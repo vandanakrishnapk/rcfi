@@ -1,0 +1,24 @@
+.hh 
+{
+    background-color: #3cc88f;
+}
+.but 
+{
+    background-color: #3cc88f !important; 
+}
+.but:hover 
+{
+    background-color: #25283a !important; 
+}
+.forgot 
+{
+    color:#3cc88f;
+} 
+.box
+{
+    background-color: #3cc88f;
+} 
+.box:hover 
+{
+    background-color: #25283a;
+} 
