@@ -1,0 +1,99 @@
+.hh 
+{
+    background-color: #3cc88f;
+}
+.but 
+{
+    background-color: #3cc88f !important; 
+}
+.but:hover 
+{
+    background-color: #25283a !important; 
+}
+.forgot 
+{
+    color:#3cc88f;
+}  
+.btn-success {
+    background-color: #3cc88f;
+    border-color: #3cc88f;
+}
+.btn-success:hover {
+    background-color: #25283a;
+    border-color: #36b378;
+}
+.btn-success:focus, .btn-success.focus {
+    box-shadow: 0 0 0 0.2rem rgba(60, 200, 143, 0.5);
+}  
+
+
+.custommodal
+{
+    background-color: #3cc88f;
+    border-color: #3cc88f;
+    color:white;
+} 
+.custommodal:hover 
+{
+    background-color: #25283a;
+    border-color: #36b378; 
+}
+.custommodal:focus, .custommodal.focus {
+    box-shadow: 0 0 0 0.2rem rgba(60, 200, 143, 0.5);
+}   
+
+
+.customclose
+{
+    background-color: #3cc88f;
+    border-color: #3cc88f;
+    color:rgb(10, 10, 10);
+} 
+.customclose:hover 
+{
+    background-color: #36b378;
+   color:white; 
+}
+.customclose:focus, .customclose.focus {
+    box-shadow: 0 0 0 0.2rem #36b378;
+    color:white;
+}  
+
+
+
+.btn-outline-success {
+    color: #3cc88f;
+    border-color: #3cc88f;
+}
+.btn-outline-success:hover {
+    background-color: #25283a;
+    color: white;
+    border-color: #3cc88f;
+}
+.btn-outline-success:focus, .btn-outline-success.focus {
+    box-shadow: 0 0 0 0.2rem rgba(60, 200, 143, 0.5);
+}
+.box
+{
+    background-color: #3cc88f;
+    color:white;
+   
+
+} 
+.box:hover 
+{
+    background-color: #25283a;
+} 
+.cls:hover 
+{
+    background-color: white;
+}  
+.custombutton {
+    background-color: #0f914c;
+    color: white!important;
+    border: none!important;
+    padding: 10px 20px !important;
+    border-radius: 5px!important;
+    cursor: pointer!important;
+} 
+

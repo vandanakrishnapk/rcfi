@@ -4,7 +4,7 @@
 
 @section('css')
 <link href="{{ asset('assets/libs/chartist/chartist.min.css') }}" rel="stylesheet">
-<link href="{{ asset('style.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 @endsection
 
 @section('body') 

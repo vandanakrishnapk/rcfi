@@ -10,11 +10,14 @@
     <meta name="keywords" content="veltrix,veltrix laravel,admin template,new admin panel,laravel 10">
     <meta content="Themesbrand" name="author">
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
-    <link rel="stylesheet" href="{{ asset('style.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
-    @yield('css')
     @include('layouts.head-css')
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+  
+    <!-- @yield('css') -->
 </head>
 
 @yield('body')
@@ -52,10 +55,12 @@
     @include('layouts.vendor-scripts')
     @yield('scripts')
     <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
-
-    <script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- creates user -->
+@stack('scripts')
+<script>
                       
-                      $(document).ready(function() {
+  $(document).ready(function() {
     $(".submit-application").click(function(e) {
         e.preventDefault();
         let form = $('#submitApplication')[0];
@@ -112,6 +117,67 @@
 });
 
 </script>
+<script>
+// creates donor
+$(document).ready(function() {
+ 
+  
+    $('#addPartnerForm').on('submit', function(event) {
+        event.preventDefault();
+        
+        const formData = $(this).serialize();
+
+        $.ajax({
+            url: "{{ route('do.AddDonor') }}",
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                console.log(response); // Log response for debugging
+
+                // Clear previous error messages
+                $('.error').text('');
+
+                if (response.status === 0) {
+                    $.each(response.error, function(key, value) {
+                        $('#' + key).next('.error').text(value);
+                    });
+                    iziToast.error({
+                        title: 'Validation Error',
+                        message: 'Please fix the errors and try again.',
+                        position: 'topRight'
+                    });
+                } else if (response.status === 1) {
+                    iziToast.success({
+                        title: 'Success',
+                        message: response.message,
+                        position: 'topRight'
+                    });
+                    $('#addPartnerForm')[0].reset(); // Clear form fields
+                    $('#addPartnerModal').modal('hide'); // Optionally, close the modal
+                } else {
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Unexpected response format',
+                        position: 'topRight'
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Something went wrong!',
+                    position: 'topRight'
+                });
+            }
+        
+            });
+        });
+    });
+
+</script>
+
+
     </body>
 
 </html>

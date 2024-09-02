@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\Admin;
 use App\Models\User;
+use App\Models\Donor;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -101,7 +102,7 @@ public function change_password_form($token)
   
       DB::table('password_reset_tokens')->where(['email' => $request->email])->delete();
   
-      return redirect()->route('admin.login')->with('message', 'Password has been changed!');
+      return redirect()->route('login')->with('message', 'Password has been changed!');
   } 
 public function data_table()
 {
@@ -144,8 +145,6 @@ public function do_add_user(Request $request)
         'mobile' =>$request->input('mobile'),
         'designation' =>$request->input('designation'),
         'password' =>bcrypt($request->input('password')),
-
-
     ]; 
     if (DB::table('users')->insert($data)) {
         return response()->json([
@@ -161,6 +160,66 @@ public function do_add_user(Request $request)
 
 
     
+}  
+
+
+public function doAddDonor(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'partner_name' => 'required|string|max:255',
+        'short_name' => 'required|string|max:100',
+        'partner_website' => 'required',
+        'type_of_partner' => 'required|string',
+        'type_of_fund' => 'required|string',
+        'contact_person' => 'required|string|max:255',
+        'support_date' => 'required|date_format:Y-m',
+        'contact_email' => 'required|email|max:255',
+        'contact_phone' => 'required|string|max:12',
+    ],
+    [
+        'partner_name.required' => 'name is required',
+        'short_name.required' => 'short name is required',
+        'partner_website.required' => 'website name required',
+        'type_of_partner.required' => 'type of partner required',
+        'type_of_fund.required' => 'type of fund is required',
+        'contact_person.required' => 'contact person is required',
+        'support_date.required' => 'support date is required',
+        'contact_email.required' => 'contact mail required',
+        'contact_phone' => 'contact phone is required',
+    ]
+);
+
+if ($validator->fails()) {
+    // Return validation errors as JSON
+    return response()->json([
+        'status' => 0,
+        'error' => $validator->errors()]);
+}
+    // Create the partner
+    $data = [
+        'partner_name' => $request->input('partner_name'),
+        'short_name' => $request->input('short_name'),
+        'partner_website' => $request->input('partner_website'),
+        'type_of_partner' => $request->input('type_of_partner'),
+        'type_of_fund' => $request->input('type_of_fund'),
+        'contact_person' => $request->input('contact_person'),
+        'support_date' => $request->input('support_date'),
+        'contact_email' => $request->input('contact_email'),
+        'contact_phone' => $request->input('contact_phone'),
+    ];
+    if (DB::table('donors')->insert($data)) {
+        return response()->json([
+            'status' => 1,
+            'message' => 'Partner created successfully!',
+        ]);
+    } else {
+        return response()->json([
+            'status' => 2,
+            'message' => 'Something went wrong!', 
+        ]);
+    }
+
+   
 }
 
     

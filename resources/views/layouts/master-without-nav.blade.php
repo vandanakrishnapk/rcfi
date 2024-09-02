@@ -11,16 +11,16 @@
     <meta content="Themesbrand" name="author">
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico')}}">
-    <link rel="stylesheet" href="{{ asset('style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
     @include('layouts.head-css')
 </head>
 @yield('body')
 
 <!-- Start content -->
-@yield('content')
-<!-- content -->
 
+<!-- content -->
+@yield('scripts')
 @include('layouts.vendor-scripts')
 
 </body>

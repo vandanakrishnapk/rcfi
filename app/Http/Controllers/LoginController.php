@@ -33,7 +33,7 @@ class LoginController extends Controller
             else {
                 // Handle the case where the role is not 0
                 Auth::guard('admin')->logout();
-                return redirect()->route('admin.login')->withErrors(['role' => 'Unauthorized role.']);
+                return redirect()->route('login')->withErrors(['role' => 'Unauthorized role.']);
             }
         } 
         elseif(Auth::attempt($credentials))
@@ -47,19 +47,19 @@ class LoginController extends Controller
             else {
                 // Handle the case where the role is not 0
                 Auth::logout();
-                return redirect()->route('admin.login')->withErrors(['role' => 'Unauthorized role.']);
+                return redirect()->route('login')->withErrors(['role' => 'Unauthorized role.']);
             }
 
         }
         
         else {
             // Handle failed login attempt
-            return redirect()->route('admin.login')->withErrors(['email' => 'The provided credentials do not match our records.']);
+            return redirect()->route('login')->withErrors(['email' => 'The provided credentials do not match our records.']);
         }
 } 
 public function logout()
 {
     Auth::guard('admin')->logout();
-    return redirect()->route('admin.login');
+    return redirect()->route('login');
 } 
 }

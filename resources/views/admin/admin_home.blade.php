@@ -2,7 +2,13 @@
 @section('title') Compact Sidebar @endsection
 @section('css')
 <link href="{{ asset('assets/libs/chartist/chartist.min.css')}}" rel="stylesheet">
-<link href="{{ asset('style.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+<!-- Bootstrap Css -->
+<link href="{{ asset('assets/css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css">
+<!-- Icons Css -->
+<link href="{{ asset('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css">
+<!-- App Css-->
+<link href="{{ asset('assets/css/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css">
 @endsection
 @section('body') <body data-sidebar="light" data-sidebar-size="small"> @endsection
     @section('content')
@@ -12,7 +18,7 @@
     @endcomponent 
     <div class="row">
     <div class="float-end d-none d-md-block">
-                <button type="button" class="btn box text-light mb-2 float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button type="button" class="btn box mb-2 float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Add user
                 </button>
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -20,7 +26,7 @@
                         <div class="modal-content">
                             <div class="modal-header box">
                                 <h1 class="modal-title fs-5 text-light" id="exampleModalLabel">User Registration</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" class="btn-close cls" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body p-4">
                                 <form id="submitApplication">
@@ -49,7 +55,7 @@
                                     
                                     <br>
                                     <div class="modal-footer">        
-                                        <button type="submit" class="box btn text-light submit-application">Register</button>
+                                        <button type="submit" class="box btn submit-application">Register</button>
                                     </div>
                                 </form>
                             </div>
