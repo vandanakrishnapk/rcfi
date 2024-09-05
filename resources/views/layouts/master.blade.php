@@ -4,20 +4,22 @@
 <head>
     <meta charset="utf-8">
 
-    <title> @yield('title')| Veltrix Laravel - Admin & Dashboard Template</title>
+    <title> @yield('title')RCFI</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description">
     <meta name="keywords" content="veltrix,veltrix laravel,admin template,new admin panel,laravel 10">
     <meta content="Themesbrand" name="author">
     <!-- App favicon -->
     @include('layouts.head-css')
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+ 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
   
-    <!-- @yield('css') -->
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
 </head>
 
 @yield('body')

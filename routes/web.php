@@ -71,10 +71,33 @@ Route::get('/markaz/orphan/care/edit/{id}',[MarkazOrphanCareController::class,'e
 Route::post('/markaz/orphan/care/update',[MarkazOrphanCareController::class,'updateMarkazOrphanCare'])->name('admin.updateMarkazOrphanCare');
 Route::delete('/markaz/orphan/care/delete/{id}',[MarkazOrphanCareController::class, 'deleteMarkazOrphanCare'])->name('admin.deleteMarkazOrphanCare');
 
-
-
-
+//Education Centre Routes 
 Route::get('/education/center/application/view',[EducationCenterAppController::class,'getEducationCenterApplication'])->name('admin.getEducationCenterApplication');
-Route::get('/sweetwater/project/view',[SweetWaterProjectController::class,'getSweetWaterProject'])->name('admin.getSweetWaterProject');
+Route::post('/education/centre/application/new',[EducationCenterAppController::class,'doEducationCentreApplication'])->name('admin.doEducationCentreApplication');
+Route::get('/education/centre/application/datatable',[EducationCenterAppController::class,'getEducationCentreDataTable'])->name('admin.getEducationCentreDataTable');
+Route::get('/education/centre/application/view/more/{id}',[EducationCenterAppController::class,'getEducationCentreViewMore'])->name('admin.getEducationCentreViewMore');
+Route::get('/education/centre/application/edit/{id}',[EducationCenterAppController::class,'editEducationCentreApplication'])->name('admin.editEducationCentreApplication');
+Route::post('/education/centre/application/update',[EducationCenterAppController::class,'updateEducationCentreApplication'])->name('admin.updateEducationCentreApplication');
+Route::delete('/education/centre/application/delete/{id}',[EducationCenterAppController::class, 'deleteEducationCentreApplication'])->name('admin.deleteEducationCentreApplication');
+
+//Cultular Centre Application Routes
 Route::get('/cultural/center/application/view',[CulturalCenterAppController::class,'getCulturalCenterApp'])->name('admin.getCulturalCenterApp');
+Route::post('/cultural/centre/application/new',[CulturalCenterAppController::class,'doCulturalCentreApplication'])->name('admin.doCulturalCentreApplication');
+Route::get('/cultural/centre/application/datatable',[CulturalCenterAppController::class,'getCulturalCentreDataTable'])->name('admin.getCulturalCentreDataTable');
+Route::get('/cultural/centre/application/view/more/{id}',[CulturalCenterAppController::class,'getCulturalCentreViewMore'])->name('admin.getCulturalCentreViewMore');
+Route::get('/cultural/centre/application/edit/{id}',[CulturalCenterAppController::class,'editCulturalCentreApplication'])->name('admin.editCulturalCentreApplication');
+Route::post('/cultural/centre/application/update',[CulturalCenterAppController::class,'updateCulturalCentreApplication'])->name('admin.updateCulturalCentreApplication');
+Route::delete('/cultural/centre/application/delete/{id}',[CulturalCenterAppController::class, 'deleteCulturalCentreApplication'])->name('admin.deleteCulturalCentreApplication');
+
+
+
+//Sweet Water project Routes
+Route::get('/sweetwater/project/view',[SweetWaterProjectController::class,'getSweetWaterProject'])->name('admin.getSweetWaterProject');
+Route::post('/sweetwater/project/new',[SweetWaterProjectController::class,'doSweetWaterProject'])->name('admin.doSweetWaterProject');
+Route::get('/sweetwater/project/datatable',[SweetWaterProjectController::class,'getSweetWaterProjectDataTable'])->name('admin.getSweetWaterProjectDataTable');
+Route::get('/sweetwater/project/view/more/{id}',[SweetWaterProjectController::class,'getSweetWaterProjectViewMore'])->name('admin.getSweetWaterProjectViewMore');
+Route::get('/sweetwater/project/edit/{id}',[SweetWaterProjectController::class,'editSweetWaterProject'])->name('admin.editSweetWaterProject');
+Route::post('/sweetwater/project/update',[SweetWaterProjectController::class,'updateSweetWaterProject'])->name('admin.updateSweetWaterProject');
+Route::delete('/sweetwater/project/delete/{id}',[SweetWaterProjectController::class, 'deleteSweetWaterProject'])->name('admin.deleteSweetWaterProject');
+
 });

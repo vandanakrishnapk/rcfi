@@ -18,7 +18,7 @@
 @yield('body')
 
 <!-- Start content -->
-
+@yield('content')
 <!-- content -->
 @yield('scripts')
 @include('layouts.vendor-scripts')

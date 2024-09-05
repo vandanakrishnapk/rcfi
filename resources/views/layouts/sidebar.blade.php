@@ -13,7 +13,7 @@
 
                 <li>
                     <a href="{{ route('admin.home') }}" class="waves-effect">
-                        <i class="ti-home"></i>
+                        <i class="bi bi-houses-fill"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
@@ -22,7 +22,7 @@
 
                 <li>
                     <a href="#" class=" waves-effect">
-                        <i class="ti-layout"></i>
+                        <i class="bi bi-people-fill"></i>
                         <span>Configuration</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="true">
@@ -41,7 +41,7 @@
 
                 <li>
                     <a href="#" class=" waves-effect">
-                        <i class="ti-layout"></i>
+                        <i class="bi bi-file-earmark-medical-fill"></i>
                         <span>Application</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="true">
@@ -54,13 +54,14 @@
                            
                         </li>
                         <li>
-                            <a href="{{ route('admin.getSweetWaterProject')}}" class="">  <span>Sweet Water Project</span></a>
-                           
-                        </li>
-                        <li>
                             <a href="{{ route('admin.getCulturalCenterApp')}}" class="">  <span>Cultural Centre</span></a>
                            
                         </li>
+                        <li>
+                            <a href="{{ route('admin.getSweetWaterProject')}}" class="">  <span>Sweet Water Project</span></a>
+                           
+                        </li>
+                       
                     </ul>
                 </li>
 

@@ -16,9 +16,9 @@
 @endcomponent
 <div class="row">
     <div class="float-end d-none d-md-block">
-                <button type="button" class="btn box mb-2 float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Add user
-                </button>
+        <button type="button" class="btn btn-success mb-2 float-end rounded-circle" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <i class="bi bi-person-plus-fill fs-5"></i>
+        </button>
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -92,15 +92,52 @@
             </div>
         </div>
     </div>
+</div>   
+
+<!--Delete confirmation modal-->
+<!-- Bootstrap Modal -->
+<div id="deleteConfirmationModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header custommodal">
+                <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage"></p>
+                <p>Name: <span id="modalUserName"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn but cancel" data-dismiss="modal">Cancel</button>
+                <button type="button" id="confirmDelete" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 <div class="row">
     <div class="col-12">
         <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-3">
+
+                    </div> 
+                    <div class="col-4">
+
+                        <h4 class="but p-1 rounded fw-bold border border-success text-center" style="width:200px;color:white;">USERS </h4>
+            
+                    </div>
+                </div>
+            </div>
             <div class="card-body">
                 <table id="usersTable" class="table table-bordered dt-responsive nowrap display" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
                         <tr>
+                            <th>S.No</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Mobile</th>
@@ -112,6 +149,7 @@
                     </thead>
                     <tbody>
                         <tr>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -143,14 +181,45 @@
    $(document).ready(function() {
     $('#usersTable').DataTable({
         processing: true,
-        serverSide: true,
-        destroy:true,
+            serverSide: true,
+            destroy: true,
+            searching: true,
+            dom: "<'row'<'col-sm-6'B><'col-sm-6'f>>" +
+                 "<'row'<'col-sm-12'tr>>" +
+                 "<'row'<'col-sm-4'l><'col-sm-8'ip>>",
+            buttons: [
+                {
+                    extend: 'csvHtml5',
+                    text: 'Download Excel',
+                    title: 'Users List',
+                    titleAttr: 'Export to CSV',
+                    className: 'custombutton',
+                    exportOptions: {
+                        columns: function (idx, data, node) {
+                return true;
+            }
+                    }
+                }
+            ],
+            
+            lengthMenu: [
+                [10, 25, 50, -1],
+                ['10 Users', '25 Users', '50 Users', 'All Users']
+            ],
         ajax: {
             url: "{{ route('users.data') }}",
             type: 'GET',
             dataSrc: 'data'
         },
         columns: [
+            {
+                data: null,
+                orderable: false,
+                searchable: false,
+                render: function(data, type, row, meta) {
+                    return meta.row + 1; // Serial number starts from 1
+                }
+            },
             { data: 'name', name: 'name' },
             { data: 'email', name: 'email' },
             { data: 'mobile', name: 'mobile' },
@@ -168,7 +237,7 @@
                         <button class="btn btn-info btn-sm edit-user" data-id="${row.id}">
                             <i class="bi bi-pencil"></i>
                         </button>
-                        <button class="btn btn-danger btn-sm delete-user" data-id="${row.id}">
+                        <button class="btn btn-danger btn-sm delete-user" data-id="${row.id}" data-name=${row.name}>
                             <i class="bi bi-trash"></i>
                         </button>
                     `;
@@ -182,7 +251,7 @@
         console.log('Clicked user ID:', userId);
 
         if (userId !== undefined) {
-            $.get(`{{ url('/users') }}/${userId}`, function(data) {
+            $.get(`{{ url('/admin/users') }}/${userId}`, function(data) {
                 console.log('Response data:', data);
 
                 if (data && data.name && data.email && data.mobile && data.designation) {
@@ -210,7 +279,7 @@
 $(document).on('click', '.edit-user', function() {
     const userId = $(this).data('id');
     console.log(userId)
-    $.get(`/users/${userId}/edit`, function(data) {
+    $.get(`{{ url('/admin/users/${userId}/edit')}}`, function(data) {
        
         const formHtml = `
             <form id="editUserForm" data-id="${data.id}">
@@ -248,7 +317,7 @@ $(document).on('submit', '#editUserForm', function(event) {
     event.preventDefault();    
     const userId = $(this).data('id');
     const formData = $(this).serialize();
-    const url = `/users/${userId}`; // Ensure this URL is correct
+    const url = `{{ url('/admin/users') }}/${userId}`; // Ensure this URL is correct
 
     $.ajax({
         url: url,
@@ -295,72 +364,62 @@ $(document).on('submit', '#editUserForm', function(event) {
 
 
     
-//delete user 
+//delete user  
+
 $(document).on('click', '.delete-user', function() {
-      const userId = $(this).data('id');
-      if(confirm('Are you sure you want to delete this user?')) {
-          $.ajax({
-              url: `{{ url('/admin/users') }}/${userId}`,
-              type: 'DELETE',
-              data: {
-                  _token: '{{ csrf_token() }}'
-              },
-              success: function(response) {
+    const userId = $(this).data('id');
+    const userName = $(this).data('name'); // Assuming you have the username data attribute
+    // Set the user name and message in the modal
+    $('#modalUserName').text(userName);
+    $('#modalMessage').text('Are you sure you want to delete this user?');
+
+    // Show the modal
+    $('#deleteConfirmationModal').modal('show');
+     $('.close').on('click', function()
+    {
+        $('#deleteConfirmationModal').modal('hide');
+    });
+
+    $('.cancel').on('click', function()
+    {
+        $('#deleteConfirmationModal').modal('hide');
+    });
+
+    // Handle confirmation
+    $('#confirmDelete').off('click').on('click', function() {
+        $.ajax({
+            url: `{{ url('/admin/users') }}/${userId}`,
+            type: 'DELETE',
+            data: {
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
                 if (response.status === 1) {
-                iziToast.success({
-                    title: 'Success',
-                    message: response.message,
-                    position: 'topRight'
+                    toastr.success(response.message, 'Success', {
+                        positionClass: 'toast-top-right'
+                    });
+                } else {
+                    toastr.error('Unexpected response format.', 'Error', {
+                        positionClass: 'toast-top-right'
+                    });
+                }
+                $('#SweetWaterTable').DataTable().ajax.reload();
+                $('#deleteConfirmationModal').modal('hide'); // Hide the modal on success
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                toastr.error('Something went wrong!', 'Error', {
+                    positionClass: 'toast-top-right'
                 });
             }
-            
-                  $('#usersTable').DataTable().ajax.reload();
-              }
-          });
-      }
-  });
-
-// $(document).on('submit', '#editUserForm', function(event) {
-//     event.preventDefault();
-    
-//     const userId = $(this).data('id');
-//     const formData = $(this).serialize();
-
-//     $.ajax({
-//         url: `/users/${userId}`,
-//         type: 'POST',
-//         data: formData,
-//         dataType: "JSON",
-//         success: function(response) {
-//             if (response.success) {
-//                 $('#editDetailsModal').modal('hide');
-//                 alert('User updated successfully');
-               
-//             }
-//         },
-//         error: function(xhr) {
-//             console.log(xhr.responseText);
-//             alert('An error occurred while updating the user.');
-//         }
-//     });
-// });
+        });
+    });
+});
 
 
-//   $(document).on('click', '.delete-user', function() {
-//       const userId = $(this).data('id');
-//       if(confirm('Are you sure you want to delete this user?')) {
-//           $.ajax({
-//               url: `{{ url('/users') }}/${userId}`,
-//               type: 'DELETE',
-//               data: {
-//                   _token: '{{ csrf_token() }}'
-//               },
-//               success: function(response) {
-//                   alert(response.success);
-//                   $('#usersTable').DataTable().ajax.reload();
-//               }
-//           });
-//       }
-//   });
+
+
+
+
  </script>
 @endsection

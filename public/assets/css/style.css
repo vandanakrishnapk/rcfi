@@ -4,11 +4,13 @@
 }
 .but 
 {
-    background-color: #3cc88f !important; 
+    background-color: #3cc88f !important;  
+    color:white;
 }
 .but:hover 
 {
-    background-color: #25283a !important; 
+    background-color: #25283a !important;
+    color: white !important; 
 }
 .forgot 
 {
@@ -59,7 +61,10 @@
     color:white;
 }  
 
-
+.close 
+{
+    border-color: white!important;
+}
 
 .btn-outline-success {
     color: #3cc88f;
@@ -89,10 +94,10 @@
     background-color: white;
 }  
 .custombutton {
-    background-color: #0f914c;
+    background-color: #3cc88f;
     color: white!important;
     border: none!important;
-    padding: 10px 20px !important;
+    padding: 5px !important;
     border-radius: 5px!important;
     cursor: pointer!important;
 } 

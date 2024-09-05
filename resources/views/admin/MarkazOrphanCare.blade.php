@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('css')
 <!-- DataTables -->
-<link href="{{ asset('assets/libs/datatables/dataTables.min.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css">
 
 <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -15,9 +15,11 @@
     <div class="row">
         <div class="col-12">
             <div class="float-end d-none d-md-block">
-                <button type="button" class="btn btn-success mb-2 float-end rounded-circle" data-bs-toggle="modal" data-bs-target="#MarkazOrphanCareModal">
+                <button type="button" class="btn btn-success mb-1 me-3 float-end rounded-circle" data-bs-toggle="modal" data-bs-target="#MarkazOrphanCareModal">
                     <i class="bi bi-person-plus-fill fs-5"></i>
                 </button>
+            </div>
+        </div>
                 <div class="row">
                     <div class="col-12">
             
@@ -401,10 +403,7 @@
             </div>
             
             </div>
-            </div>
-        </div>
-    </div>
-    
+           
 <!-- view more markaz orphan care -->
 
 
@@ -809,17 +808,51 @@
       </div>
     </div>
   </div> 
+<!--Delete confirmation modal-->
+<!-- Bootstrap Modal -->
+<div id="deleteConfirmationModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header custommodal">
+                <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage"></p>
+                <p>Name: <span id="modalUserName"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn but cancel" data-dismiss="modal">Cancel</button>
+                <button type="button" id="confirmDelete" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
 
     
 <!-- data table Markaz Orphan care -->
  <div class="row">
     <div class="col-12">
         <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-3">
+
+                    </div> 
+                    <div class="col-4">
+
+                        <h4 class="but p-1 rounded fw-bold border border-success" style="width:360px;color:white;">MARKAZ OPEN CARE APPLICATIONS</h4>
+            
+                    </div>
+                </div>
+            </div>
             <div class="card-body">
                 <table id="orphanTable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
                         <tr>
-                           
+                            <th>S.No</th>
                             <th>Name of Orphan</th>
                             <th>Father's Name</th>
                             <th>Grandfather's Name</th>
@@ -896,12 +929,14 @@ $(document).ready(function() {
             buttons: [
                 {
                     extend: 'csvHtml5',
-                    text: 'Download CSV',
+                    text: 'Download Excel',
                     title: 'Markaz Orphan Care',
                     titleAttr: 'Export to CSV',
                     className: 'custombutton',
                     exportOptions: {
-                        columns: [0, 1, 2, 3] // Ensure the correct column indices
+                        columns: function (idx, data, node) {
+                        return true;
+            }
                     }
                 }
             ],
@@ -916,6 +951,14 @@ $(document).ready(function() {
                 
             },
                 "columns": [
+                {
+                data: null,
+                orderable: false,
+                searchable: false,
+                render: function(data, type, row, meta) {
+                    return meta.row + 1; // Serial number starts from 1
+                }
+                },
                    
                     { "data": "nameOfOrphan" },
                     { "data": "nameOfFather" },
@@ -971,7 +1014,7 @@ $(document).ready(function() {
                         <button class="btn btn-warning btn-sm edit me-1" data-id="${row.orphancareId}">
                             <i class="bi bi-pencil"></i>
                         </button>
-                        <button class="btn btn-danger btn-sm delete" data-id="${row.orphancareId}">
+                        <button class="btn btn-danger btn-sm delete" data-id="${row.orphancareId}" data-name="${row.nameOfOrphan}">
                             <i class="bi bi-trash"></i>
                         </button>                       
                        
@@ -1000,6 +1043,7 @@ $(document).ready(function() {
                     success: function(response) {
                         toastr.success(response.message, 'Success');
                         $('#MarkazOrphanCareModal').modal('hide');
+                        $('#orphanTable').DataTable().ajax.reload();
                     },
                     error: function(response) {
                         let errors = response.responseJSON.errors;
@@ -1170,7 +1214,6 @@ $(document).ready(function() {
                 } else {
                     // Hide the modal and reset the form on success
                     $('#EditMarkazOrphanCareModal').modal('hide');
-                    $('#EditorphanForm')[0].reset();
                     toastr.success(data.message); // Display success message
                     setTimeout(function() {
                         location.reload(); // Optional: Reload page after a short delay
@@ -1184,13 +1227,30 @@ $(document).ready(function() {
     });
 }); 
 
-
-//delete markaz open care 
 $(document).on('click', '.delete', function() {
     const orphanCareId = $(this).data('id');
-    if(confirm('Are you sure you want to delete this purchase?')) {
+    const userName = $(this).data('name'); // Assuming you have the username data attribute
+
+    // Set the user name and message in the modal
+    $('#modalUserName').text(userName);
+    $('#modalMessage').text('Are you sure you want to delete this application?');
+
+    // Show the modal
+    $('#deleteConfirmationModal').modal('show');
+     $('.close').on('click', function()
+    {
+        $('#deleteConfirmationModal').modal('hide');
+    });
+
+    $('.cancel').on('click', function()
+    {
+        $('#deleteConfirmationModal').modal('hide');
+    });
+
+    // Handle confirmation
+    $('#confirmDelete').off('click').on('click', function() {
         $.ajax({
-            url: `{{ url('/admin/markaz/orphan/care/delete/') }}/${orphanCareId}`,
+            url: `{{ url('/admin/markaz/orphan/care/delete') }}/${orphanCareId}`,
             type: 'DELETE',
             data: {
                 _token: '{{ csrf_token() }}'
@@ -1206,6 +1266,7 @@ $(document).on('click', '.delete', function() {
                     });
                 }
                 $('#orphanTable').DataTable().ajax.reload();
+                $('#deleteConfirmationModal').modal('hide'); // Hide the modal on success
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);
@@ -1214,8 +1275,9 @@ $(document).on('click', '.delete', function() {
                 });
             }
         });
-    }
+    });
 });
+
 
 </script>
 @endpush

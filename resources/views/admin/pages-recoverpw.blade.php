@@ -64,6 +64,6 @@
 
 @endsection
 
-@section('scripts')
-<script src="{{ URL::asset('assets/js/app.js') }}"></script>
-@endsection
+@push('scripts')
+<script src="{{ asset('assets/js/app.js') }}"></script>
+@endpush
