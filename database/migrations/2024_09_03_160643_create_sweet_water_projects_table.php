@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('sweet_water_projects', function (Blueprint $table) {
             $table->id('sweetwaterId');
+            $table->string('applicationId');
             $table->string('applicantName');
             $table->string('location');
             $table->text('address');

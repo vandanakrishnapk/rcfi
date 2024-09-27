@@ -1,17 +1,70 @@
-@extends('layouts.master')
+@extends('user.template.master')
 @section('title') Compact Sidebar @endsection
 @section('css')
+<link href="{{ asset('assets/css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css">
+<!-- Icons Css -->
+<link href="{{ asset('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css">
+<!-- App Css-->
+<link href="{{ asset('assets/css/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css">
+
 <link href="{{ asset('assets/libs/chartist/chartist.min.css')}}" rel="stylesheet">
 <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+<!-- Bootstrap Css -->
 @endsection
 @section('body') <body data-sidebar="light" data-sidebar-size="small"> @endsection
     @section('content')
-   
+    @component('components.breadcrumb')
     @slot('page_title') RCFI @endslot
     @slot('subtitle')User Dashboard @endslot
+    @endcomponent 
+    <div class="row">
+    <div class="float-end d-none d-md-block">
+                
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header box">
+                                <h1 class="modal-title fs-5 text-light" id="exampleModalLabel">User Registration</h1>
+                                <button type="button" class="btn-close cls" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body p-4">
+                                <form id="submitApplication">
+                                    @csrf 
+                                    <div id="formErrors" class="alert alert-danger d-none"></div> <!-- Error container -->
+                                    
+                                    <br><label for="name">Name</label>
+                                    <input type="text" name="name" id="name" placeholder="name" class="form-control">
+                                    <span class="error name_error text-danger"></span>
+                                    
+                                    <br><label for="email">Email</label>
+                                    <input type="email" name="email" id="email" placeholder="email" class="form-control">
+                                    <span class="error email_error text-danger"></span>
+                                    
+                                    <br><label for="mobile">Mobile</label>
+                                    <input type="text" name="mobile" id="mobile" placeholder="mobile" class="form-control">
+                                    <span class="error mobile_error text-danger"></span>
+                                    
+                                    <br><label for="designation">Designation</label>
+                                    <input type="text" name="designation" id="designation" placeholder="designation" class="form-control">
+                                    <span class="error designation_error text-danger"></span>
+                                    
+                                    <br><label for="password">Password</label>
+                                    <input type="password" name="password" id="password" placeholder="password" class="form-control">
+                                    <span class="error password_error text-danger"></span>
+                                    
+                                    <br>
+                                    <div class="modal-footer">        
+                                        <button type="submit" class="box btn submit-application">Register</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
 
-
-    <div class="row mt-5">
+    <div class="row">
         <div class="col-xl-3 col-md-6">
             <div class="card mini-stat text-white box">
                 <div class="card-body box rounded">
@@ -131,3 +184,4 @@
     
 
     @endsection
+   

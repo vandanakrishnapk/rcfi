@@ -9,6 +9,10 @@ use App\Http\Controllers\MarkazOrphanCareController;
 use App\Http\Controllers\EducationCenterAppController;
 use App\Http\Controllers\SweetWaterProjectController;
 use App\Http\Controllers\CulturalCenterAppController;
+use App\Http\Controllers\userProjectController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectDetailsController;
+use App\Http\Controllers\UserProjectDetailsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,7 +35,7 @@ Route::post('/doAdminLogin',[LoginController::class,'do_admin_login'])->name('do
 Route::post('/logout',[LoginController::class,'logout'])->name('logout');
 
 //Admin routes
-Route::prefix('admin')->middleware(['auth:admin', 'role:0'])->group(function ()
+Route::prefix('admin')->middleware(['auth', 'role:1,2'])->group(function ()
  {
 Route::get('/dashboard',[AdminController::class,'admin_home'])->name('admin.home');
 Route::get('/forgotPassword',[AdminController::class,'forgot_password'])->name('forgot_password');
@@ -47,7 +51,6 @@ Route::post('/doAddDonor',[AdminController::class,'doAddDonor'])->name('do.AddDo
 //user routes 
 
 Route::get('/users/data', [UserController::class, 'getUserData'])->name('users.data');
-Route::get('/home',[UserController::class,'home'])->name('user.home');
 Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
 Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
 Route::post('/users/{id}', [UserController::class, 'update'])->name('users.update');
@@ -100,4 +103,33 @@ Route::get('/sweetwater/project/edit/{id}',[SweetWaterProjectController::class,'
 Route::post('/sweetwater/project/update',[SweetWaterProjectController::class,'updateSweetWaterProject'])->name('admin.updateSweetWaterProject');
 Route::delete('/sweetwater/project/delete/{id}',[SweetWaterProjectController::class, 'deleteSweetWaterProject'])->name('admin.deleteSweetWaterProject');
 
-});
+
+Route::get('/application/view',[AdminController::class,'getApplications'])->name('admin.getApplications'); 
+Route::get('/projects/view',[ProjectController::class,'getProjects'])->name('admin.getProjects');
+Route::post('/projects/new',[ProjectController::class,'doProject'])->name('admin.doProject');
+Route::get('/projects/datatable',[ProjectController::class,'getProjectData'])->name('admin.getProjectData');
+Route::get('/projects/view/more/{id}',[ProjectController::class,'projectViewMore'])->name('admin.projectViewMore');
+Route::get('/projects/edit/{id}',[ProjectController::class,'editProject'])->name('admin.editProject');
+Route::post('projects/update',[ProjectController::class,'updateProject'])->name('admin.updateProject');
+Route::delete('projects/delete/{id}',[ProjectController::class, 'deleteProject'])->name('admin.deleteProject');
+
+Route::get('/project/details/view/{id}',[ProjectDetailsController::class,'getProjectDetails'])->name('admin.getProjectDetails');
+Route::post('/projects/details/do',[ProjectDetailsController::class,'doProjectDetails'])->name('admin.doProjectDetails');
+Route::post('/projects/details/approval/{id}',[ProjectDetailsController::class,'projectApproval'])->name('admin.projectApproval');
+});   
+
+
+
+Route::prefix('user')->middleware(['auth', 'role:3'])->group(function ()
+ {
+    Route::get('/home',[UserController::class,'home'])->name('user.home');
+    Route::get('/project/view',[userProjectController::class,'getUserProject'])->name('user.userProject');
+    Route::get('/projects/datatable',[userProjectController::class,'getProjectData'])->name('user.getProjectData');
+
+    Route::get('/project/details/view',[UserProjectDetailsController::class,'getProjectDetails'])->name('user.getProjectDetails');
+
+    Route::get('/project/details/stage2/view/{id}',[UserProjectDetailsController::class,'getStage2'])->name('user.getStage2');
+
+ });
+
+

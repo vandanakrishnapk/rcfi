@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('cultural_centres', function (Blueprint $table) {
             $table->id('culturalcentreId');
+            $table->string('applicationId');
             $table->string('applicantName');
             $table->string('committeeName');
             $table->string('regNumber');

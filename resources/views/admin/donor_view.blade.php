@@ -164,12 +164,10 @@
         <div class="card">
             <div class="card-header">
                 <div class="row">
-                    <div class="col-3">
+              
+                    <div class="col-12">
 
-                    </div> 
-                    <div class="col-4">
-
-                        <h4 class="but p-1 rounded fw-bold border border-success text-center" style="width:200px;color:white;">DONORS</h4>
+                        <h4 class="but p-3 rounded fw-bold border border-success text-center" style="color:white;">DONORS</h4>
             
                     </div>
                 </div>

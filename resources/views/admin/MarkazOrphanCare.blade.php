@@ -8,12 +8,12 @@
 @endsection
 @section('body') <body data-sidebar="light"> @endsection
     @section('content')
-    @component('components.breadcrumb')
-    @slot('page_title') Data tables @endslot
-    @slot('subtitle') Tables @endslot
-    @endcomponent 
-    <div class="row">
+   
+    <div class="row mt-3">
         <div class="col-12">
+            <div class="float-start">
+                <a href="{{ route('admin.getApplications')}}" class="btn btn-success btn-sm rounded-circle"><i class="bi bi-box-arrow-in-left fs-4 ms-1"></i></a>
+            </div>
             <div class="float-end d-none d-md-block">
                 <button type="button" class="btn btn-success mb-1 me-3 float-end rounded-circle" data-bs-toggle="modal" data-bs-target="#MarkazOrphanCareModal">
                     <i class="bi bi-person-plus-fill fs-5"></i>
@@ -837,22 +837,22 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
+             
                 <div class="row">
-                    <div class="col-3">
+                
+                    <div class="col-12">
 
-                    </div> 
-                    <div class="col-4">
-
-                        <h4 class="but p-1 rounded fw-bold border border-success" style="width:360px;color:white;">MARKAZ OPEN CARE APPLICATIONS</h4>
+                        <h4 class="but p-3 rounded fw-bold border border-success text-center" style="color:white;">MARKAZ OPEN CARE APPLICATIONS</h4>
             
                     </div>
                 </div>
             </div>
             <div class="card-body">
+               
                 <table id="orphanTable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
                         <tr>
-                            <th>S.No</th>
+                            <th>Application ID</th>
                             <th>Name of Orphan</th>
                             <th>Father's Name</th>
                             <th>Grandfather's Name</th>
@@ -951,15 +951,7 @@ $(document).ready(function() {
                 
             },
                 "columns": [
-                {
-                data: null,
-                orderable: false,
-                searchable: false,
-                render: function(data, type, row, meta) {
-                    return meta.row + 1; // Serial number starts from 1
-                }
-                },
-                   
+                    { "data": "applicationId"},                  
                     { "data": "nameOfOrphan" },
                     { "data": "nameOfFather" },
                     { "data": "nameOfGrandFather" },
@@ -1044,6 +1036,8 @@ $(document).ready(function() {
                         toastr.success(response.message, 'Success');
                         $('#MarkazOrphanCareModal').modal('hide');
                         $('#orphanTable').DataTable().ajax.reload();
+                       
+                       
                     },
                     error: function(response) {
                         let errors = response.responseJSON.errors;

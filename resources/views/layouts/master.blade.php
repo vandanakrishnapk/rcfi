@@ -9,6 +9,8 @@
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description">
     <meta name="keywords" content="veltrix,veltrix laravel,admin template,new admin panel,laravel 10">
     <meta content="Themesbrand" name="author">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- App favicon -->
     @include('layouts.head-css')
     
@@ -56,8 +58,8 @@
     <!-- script file here -->
     @include('layouts.vendor-scripts')
     @yield('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- creates user -->
 @stack('scripts')
 <script>
@@ -98,6 +100,7 @@
                     });
                     $('#submitApplication')[0].reset(); // Clear form fields
                     $('#exampleModal').modal('hide'); // Optionally, close the modal
+                    $('#usersTable').DataTable().ajax.reload();
                 } else {
                     iziToast.error({
                         title: 'Error',
@@ -156,6 +159,7 @@ $(document).ready(function() {
                     });
                     $('#addPartnerForm')[0].reset(); // Clear form fields
                     $('#addPartnerModal').modal('hide'); // Optionally, close the modal
+                    $('#donorsTable').DataTable().ajax.reload();
                 } else {
                     iziToast.error({
                         title: 'Error',

@@ -11,7 +11,7 @@ class UserController extends Controller
         public function getUserData(Request $request)
         {
             if ($request->ajax()) {
-                $users = User::select(['id','name', 'email', 'mobile','designation'])->get();
+                $users = User::select(['id','name', 'email', 'mobile','designation','role'])->where('role','!=',1)->get();
                 $totalRecords = count($users); // Total records in your data source
                 $filteredRecords = count($users); // Number of records after applying filters
             

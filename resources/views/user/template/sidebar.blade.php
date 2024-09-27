@@ -12,60 +12,17 @@
                 
 
                 <li>
-                    <a href="{{ route('admin.home') }}" class="waves-effect">
+                    <a href="{{ route('user.home') }}" class="waves-effect">
                         <i class="bi bi-houses-fill"></i>
                         <span>Dashboard</span>
                     </a>
-                </li>
+                </li>            
 
-               
-
-                <li>
-                    <a href="#" class=" waves-effect">
-                        <i class="bi bi-people-fill"></i>
-                        <span>Configuration</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="true">
-                        <li>
-                            <a href="{{ route('data_table') }}" class="">User</a>
-                            
-                        </li>
-                        <li>
-                            <a href="{{ route('donor.view') }}" class="">  <span>Donor</span></a>
-                           
-                        </li>
-                    </ul>
-                </li>
-
+              
                 <!--Application -->
 
                 <li>
-                    <a href="{{ route('admin.getApplications')}}" class=" waves-effect">
-                        <i class="bi bi-file-earmark-medical-fill"></i>
-                        <span>Application</span>
-                    </a>
-                    {{-- <ul class="sub-menu" aria-expanded="true">
-                        <li>
-                            <a href="{{ route('admin.getMarkazOrphanCare')}}" class="">Markaz Orphan Care</a>
-                            
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.getEducationCenterApplication')}}" class="">  <span>Education Centre</span></a>
-                           
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.getCulturalCenterApp')}}" class="">  <span>Cultural Centre</span></a>
-                           
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.getSweetWaterProject')}}" class="">  <span>Sweet Water Project</span></a>
-                           
-                        </li>
-                       
-                    </ul> --}}
-                </li>
-                <li>
-                    <a href="{{ route('admin.getProjects')}}" class=" waves-effect">
+                    <a href="{{ route('user.userProject')}}" class=" waves-effect">
                         <i class="bi bi-folder-fill"></i>
                         <span>Projects</span>
                     </a>

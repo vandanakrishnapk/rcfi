@@ -11,13 +11,12 @@
 @endsection
 
 @section('content')
-@component('components.breadcrumb')
-@slot('page_title') Application Form @endslot
-@slot('subtitle') New Project Application @endslot
-@endcomponent
 
-<div class="row">
+<div class="row mt-3">
     <div class="col-12">
+        <div class="float-start">
+            <a href="{{ route('admin.getApplications')}}" class="btn btn-success btn-sm rounded-circle"><i class="bi bi-box-arrow-in-left fs-4 ms-1"></i></a>
+        </div>
 <div class="float-end d-none d-md-block"> 
     <button type="button" class="btn btn-success mb-1 float-end rounded-circle me-3" data-bs-toggle="modal" data-bs-target="#CulturalCenterApplicationModal">
         <i class="bi bi-person-plus-fill fs-5"></i>
@@ -737,12 +736,10 @@
         <div class="card">
             <div class="card-header">
                 <div class="row">
-                    <div class="col-3">
+           
+                    <div class="col-12">
 
-                    </div> 
-                    <div class="col-4">
-
-                        <h4 class="but p-1 rounded fw-bold border border-success" style="width:350px;color:white;">CULTURAL CENTRE APPLICATIONS</h4>
+                        <h4 class="but p-3 text-center rounded fw-bold border border-success" style="color:white;">CULTURAL CENTRE APPLICATIONS</h4>
             
                     </div>
                 </div>
@@ -752,7 +749,7 @@
     <table id="CulturalTable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
         <thead>
             <tr>  
-                <th>S.No</th>             
+                <th>Application ID</th>             
                 <th>Name of Applicant</th>
                 <th>Name of Committee</th>
                 <th>Reg. Number</th>
@@ -841,14 +838,7 @@ $(document).ready(function() {
             dataSrc: 'data',
         },
         columns: [ 
-            {
-                data: null,
-                orderable: false,
-                searchable: false,
-                render: function(data, type, row, meta) {
-                    return meta.row + 1; // Serial number starts from 1
-                }
-            },         
+            { data: 'applicationId' },    
             { data: 'applicantName' },
             { data: 'committeeName' },
             { data: 'regNumber' },

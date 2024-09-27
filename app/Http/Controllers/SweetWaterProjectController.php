@@ -62,9 +62,11 @@ class SweetWaterProjectController extends Controller
     if ($validator->fails()) {
         return response()->json(['errors' => $validator->errors()], 422);
     }
+    $applicationId = $this->generateApplicationId('SW'); // Use your specific project code
 
     try {
         $project = SweetWaterProject::create([
+            'applicationId'=>$applicationId,
             'applicantName' => $request->input('applicantName'),
             'location' => $request->input('location'),
             'address' => $request->input('address'),
@@ -108,7 +110,19 @@ class SweetWaterProjectController extends Controller
 
         return response()->json(['error' => 'Failed to save application'], 500);
     }
-}   
+}    
+private function generateApplicationId($projectCode)
+{
+    // Get the current year
+    $year = date('y'); // Get last two digits of the year
+
+    // Generate a 5-digit unique number
+    $latest =SweetWaterProject::max('sweetwaterId'); // Assuming 'id' is an auto-incrementing primary key
+    $uniqueNumber = str_pad(($latest + 1), 5, '0', STR_PAD_LEFT); // Increment ID and pad with zeros
+
+    return "APLRCFI{$year}{$projectCode}{$uniqueNumber}";
+}
+
 public function getSweetWaterProjectDataTable()
 {
     $details = SweetWaterProject::all();
@@ -129,6 +143,7 @@ public function getSweetWaterProjectDataTable()
         // Return formatted record
         return [
             'sweetwaterId' => $item->sweetwaterId,
+            'applicationId' =>$item->applicationId,
             'applicantName' => $item->applicantName,
             'location' => $item->location,
             'address' => $item->address,

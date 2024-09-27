@@ -44,13 +44,21 @@
                                     <span class="error mobile_error text-danger"></span>
                                     
                                     <br><label for="designation">Designation</label>
-                                    <input type="text" name="designation" id="designation" placeholder="designation" class="form-control">
+                                    <select name="designation" class="form-select">
+                                        <option value="">Select Designation</option>
+                                        <option value="Admin">Admin</option>
+                                        <option value="COO">COO</option>
+                                        <option value="Project Manager">Project Manager</option>
+                                        <option value="Project Executive">Project Executive</option>
+                                    </select>
                                     <span class="error designation_error text-danger"></span>
                                     
                                     <br><label for="password">Password</label>
                                     <input type="password" name="password" id="password" placeholder="password" class="form-control">
                                     <span class="error password_error text-danger"></span>
                                     
+                                   
+
                                     <br>
                                     <div class="modal-footer">        
                                         <button type="submit" class="box btn submit-application">Register</button>
@@ -123,12 +131,10 @@
         <div class="card">
             <div class="card-header">
                 <div class="row">
-                    <div class="col-3">
+           
+                    <div class="col-12">
 
-                    </div> 
-                    <div class="col-4">
-
-                        <h4 class="but p-1 rounded fw-bold border border-success text-center" style="width:200px;color:white;">USERS </h4>
+                        <h4 class="but p-3 rounded fw-bold border border-success text-center" style="color:white;">USERS </h4>
             
                     </div>
                 </div>

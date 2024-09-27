@@ -11,14 +11,11 @@
 @endsection
 
 @section('content')
-@component('components.breadcrumb')
-@slot('page_title') Data tables @endslot
-@slot('subtitle') Tables @endslot
-@endcomponent
-
-
-<div class="row">
+<div class="row mt-3">
     <div class="col-12">
+        <div class="float-start">
+            <a href="{{ route('admin.getApplications')}}" class="btn btn-success btn-sm rounded-circle"><i class="bi bi-box-arrow-in-left fs-4 ms-1"></i></a>
+        </div>
 <div class="float-end d-none d-md-block"> 
     <button type="button" class="btn btn-success mb-1 float-end rounded-circle me-3" data-bs-toggle="modal" data-bs-target="#SweetWaterProjectModal">
         <i class="bi bi-person-plus-fill fs-5"></i>
@@ -271,6 +268,7 @@
                 <div class="mb-3">
                     <label class="form-label">Type of Well</label>
                     <select id="typeOfWell" name="typeOfWell" class="form-select">
+                        <option value=""></option>
                         <option value="boreWell">Bore Well</option>
                         <option value="openWell">Open Well</option>
                         <option value="indiaMark2HandPump">India Mark 2 Hand Pump</option>
@@ -627,7 +625,7 @@
 <div class="col-12">
     <div class="mb-3">
         <label class="form-label">Type of Well</label>
-        <select id="typeOfWell" name="typeOfWell" class="form-select">
+        <select id="EdittypeOfWell" name="typeOfWell" class="form-select">
             <option value="boreWell">Bore Well</option>
             <option value="openWell">Open Well</option>
             <option value="indiaMark2HandPump">India Mark 2 Hand Pump</option>
@@ -683,7 +681,8 @@
     <!-- Need of Electric Pump -->
     <div class="mb-3">
         <label class="form-label">Need of Electric Pump</label>
-        <select id="needElectricPump" name="needElectricPump" class="form-select">
+        <select id="EditneedElectricPump" name="needElectricPump" class="form-select">
+            <option value=""></option>
             <option value="yes">Yes</option>
             <option value="no">No</option>
         </select>
@@ -694,7 +693,8 @@
     <!-- Whether the Well Used for Agriculture -->
     <div class="mb-3">
         <label class="form-label">Whether the Well Used for Agriculture Purposes?</label>
-        <select id="usedForAgriculture" name="usedForAgriculture" class="form-select">
+        <select id="EditusedForAgriculture" name="usedForAgriculture" class="form-select">
+            <option value=""></option>
             <option value="yes">Yes</option>
             <option value="no">No</option>
         </select>
@@ -750,12 +750,10 @@
     <div class="card">
         <div class="card-header">
             <div class="row">
-                <div class="col-3">
+              
+                <div class="col-12">
 
-                </div> 
-                <div class="col-4">
-
-                    <h4 class="but p-1 rounded fw-bold border border-success" style="width:390px;color:white;">SWEET WATER PROJECT APPLICATIONS</h4>
+                    <h4 class="but p-3 text-center rounded fw-bold border border-success" style="color:white;">SWEET WATER PROJECT APPLICATIONS</h4>
         
                 </div>
             </div>
@@ -766,7 +764,7 @@
 <table id="sweetwaterTable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
     <thead>
         <tr>
-          <th>S.No</th>
+          <th>ApplicationId</th>
             <th>Applicant Name</th>
             <th>Location</th>
             <th>Address</th>
@@ -860,15 +858,9 @@ $(document).ready(function() {
                 
             },
                 "columns": [
-                {
-                data: null,
-                orderable: false,
-                searchable: false,
-                render: function(data, type, row, meta) {
-                    return meta.row + 1; // Serial number starts from 1
-                }
-                },
-                   
+       
+                     
+            { data: 'applicationId' },       
             { data: 'applicantName' },
             { data: 'location' },
             { data: 'address' },
@@ -992,7 +984,7 @@ $(document).ready(function() {
             success: function(response) {
                 toastr.success(response.message, 'Success');
                 $('#SweetWaterProjectModal').modal('hide');
-                $('#SweetWaterTable').DataTable().ajax.reload();
+                $('#sweetwaterTable').DataTable().ajax.reload();
             },
             error: function(response) {
                 let errors = response.responseJSON.errors;
@@ -1116,9 +1108,9 @@ $(document).on('click', '.edit', function() {
         $('textarea[name="currentWaterSource"]').val(data.currentWaterSource);
 
         // Set select fields
-        $('#typeOfWell').val(data.typeOfWell);
-        $('#needElectricPump').val(data.needElectricPump);
-        $('#usedForAgriculture').val(data.usedForAgriculture);
+        $('#EdittypeOfWell').val(data.typeOfWell);
+        $('#EditneedElectricPump').val(data.needElectricPump);
+        $('#EditusedForAgriculture').val(data.usedForAgriculture);
 
         // Populate beneficiaries dynamically
         $('#Editbeneficiary-fields').empty();

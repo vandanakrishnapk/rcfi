@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('markaz_orphan_cares', function (Blueprint $table) {
             $table->id('orphancareId');
+            $table->string('applicationId');
             $table->string('nameOfOrphan');
             $table->string('nameOfFather');
             $table->string('nameOfGrandFather')->nullable();

@@ -118,38 +118,59 @@ public function do_add_user(Request $request)
         'mobile' => 'required|digits:10',
         'password' => 'required|min:8',
         'designation' => 'required|string',
-            ], 
-            [
-                'name.required' => 'Name is required.',
-                'name.min' => 'Name must be at least 2 characters.',
-                'email.required' => 'Email is required.',
-                'email.email' => 'Invalid email format.',
-                'mobile.required' => 'Mobile number is required.',
-                'mobile.digits' => 'Mobile number must be 10 digits.',
-                'password.required' => 'Password is required.',
-                'password.min' => 'Password must be at least 8 characters.',
-                'designation.required' => 'Designation is required.',
-            ]);
+    ], 
+    [
+        'name.required' => 'Name is required.',
+        'name.min' => 'Name must be at least 2 characters.',
+        'email.required' => 'Email is required.',
+        'email.email' => 'Invalid email format.',
+        'mobile.required' => 'Mobile number is required.',
+        'mobile.digits' => 'Mobile number must be 10 digits.',
+        'password.required' => 'Password is required.',
+        'password.min' => 'Password must be at least 8 characters.',
+        'designation.required' => 'Designation is required.',
+    ]);
 
     // Check if validation fails
     if ($validator->fails()) {
-        // Return validation errors as JSON
         return response()->json([
             'status' => 0,
-            'error' => $validator->errors()]);
+            'error' => $validator->errors()
+        ], 422); // Set status code for validation errors
     }
 
+    // Prepare user data
     $data = [
-        'name' =>$request->input('name'),
-        'email' =>$request->input('email'),
-        'mobile' =>$request->input('mobile'),
-        'designation' =>$request->input('designation'),
-        'password' =>bcrypt($request->input('password')),
-    ]; 
-    if (DB::table('users')->insert($data)) {
+        'name' => $request->input('name'),
+        'email' => $request->input('email'),
+        'mobile' => $request->input('mobile'),
+        'designation' => $request->input('designation'),
+        'password' => bcrypt($request->input('password')),
+    ];
+
+    // Determine role based on designation
+    switch ($data['designation']) {
+        case 'Admin':
+            $data['role'] = 1;
+            break;
+        case 'COO':
+            $data['role'] = 2;
+            break;
+        case 'Project Manager':
+            $data['role'] = 3;
+            break;
+        default:
+            $data['role'] = 4; // Default role
+            break;
+    }
+
+    // Insert the user into the database
+    $user = User::create($data); // Using Eloquent
+
+    if ($user) {
         return response()->json([
             'status' => 1,
-            'message' => 'user created successfully!',
+            'message' => 'User created successfully!',
         ]);
     } else {
         return response()->json([
@@ -157,8 +178,6 @@ public function do_add_user(Request $request)
             'message' => 'Something went wrong!', 
         ]);
     }
-
-
     
 }  
 
@@ -220,9 +239,19 @@ if ($validator->fails()) {
     }
 
    
-}
+}  
 
-    
+public function getApplications()
+{
+    $markazCount = DB::table('markaz_orphan_cares')->count();
+    $eduCount = DB::table('education_centres')->count();
+    $culturalCount = DB::table('cultural_centres')->count();
+    $sweetCount = DB::table('sweet_water_projects')->count();
+
+    return view('admin.applications',compact('markazCount','eduCount','culturalCount','sweetCount'));
+}
+ 
+
 }
   
 

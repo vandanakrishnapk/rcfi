@@ -63,10 +63,29 @@ class MarkazOrphanCareController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
        
-        MarkazOrphanCare::create($request->all());
+        $applicationId = $this->generateApplicationId('OC'); // 'OC' or your specific project code
 
-        return response()->json(['message' => 'Data saved successfully'], 200);
-    } 
+        // Prepare data for creation
+        $orphanCareData = $request->all();
+        $orphanCareData['applicationId'] = $applicationId; // Set application_id
+
+        // Create the record
+        MarkazOrphanCare::create($orphanCareData);
+
+        return response()->json(['message' => 'Data saved successfully']);
+       }  
+
+       private function generateApplicationId($projectCode)
+       {
+           // Get the current year
+           $year = date('y'); // Get last two digits of the year
+   
+           // Generate a 5-digit unique number
+           $latest = MarkazOrphanCare::max('orphancareId'); // Assuming 'id' is an auto-incrementing primary key
+           $uniqueNumber = str_pad(($latest + 1), 5, '0', STR_PAD_LEFT); // Increment ID and pad with zeros
+   
+           return "APLRCFI{$year}{$projectCode}{$uniqueNumber}";
+       }
 
     public function getMarkazOrphanCareDataTable()
     {

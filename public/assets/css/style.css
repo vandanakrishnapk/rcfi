@@ -102,3 +102,17 @@
     cursor: pointer!important;
 } 
 
+.tab-content {
+    .tab-pane {
+        @media (max-width: 575.98px) {
+            display: block !important;
+            opacity: 1 !important;
+        }
+    }
+    @media (min-width: 576px) {
+        .collapse {
+            display: block !important;
+            opacity: 1 !important;
+        }
+    }
+}

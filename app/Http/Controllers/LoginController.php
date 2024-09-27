@@ -21,30 +21,21 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
         $credentials = $request->only(['email','password']);
-      
-        if(Auth::guard('admin')->attempt($credentials)) 
-        {
-         
-            $admin = Auth::guard('admin')->user();
-            if ($admin->role === 0) {
-                $request->session()->regenerate();
-                return redirect()->route('admin.home');
-            }
-            else {
-                // Handle the case where the role is not 0
-                Auth::guard('admin')->logout();
-                return redirect()->route('login')->withErrors(['role' => 'Unauthorized role.']);
-            }
-        } 
-        elseif(Auth::attempt($credentials))
+        if(Auth::attempt($credentials))
         {
               
             $user = Auth::user();
-            if ($user->role === 1) {
+            if ($user->role === 1 || $user->role === 2) {
+                $request->session()->regenerate();
+                return redirect()->route('admin.home');
+            }
+            elseif($user->role === 3) 
+            {
                 $request->session()->regenerate();
                 return redirect()->route('user.home');
             }
-            else {
+            else
+           {
                 // Handle the case where the role is not 0
                 Auth::logout();
                 return redirect()->route('login')->withErrors(['role' => 'Unauthorized role.']);
