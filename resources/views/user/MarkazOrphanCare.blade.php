@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('user.template.master')
 @section('css')
 <!-- DataTables -->
 <link href="{{ asset('assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css">
@@ -12,7 +12,7 @@
     <div class="row mt-3">
         <div class="col-12">
             <div class="float-start">
-                <a href="{{ route('admin.getApplications')}}" class="btn btn-success btn-sm rounded-circle"><i class="bi bi-box-arrow-in-left fs-4 ms-1"></i></a>
+                <a href="{{ route('user.getApplications')}}" class="btn btn-success btn-sm rounded-circle"><i class="bi bi-box-arrow-in-left fs-4 ms-1"></i></a>
             </div>
             <div class="float-end d-none d-md-block">
                 <button type="button" class="btn btn-success mb-1 me-3 float-end rounded-circle" data-bs-toggle="modal" data-bs-target="#MarkazOrphanCareModal">
@@ -945,7 +945,7 @@ $(document).ready(function() {
                 ['10 Applications', '25 Applications', '50 Applications', 'All Applications']
             ],
             ajax: {
-                url: `{{ url('/admin/markaz/orphan/care/datatable/view') }}`,
+                url: `{{ url('/user/markaz/orphan/care/datatable/view') }}`,
                 type: 'GET',
                 dataSrc: 'data',
                 
@@ -1029,7 +1029,7 @@ $(document).ready(function() {
                 var formData = $(this).serialize();
 
                 $.ajax({
-                    url: `{{ url('admin/markaz/orphan/care/new') }}`,
+                    url: `{{ url('user/markaz/orphan/care/new') }}`,
                     type: 'POST',
                     data: formData,
                     success: function(response) {
@@ -1057,7 +1057,7 @@ $(document).on('click', '.view-more', function() {
 
     if (orphanCareId !== undefined) {
         $.ajax({
-            url: `{{ url('/admin/markaz/orphan/care/view/more')}}/${orphanCareId}`, // Laravel route
+            url: `{{ url('/user/markaz/orphan/care/view/more')}}/${orphanCareId}`, // Laravel route
             method: 'GET',
             success: function(data) {
                 console.log('Response data:', data);
@@ -1122,7 +1122,7 @@ $(document).on('click', '.view-more', function() {
  $(document).on('click', '.edit', function() {
     const orphanCareId = $(this).data('id');
     
-    $.get(`{{ url('/admin/markaz/orphan/care/edit') }}/${orphanCareId}`, function(data) {
+    $.get(`{{ url('/user/markaz/orphan/care/edit') }}/${orphanCareId}`, function(data) {
         // Fill the form with data
         // Set text inputs
         $('input[name="orphancareId"]').val(data.orphancareId);
@@ -1191,7 +1191,7 @@ $(document).ready(function() {
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            url: "{{ route('admin.updateMarkazOrphanCare') }}",
+            url: "{{ route('user.updateMarkazOrphanCare') }}",
             data: formData,
             dataType: 'json',
             beforeSend: function() {
@@ -1242,7 +1242,7 @@ $(document).on('click', '.delete', function() {
     // Handle confirmation
     $('#confirmDelete').off('click').on('click', function() {
         $.ajax({
-            url: `{{ url('/admin/markaz/orphan/care/delete') }}/${orphanCareId}`,
+            url: `{{ url('/user/markaz/orphan/care/delete') }}/${orphanCareId}`,
             type: 'DELETE',
             data: {
                 _token: '{{ csrf_token() }}'

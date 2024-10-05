@@ -25,7 +25,7 @@ class userProjectController extends Controller
             $data = DB::table('projects')
             ->join('donors','donors.donor_id','=','projects.donorName')
             ->join('users','users.id','=','projects.projectManager')
-            ->select('projects.projectId','projects.agencyProjectNo','projects.availableBudget','projects.typeOfProject','projects.remarks','users.name as projectManager','donors.partner_name as donorName')
+            ->select('projects.proId','projects.projectID','projects.agencyProjectNo','projects.availableBudget','projects.typeOfProject','projects.remarks','users.name as projectManager','donors.partner_name as donorName')
             ->get();
             // Retrieve parameters from DataTables
             $draw = $request->get('draw');

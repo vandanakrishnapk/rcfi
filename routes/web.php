@@ -13,6 +13,13 @@ use App\Http\Controllers\userProjectController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectDetailsController;
 use App\Http\Controllers\UserProjectDetailsController;
+use Illuminate\Support\Facades\Artisan;
+
+use App\Http\Controllers\userMarkazOrphanCareController;
+use App\Http\Controllers\userEducationCentreController;
+use App\Http\Controllers\userSweetWaterProjectController;
+use App\Http\Controllers\userCulturalCentreController;
+use App\Http\Controllers\userApplicationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,17 +39,18 @@ use App\Http\Controllers\UserProjectDetailsController;
 //Login routes
 Route::get('/',[LoginController::class,'admin_login'])->name('login');
 Route::post('/doAdminLogin',[LoginController::class,'do_admin_login'])->name('do.admin_login');
-Route::post('/logout',[LoginController::class,'logout'])->name('logout');
-
-//Admin routes
-Route::prefix('admin')->middleware(['auth', 'role:1,2'])->group(function ()
- {
 Route::get('/dashboard',[AdminController::class,'admin_home'])->name('admin.home');
 Route::get('/forgotPassword',[AdminController::class,'forgot_password'])->name('forgot_password');
 Route::post('/submitForgetPasswordForm',[AdminController::class,'submitForgetPasswordForm'])->name('submitForgetPasswordForm');
 Route::get('/sendMailReset',[AdminController::class,'send_mail_reset'])->name('send.mail_reset');
 Route::get('/changePasswordForm/{token}',[AdminController::class,'change_password_form'])->name('change_password_form');
 Route::post('/submitResetPasswordForm',[AdminController::class,'submitResetPasswordForm'])->name('submitResetPasswordForm');
+
+Route::post('/logout',[LoginController::class,'logout'])->name('logout');
+
+//Admin routes
+Route::prefix('admin')->middleware(['auth', 'role:1,2'])->group(function ()
+ {
 Route::post('/doAddUser',[AdminController::class,'do_add_user'])->name('do.add_user');
 Route::get('/dataTable',[AdminController::class,'data_table'])->name('data_table');
 Route::post('/doAddDonor',[AdminController::class,'doAddDonor'])->name('do.AddDonor');
@@ -116,20 +124,81 @@ Route::delete('projects/delete/{id}',[ProjectController::class, 'deleteProject']
 Route::get('/project/details/view/{id}',[ProjectDetailsController::class,'getProjectDetails'])->name('admin.getProjectDetails');
 Route::post('/projects/details/do',[ProjectDetailsController::class,'doProjectDetails'])->name('admin.doProjectDetails');
 Route::post('/projects/details/approval/{id}',[ProjectDetailsController::class,'projectApproval'])->name('admin.projectApproval');
+Route::post('/project/details/applicant/approve/{id}',[ProjectDetailsController::class,'applicantApprove'])->name('admin.applicantApprove');
+
+Route::get('/download-document',[ProjectDetailsController::class,'download'])->name('admin.download'); 
+Route::post('/project/details/files/approve/{proId}',[ProjectDetailsController::class,'fileApproval'])->name('admin.fileApproval');
+Route::get('/project/details/stage4/fund/view',[ProjectDetailsController::class,'fundAllocatedView'])->name('admin.fundAllocatedView');
+Route::post('/project/details/stage4/fund/approve/{id}',[ProjectDetailsController::class,'fundApproval'])->name('admin.fundApproval');
 });   
 
 
 
-Route::prefix('user')->middleware(['auth', 'role:3'])->group(function ()
+Route::prefix('user')->middleware(['auth', 'role:3,4'])->group(function ()
  {
     Route::get('/home',[UserController::class,'home'])->name('user.home');
     Route::get('/project/view',[userProjectController::class,'getUserProject'])->name('user.userProject');
     Route::get('/projects/datatable',[userProjectController::class,'getProjectData'])->name('user.getProjectData');
 
-    Route::get('/project/details/view',[UserProjectDetailsController::class,'getProjectDetails'])->name('user.getProjectDetails');
+    Route::get('/project/details/view/{id}',[UserProjectDetailsController::class,'getProjectDetails'])->name('user.getProjectDetails');
 
-    Route::get('/project/details/stage2/view/{id}',[UserProjectDetailsController::class,'getStage2'])->name('user.getStage2');
+    //Applications Route 
+//markaz Open care routes 
+Route::get('/markaz/orphan/care/view',[userMarkazOrphanCareController::class,'getMarkazOrphanCare'])->name('user.getMarkazOrphanCare');
+Route::post('/markaz/orphan/care/new',[userMarkazOrphanCareController::class,'doMarkazOrphanCare'])->name('user.doMarkazOrphanCare');
+Route::get('/markaz/orphan/care/datatable/view',[userMarkazOrphanCareController::class,'getMarkazOrphanCareDataTable'])->name('user.getMarkazOrphanCareDataTable');
+Route::get('/markaz/orphan/care/view/more/{id}',[userMarkazOrphanCareController::class,'getMarkazOpenCareViewMore'])->name('user.getMarkazOpenCareViewMore');
+Route::get('/markaz/orphan/care/edit/{id}',[userMarkazOrphanCareController::class,'editMarkazOrphanCare'])->name('user.editMarkazOrphanCare');
+Route::post('/markaz/orphan/care/update',[userMarkazOrphanCareController::class,'updateMarkazOrphanCare'])->name('user.updateMarkazOrphanCare');
+Route::delete('/markaz/orphan/care/delete/{id}',[userMarkazOrphanCareController::class, 'deleteMarkazOrphanCare'])->name('user.deleteMarkazOrphanCare');
 
- });
+//Education Centre Routes 
+Route::get('/education/center/application/view',[userEducationCentreController::class,'getEducationCenterApplication'])->name('user.getEducationCenterApplication');
+Route::post('/education/centre/application/new',[userEducationCentreController::class,'doEducationCentreApplication'])->name('user.doEducationCentreApplication');
+Route::get('/education/centre/application/datatable',[userEducationCentreController::class,'getEducationCentreDataTable'])->name('user.getEducationCentreDataTable');
+Route::get('/education/centre/application/view/more/{id}',[userEducationCentreController::class,'getEducationCentreViewMore'])->name('user.getEducationCentreViewMore');
+Route::get('/education/centre/application/edit/{id}',[userEducationCentreController::class,'editEducationCentreApplication'])->name('user.editEducationCentreApplication');
+Route::post('/education/centre/application/update',[userEducationCentreController::class,'updateEducationCentreApplication'])->name('user.updateEducationCentreApplication');
+Route::delete('/education/centre/application/delete/{id}',[userEducationCentreController::class, 'deleteEducationCentreApplication'])->name('user.deleteEducationCentreApplication');
+
+//Cultular Centre Application Routes
+Route::get('/cultural/center/application/view',[userCulturalCentreController::class,'getCulturalCenterApp'])->name('user.getCulturalCenterApp');
+Route::post('/cultural/centre/application/new',[userCulturalCentreController::class,'doCulturalCentreApplication'])->name('user.doCulturalCentreApplication');
+Route::get('/cultural/centre/application/datatable',[userCulturalCentreController::class,'getCulturalCentreDataTable'])->name('user.getCulturalCentreDataTable');
+Route::get('/cultural/centre/application/view/more/{id}',[userCulturalCentreController::class,'getCulturalCentreViewMore'])->name('user.getCulturalCentreViewMore');
+Route::get('/cultural/centre/application/edit/{id}',[userCulturalCentreController::class,'editCulturalCentreApplication'])->name('user.editCulturalCentreApplication');
+Route::post('/cultural/centre/application/update',[userCulturalCentreController::class,'updateCulturalCentreApplication'])->name('user.updateCulturalCentreApplication');
+Route::delete('/cultural/centre/application/delete/{id}',[userCulturalCentreController::class, 'deleteCulturalCentreApplication'])->name('user.deleteCulturalCentreApplication');
+
+
+
+//Sweet Water project Routes
+Route::get('/sweetwater/project/view',[userSweetWaterProjectController::class,'getSweetWaterProject'])->name('user.getSweetWaterProject');
+Route::post('/sweetwater/project/new',[userSweetWaterProjectController::class,'doSweetWaterProject'])->name('user.doSweetWaterProject');
+Route::get('/sweetwater/project/datatable',[userSweetWaterProjectController::class,'getSweetWaterProjectDataTable'])->name('user.getSweetWaterProjectDataTable');
+Route::get('/sweetwater/project/view/more/{id}',[userSweetWaterProjectController::class,'getSweetWaterProjectViewMore'])->name('user.getSweetWaterProjectViewMore');
+Route::get('/sweetwater/project/edit/{id}',[userSweetWaterProjectController::class,'editSweetWaterProject'])->name('user.editSweetWaterProject');
+Route::post('/sweetwater/project/update',[userSweetWaterProjectController::class,'updateSweetWaterProject'])->name('user.updateSweetWaterProject');
+Route::delete('/sweetwater/project/delete/{id}',[userSweetWaterProjectController::class, 'deleteSweetWaterProject'])->name('user.deleteSweetWaterProject');
+
+
+Route::get('/application/view',[userApplicationController::class,'getApplications'])->name('user.getApplications');  
+Route::post('/project/details/submit/applicant/new',[UserProjectDetailsController::class,'submitApplicant'])->name('user.submitApplicant');
+Route::post('/project/details/submit/documents',[UserProjectDetailsController::class,'submitDocuments'])->name('user.submitDocuments'); 
+
+Route::post('/documents/{id}/{type}', [UserProjectDetailsController::class, 'deleteDocument']);
+Route::get('/download-document', [UserProjectDetailsController::class, 'download'])->name('document.download');
+
+Route::post('/project/details/stage4/input/new',[UserProjectDetailsController::class,'doStage4Input'])->name('user.doStage4Input');
+Route::post('/project/details/stage4/fund/new',[UserProjectDetailsController::class,'doFundAllocation'])->name('user.foFundAllocation');
+Route::get('/project/details/stage5/fund/view',[UserProjectDetailsController::class,'getFundAllocated'])->name('user.getFundAllocated'); 
+Route::get('/project/details/stage5/fund/edit/{id}',[UserProjectDetailsController::class,'editBill'])->name('user.editBill');
+Route::post('/projects/details/stage5/fund/update',[UserProjectDetailsController::class,'updateFund'])->name('user.update');
+Route::delete('/projects/details/stage5/fund/delete/{id}',[UserProjectDetailsController::class,'deleteFund'])->name('user.deleteBill');
+Route::post('/projects/details/stage5/submit/bill/{id}',[UserProjectDetailsController::class,'submitBill'])->name('user.submitBill');
+Route::get('/projects/details/stage5/implementation/datatable',[UserProjectDetailsController::class,'getImplementationTable'])->name('user.getImplementationTable');
+Route::get('/projects/details/implementation/current/request/{id}',[UserProjectDetailsController::class,'requestCurrent'])->name('user.requestCurrent');
+Route::post('/projects/details/stage5/implementation/update/{id}',[UserProjectDetailsController::class,'updateCurrent'])->name('yser.updateCurrent');
+});
 
 

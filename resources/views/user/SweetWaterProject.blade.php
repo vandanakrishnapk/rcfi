@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('user.template.master')
 @section('css')
 <!-- DataTables -->
 <link href="{{ asset('assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css">
@@ -14,7 +14,7 @@
 <div class="row mt-3">
     <div class="col-12">
         <div class="float-start">
-            <a href="{{ route('admin.getApplications')}}" class="btn btn-success btn-sm rounded-circle"><i class="bi bi-box-arrow-in-left fs-4 ms-1"></i></a>
+            <a href="{{ route('user.getApplications')}}" class="btn btn-success btn-sm rounded-circle"><i class="bi bi-box-arrow-in-left fs-4 ms-1"></i></a>
         </div>
 <div class="float-end d-none d-md-block"> 
     <button type="button" class="btn btn-success mb-1 float-end rounded-circle me-3" data-bs-toggle="modal" data-bs-target="#SweetWaterProjectModal">
@@ -849,7 +849,7 @@ $(document).ready(function() {
                 ['10 Applications', '25 Applications', '50 Applications', 'All Applications']
             ],
             ajax: {
-                url: `{{ url('/admin/sweetwater/project/datatable') }}`,
+                url: `{{ url('/user/sweetwater/project/datatable') }}`,
                 type: 'GET',
                 dataSrc: 'data',
                 
@@ -973,7 +973,7 @@ $(document).ready(function() {
         formData.append('beneficiaries', JSON.stringify(getBeneficiaries()));
 
         $.ajax({
-            url: `{{ url('/admin/sweetwater/project/new') }}`,
+            url: `{{ url('/user/sweetwater/project/new') }}`,
             type: 'POST',
             data: formData,
             processData: false, // Important: Do not process the data
@@ -1003,7 +1003,7 @@ $(document).on('click', '.view-more', function() {
 
     if (sweetwaterId !== undefined) {
         $.ajax({
-            url: `{{ url('/admin/sweetwater/project/view/more') }}/${sweetwaterId}`, // Laravel route
+            url: `{{ url('/user/sweetwater/project/view/more') }}/${sweetwaterId}`, // Laravel route
             method: 'GET',
             success: function(response) {
                 console.log('Response data:', response);
@@ -1069,7 +1069,7 @@ $modalBody.append(gridHtml);
 
 $(document).on('click', '.edit', function() {
     const sweetWaterProjectId = $(this).data('id');
-    $.get(`{{ url('/admin/sweetwater/project/edit') }}/${sweetWaterProjectId}`, function(data) {
+    $.get(`{{ url('/user/sweetwater/project/edit') }}/${sweetWaterProjectId}`, function(data) {
         // Check the structure of the received data
         console.log(data); // Check the structure in the console
 
@@ -1196,7 +1196,7 @@ $(document).ready(function() {
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            url: "{{ route('admin.updateSweetWaterProject') }}",
+            url: "{{ route('user.updateSweetWaterProject') }}",
             data: formData,
             dataType: 'json',
             beforeSend: function() {
@@ -1264,7 +1264,7 @@ $(document).on('click', '.delete', function() {
     // Handle confirmation
     $('#confirmDelete').off('click').on('click', function() {
         $.ajax({
-            url: `{{ url('/admin/sweetwater/project/delete') }}/${sweetwaterId}`,
+            url: `{{ url('/user/sweetwater/project/delete') }}/${sweetwaterId}`,
             type: 'DELETE',
             data: {
                 _token: '{{ csrf_token() }}'

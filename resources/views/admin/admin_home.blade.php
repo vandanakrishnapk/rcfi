@@ -13,15 +13,15 @@
 @endsection
 @section('body') <body data-sidebar="light" data-sidebar-size="small"> @endsection
     @section('content')
-    @component('components.breadcrumb')
+    {{-- @component('components.breadcrumb')
     @slot('page_title') RCFI @endslot
     @slot('subtitle')Admin Dashboard @endslot
-    @endcomponent 
-    <div class="row">
+    @endcomponent  --}}
+    <div class="row mt-4">
     <div class="float-end d-none d-md-block">
-                <button type="button" class="btn box mb-2 float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                {{-- <button type="button" class="btn box mb-2 float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Add user
-                </button>
+                </button> --}}
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">

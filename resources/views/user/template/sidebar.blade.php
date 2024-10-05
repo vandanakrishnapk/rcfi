@@ -16,7 +16,15 @@
                         <i class="bi bi-houses-fill"></i>
                         <span>Dashboard</span>
                     </a>
-                </li>            
+                </li>   
+                
+                
+                <li>
+                    <a href="{{ route('user.getApplications') }}" class="waves-effect">
+                        <i class="bi bi-houses-fill"></i>
+                        <span>Applications</span>
+                    </a>
+                </li> 
 
               
                 <!--Application -->

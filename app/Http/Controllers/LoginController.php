@@ -29,8 +29,9 @@ class LoginController extends Controller
                 $request->session()->regenerate();
                 return redirect()->route('admin.home');
             }
-            elseif($user->role === 3) 
+            elseif($user->role === 3 || $user->role === 4) 
             {
+                
                 $request->session()->regenerate();
                 return redirect()->route('user.home');
             }

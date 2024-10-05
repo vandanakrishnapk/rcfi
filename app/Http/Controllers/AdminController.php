@@ -112,75 +112,81 @@ public function data_table()
 public function do_add_user(Request $request)
 {
    
-    $validator = Validator::make($request->all(), [
-        'name' => 'required|min:2',
-        'email' => 'required|email',
-        'mobile' => 'required|digits:10',
-        'password' => 'required|min:8',
-        'designation' => 'required|string',
-    ], 
-    [
-        'name.required' => 'Name is required.',
-        'name.min' => 'Name must be at least 2 characters.',
-        'email.required' => 'Email is required.',
-        'email.email' => 'Invalid email format.',
-        'mobile.required' => 'Mobile number is required.',
-        'mobile.digits' => 'Mobile number must be 10 digits.',
-        'password.required' => 'Password is required.',
-        'password.min' => 'Password must be at least 8 characters.',
-        'designation.required' => 'Designation is required.',
-    ]);
+  // Validation rules
+$validator = Validator::make($request->all(), [
+    'name' => 'required|min:2',
+    'email' => 'required|email',
+    'mobile' => 'required|digits:10',
+    'password' => 'required|min:8',
+    'designation' => 'required|string',
+], [
+    'name.required' => 'Name is required.',
+    'name.min' => 'Name must be at least 2 characters.',
+    'email.required' => 'Email is required.',
+    'email.email' => 'Invalid email format.',
+    'mobile.required' => 'Mobile number is required.',
+    'mobile.digits' => 'Mobile number must be 10 digits.',
+    'password.required' => 'Password is required.',
+    'password.min' => 'Password must be at least 8 characters.',
+    'designation.required' => 'Designation is required.',
+]);
 
-    // Check if validation fails
-    if ($validator->fails()) {
+// Check if validation fails
+if ($validator->fails()) {
+    return response()->json([
+        'status' => 0,
+        'error' => $validator->errors()
+    ]);
+}
+
+// Determine role based on designation
+$designation = $request->input('designation');
+$role = null;
+
+switch ($designation) {
+    case 'Admin':
+        $role = 1;
+        break;
+    case 'COO':
+        $role = 2; // assuming COO is role 2, not 3
+        break;
+    case 'Project Manager':
+        $role = 3;
+        break;
+    case 'Project Executive':
+        $role = 4;
+        break;
+    default:
         return response()->json([
             'status' => 0,
-            'error' => $validator->errors()
-        ], 422); // Set status code for validation errors
-    }
-
-    // Prepare user data
-    $data = [
-        'name' => $request->input('name'),
-        'email' => $request->input('email'),
-        'mobile' => $request->input('mobile'),
-        'designation' => $request->input('designation'),
-        'password' => bcrypt($request->input('password')),
-    ];
-
-    // Determine role based on designation
-    switch ($data['designation']) {
-        case 'Admin':
-            $data['role'] = 1;
-            break;
-        case 'COO':
-            $data['role'] = 2;
-            break;
-        case 'Project Manager':
-            $data['role'] = 3;
-            break;
-        default:
-            $data['role'] = 4; // Default role
-            break;
-    }
-
-    // Insert the user into the database
-    $user = User::create($data); // Using Eloquent
-
-    if ($user) {
-        return response()->json([
-            'status' => 1,
-            'message' => 'User created successfully!',
+            'error' => 'Invalid designation.'
         ]);
-    } else {
-        return response()->json([
-            'status' => 2,
-            'message' => 'Something went wrong!', 
-        ]);
-    }
-    
-}  
+}
 
+// Prepare data for insertion
+$data = [
+    'name' => $request->input('name'),
+    'email' => $request->input('email'),
+    'mobile' => $request->input('mobile'),
+    'designation' => $designation,
+    'password' => bcrypt($request->input('password')),
+    'role' => $role, // Add the role to the data array
+];
+
+// Insert data into the database
+if (DB::table('users')->insert($data)) {
+    return response()->json([
+        'status' => 1,
+        'message' => 'User created successfully!',
+    ]);
+} else {
+    return response()->json([
+        'status' => 2,
+        'message' => 'Something went wrong!', 
+    ]);
+}
+
+}
 
 public function doAddDonor(Request $request)
 {

@@ -10,10 +10,7 @@
 @endsection
 @section('body') <body data-sidebar="light"> @endsection
 @section('content')
-@component('components.breadcrumb')
-@slot('page_title') Data tables @endslot
-@slot('subtitle') Tables @endslot
-@endcomponent
+
 <div class="row">
     <div class="float-end d-none d-md-block">
         <button type="button" class="btn btn-success mb-2 float-end rounded-circle" data-bs-toggle="modal" data-bs-target="#exampleModal">

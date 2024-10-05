@@ -21,6 +21,7 @@ return new class extends Migration
             $table->tinyInteger('stage4_status')->default('0');
             $table->tinyInteger('stage5_status')->default('0');
             $table->tinyInteger('stage6_status')->default('0');
+            $table->string('applicantId');
             $table->timestamps();           
             $table->foreign('proId')->references('proId')->on('projects')->onDelete('cascade');
         });

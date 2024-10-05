@@ -28,6 +28,7 @@
         <thead>
             <tr>
                 <th>S.No</th>
+                <th>Project ID</th>
                 <th>Agency Project No</th>
                 <th>Donor Name</th>
                 <th>Project Manager</th>
@@ -102,6 +103,7 @@ $(document).ready(function() {
                     return meta.row + 1; // Serial number starts from 1
                 }
                 },
+                {data:'projectID'},
             { data: 'agencyProjectNo' },
             { data: 'donorName' },
             { data: 'projectManager' },
@@ -120,7 +122,7 @@ $(document).ready(function() {
                          
                         
 
-                        <a href="{{ url('/user/project/details/stage2/view') }}/${row.projectId}" class="btn btn-dark btn-sm ms-1" data-id="${row.projectId}" data-pro=${row.agencyProjectNo}>  <i class="bi bi-eye"></i></a>
+                        <a href="{{ url('/user/project/details/view')}}/${row.proId}" class="btn btn-dark btn-sm ms-1" data-id="${row.proId}" data-pro=${row.agencyProjectNo}>  <i class="bi bi-eye"></i></a>
                      
                        
                     `;

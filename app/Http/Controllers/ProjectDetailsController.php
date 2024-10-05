@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\Document;
 
 
 class ProjectDetailsController extends Controller
@@ -17,36 +18,89 @@ class ProjectDetailsController extends Controller
 
     public function getProjectDetails($id)
     {  
-        $projectId = Project::findOrFail($id);
-
         
-        return view('admin.project_details',compact('projectId'));
+       $Id = Project::find($id); 
+       $dataId= $Id->proId;
+          
+       $projectId = DB::table('projects')
+       ->leftJoin('donors', 'donors.donor_id', '=', 'projects.donorName')
+       ->leftJoin('users', 'users.id', '=', 'projects.projectManager')
+       ->leftJoin('project_details', 'project_details.proId', '=', 'projects.proId')
+       ->leftjoin('documents','documents.proId','=','project_details.proId')
+       ->select(
+           'project_details.proId',
+           'project_details.stage1_status',
+           'project_details.stage2_status',
+           'project_details.stage3_status',
+           'project_details.stage4_status',
+           'project_details.stage5_status',
+           'project_details.stage6_status',
+           'project_details.applicantId',
+           'projects.proId as project_id',
+           'users.name',
+           'donors.partner_name',
+           'projects.projectID',
+           'projects.agencyProjectNo',
+           'projects.availableBudget',
+           'projects.typeOfProject',
+           'projects.remarks',
+           'documents.*',
+       )
+       ->where('projects.proId', '=', $dataId)
+       ->first();
+   
+       $applicantDetails = DB::table('project_details')
+       ->where('project_details.proId','=',$dataId)
+       ->pluck('project_details.applicantId'); 
+
+       $appdetEC = null;
+       $appdetOC = null;
+       $appdetSW = null;
+       $appdetCC = null;
+       if (str_contains($applicantDetails, 'EC'))
+        {
+ 
+            $appdetEC = DB::table('education_centres')->where('applicationId',$applicantDetails)->first();
+        }
+        elseif(str_contains($applicantDetails, 'OC'))
+        {
+            $appdetOC = DB::table('markaz_orphan_cares')->where('applicationId',$applicantDetails)->first();
+        }
+        elseif(str_contains($applicantDetails, 'SW'))
+        {
+            $appdetSW = DB::table('sweet_water_projects')->where('applicationId',$applicantDetails)->first(); 
+        }
+        elseif(str_contains($applicantDetails, 'CC'))
+        {    
+            
+           
+                $appdetCC = DB::table('cultural_centres')
+                    ->where('applicationId', $applicantDetails) // Parameter binding
+                    ->first();
+            } 
+           
+        
+      
+        
+    
+
+       if(!$projectId) {
+        $stage1Status = null; // or whatever default value you prefer
+        $stage2Status =null; 
+        $stage3Status =null;
+        $stage4Status =null;
+        $applicantId =null;
+    } else {
+        $stage1Status = $projectId->stage1_status; // safely access the property
+        $stage2Status = $projectId->stage2_status;
+        $stage3Status = $projectId->stage3_status;
+        $applicantId = $projectId->applicantId;
+        $stage4Status = $projectId->stage4_status;
+    }    
+        return view('admin.project_details',compact('projectId','stage1Status','stage2Status','appdetOC','appdetEC','appdetSW','appdetCC','stage3Status','applicantId','stage4Status'));
     } 
 
-    // public function getStage1($id)
-    // {
-    //     $projectId =Project::find($id);    
-    //     $pro = $projectId->donorName;
-    //     $donor = Donor::where('donor_id','=',$pro)->first();
-    //     $donors =Donor::all(); 
-    //     $man = $projectId->projectManager;
-    //     $manager = User::where('id','=',$man)->first();
-    //     $projectmanager = User::where('designation','=','Project Manager')->get();
-      
-       
-    //     return view('admin.stages.stage1',compact('projectId','donor','donors', 'manager','projectmanager'));
-    // } 
-    // public function editProject($id)
-    // {
-    //     $project = DB::table('projects')
-    //     ->join('donors','donors.donor_id','=','projects.donorName')
-    //     ->join('users','users.id','=','projects.projectManager')
-    //     ->select('projects.projectID','projects.agencyProjectNo','projects.availableBudget','projects.typeOfProject','projects.remarks','users.id as projectManager','donors.donor_id as donorName')
-    //     ->where('projects.projectId','=',$id)
-    //     ->first();      
-    //     return response()->json($project);
-   
-    // }  
+    
 public function doProjectDetails(Request $request)
 {
     // Validate the incoming request data
@@ -85,7 +139,7 @@ public function doProjectDetails(Request $request)
 
         return response()->json([
             'status' => 1,
-            'message' => 'Project Details created successfully.',
+            'message' => 'Project Details verified successfully.',
              ]);
     } catch (\Exception $e) {
         // Log the exception message for debugging
@@ -94,7 +148,7 @@ public function doProjectDetails(Request $request)
         // Return an error response in case of exception
         return response()->json([
             'status' => 2,
-            'message' => 'Failed to create project details. Please try again later.'
+            'message' => 'Failed to verify project details. Please try again later.'
         ], 500);
     }
 }
@@ -112,7 +166,7 @@ public function projectApproval(Request $request,$proId)
     $projectDetail = ProjectDetail::where('proId', $proId)->first();
     if ($projectDetail) {
         // Update status
-        $projectDetail->stage1_status = 1; // Approved
+        $projectDetail->stage1_status = 2; // Approved
         $projectDetail->save();
 
         return response()->json(['message' => 'Project approved successfully!']);
@@ -127,6 +181,113 @@ public function viewProjectDetails($id)
     $proj = DB::table('project_details')->where('proId',$id)->get();
    
     return view('admin.stages.details',compact('proj'));
+} 
+public function applicantApprove(Request $request, $proId)
+{
+    if (Auth::user()->role != 2) {
+        return response()->json(['message' => 'Unauthorized'], 403);
+    }
+
+    // Find the project detail using the project ID
+    $projectDetail = ProjectDetail::where('proId', $proId)->first();
+
+    if ($projectDetail) {
+        // Update status
+        $projectDetail->stage2_status = 2; // Approved
+        $projectDetail->save();
+
+        return response()->json(['message' => 'Applicant approved successfully!']);
+    }
+
+    return response()->json(['message' => 'Project not found.'], 404);
 }
-    
+
+public function download(Request $request)
+{
+    $documentId = $request->input('id');
+    $documentType = $request->input('type');
+
+    // Fetch the document path based on the document ID and type
+    $document = Document::find($documentId); // Replace with your model
+
+    if ($document && !empty($document->$documentType)) {
+        // Use public_path() to ensure correct file path
+        $filePath = base_path(str_replace('\\', '/', $document->$documentType));
+
+        // Log the resolved file path for debugging
+        \Log::info('Resolved file path: ' . $filePath);
+
+        // Check if the file exists
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        } else {
+            return response()->json(['message' => 'File not found on the server'], 404);
+        }
+    }
+
+
+    return response()->json(['message' => 'File not found'], 404);
+} 
+
+//files approval by coo
+public function fileApproval(Request $request,$proId)
+{
+     // Check if the user has the right role (role ID 2)
+     if (Auth::user()->role != 2) {
+        return response()->json(['message' => 'Unauthorized'], 403);
+    }
+
+    // Find the project detail using the project ID
+    $projectDetail = ProjectDetail::where('proId', $proId)->first();
+    if ($projectDetail) {
+        // Update status
+        $projectDetail->stage3_status = 2; // Approved
+        $projectDetail->save();
+
+        return response()->json(['message' => 'Project approved successfully!']);
+}
+
+
+} 
+
+public function fundAllocatedView()
+{
+    $details = DB::table('funds')
+    ->join('inputs','inputs.inputId','=','funds.input')
+    ->join('project_details','project_details.proId','=','funds.proId')
+    ->join('projects','projects.proId','=','funds.proId')
+    ->select('inputs.inputName as input','funds.fundId','funds.amount','funds.unit','funds.utilized','funds.current','funds.balance','project_details.applicantId','projects.projectID')
+    ->get();
+    $totalRecords = count( $details); // Total records in your data source
+    $filteredRecords = count( $details); // Number of records after applying filters
+
+    return response()->json(['draw' => request()->get('draw'),
+                            'recordsTotal' => $totalRecords,
+                             'recordsFiltered' => $filteredRecords,
+                              'data' =>  $details]);
+    return response()->json(['error' => 'Invalid request'], 400);
+}  
+
+
+//files approval by coo
+public function fundApproval(Request $request,$proId)
+{
+     // Check if the user has the right role (role ID 2)
+     if (Auth::user()->role != 2) {
+        return response()->json(['message' => 'Unauthorized'], 403);
+    }
+
+    // Find the project detail using the project ID
+    $projectDetail = ProjectDetail::where('proId', $proId)->first();
+    if ($projectDetail) {
+        // Update status
+        $projectDetail->stage4_status = 2; // Approved
+        $projectDetail->save();
+
+        return response()->json(['message' => 'Project approved successfully!']);
+}
+
+
+} 
+
 }
