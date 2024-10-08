@@ -31,6 +31,16 @@
                     STAGE 4
                 </a>
             </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="TabControl-Support" data-bs-toggle="tab" href="#admin-stage5" role="tab" aria-controls="admin-stage4" aria-selected="false">
+                    STAGE 5
+                </a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="TabControl-Support" data-bs-toggle="tab" href="#admin-stage6" role="tab" aria-controls="admin-stage4" aria-selected="false">
+                    STAGE 6
+                </a>
+            </li>
         </ul>
 
         <div class="tab-content container-fluid">
@@ -44,7 +54,7 @@
                             <h2 class="p-4 mt-3">PROJECT DETAIL</h2>
                         </div>
                         <div class="card-body p-5">
-                            @if(Auth::user()->role === 2)
+                            @if(Auth::user()->role === 2 || Auth::user()->role === 1)
                             <div class="row">
                                 @if($stage1Status === 2)
                                 <div class="col-12 p-3">
@@ -56,11 +66,13 @@
                                 <div class="col-12 bg-secondary mb-3">
                                     <p class="fs-6 text-primary p-3 mt-3">Please verify the project details once before you approve the project</p>
                                 </div>
+                                @if(Auth::user()->role === 2)
                                 <div class="col-4">
                                     <a href="#" id="approveButton" class="btn btn-danger rounded-pill" data-id="{{ $projectId->project_id }}">
                                         Approve
                                     </a>
                                 </div>
+                                @endif
                                 @endif
                             </div>
 
@@ -112,7 +124,7 @@
                 </div>
             </div>
 
-            @if(($stage2Status === 1 || $stage2Status === 2) && Auth::user()->role === 2)
+            @if(($stage2Status === 1 || $stage2Status === 2) && (Auth::user()->role === 2 || Auth::user()->role === 1))
 
             <div class="tab-pane fade" id="admin-stage2" role="tabpanel" aria-labelledby="TabControl-Specs">
                 <div class="collapse" id="pdp-specs">
@@ -264,7 +276,7 @@
                             <h2 class="p-4 mt-3">FILES</h2>
                         </div>
                         <div class="card-body">
-                    @if(($stage3Status === 1 || $stage3Status === 2) && Auth::user()->role === 2)
+                    @if(($stage3Status === 1 || $stage3Status === 2) && (Auth::user()->role === 2 || Auth::user()->role === 1))
 
                  
                     <div class="row">
@@ -321,10 +333,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-
+ 
 
 <!--admin stage 4 -->
 
@@ -334,11 +343,11 @@
     <div class="collapse" id="pdp-support">
         <div class="card">
             <div class="card-header but mt-5">
-                <h2 class="p-4 mt-3">FUND ALLOCATED</h2>
+                <h2 class="p-4 mt-3">FUNDS ALLOCATED</h2>
             </div>
             <div class="card-body">
             
-                @if(($stage3Status === 1 || $stage3Status === 2) && Auth::user()->role === 2)
+                @if(($stage4Status === 1 || $stage4Status === 2) && (Auth::user()->role === 2 || Auth::user()->role === 1))
 
         @if($stage4Status === 2)
         <div class="row">
@@ -383,16 +392,184 @@
                     </div>
 
 
+                    @endif
+                        </div>
+                        </div>
+                    
+                </div>
+            </div>
+
+
+            <!-- admin stage 5-->
+            <div class="tab-pane fade" id="admin-stage5" role="tabpanel" aria-labelledby="TabControl-Support">
+           
+                
+                <div class="collapse" id="pdp-support">
+                    <div class="card">
+                        <div class="card-header but">
+                            <h2 class="p-4 mt-3">BILLS IMPLEMENTED</h2>
+                        </div>
+                        <div class="card-body">
+                        
+                            @if(($stage5Status === 1 || $stage5Status === 2) && (Auth::user()->role === 2 || Auth::user()->role === 1))
+            
+                    @if($stage5Status === 2)
+                    <div class="row">
+                       
+                    <div class="col-12 p-3">
+                            <div class="alert alert-success fs-6 fw-bold">
+                                Bills are Approved
+                            </div>
+                        </div>
+                    </div>
+                           @else
+                           <div class="row">
+                            <div class="col-10"></div>
+                            <div class="col-2">
+                                <a href="#" id="billApprove" class="btn btn-danger mt-3 mb-3 w-100 rounded-pill" data-id="{{ $projectId->proId }}">
+                                    Approve
+                                </a>
+                            </div>
+                           
+                           </div>
+                           @endif
+                               
+                                <div class="row">
+                                 <div class="col-12">
+                                    <table id="ImplementTable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                        <thead>
+                                            <tr>   
+                                                <th>BillNo</th>                          
+                                                <th>Input</th>
+                                                <th>Total</th>
+                                                <th>Utilized</th>
+                                                <th>Current</th>
+                                                <th>balance</th>
+                                               
+                                             
+                                             
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                           
+                                            <!-- Repeat for other materials -->
+                                        </tbody>
+                                    </table>
+                                   
+                                  </div>
+                                </div>
+            
+            
+                                @endif
+                                    </div>
+                                    </div>
+                             
+                            </div>
+                        </div>
+
+
+
+
+
+                          <!-- admin stage 5-->
+            <div class="tab-pane fade" id="admin-stage6" role="tabpanel" aria-labelledby="TabControl-Support">
+           
+                
+                <div class="collapse" id="pdp-support">
+                    <div class="card">
+                        <div class="card-header but">
+                            <h2 class="p-4 mt-3">COMPLETION STAGE</h2>
+                        </div>
+                        <div class="card-body">
+                            @if($stage6Status === 2)
+                            <div class="row">
+                               
+                            <div class="col-12 p-3">
+                                    <div class="alert alert-success fs-6 fw-bold">
+                                      Project successfully approved
+                                    </div>
+                                </div>
+                            </div>
+                                   @else
+                                   <div class="row">
+                                    <div class="col-10"></div>
+                                    <div class="col-2">
+                                        <div class="col-1">
+                                            <button id="approveCompletion" class="btn btn-danger rounded-pill" style="width:100px" data-id="{{ $projectId->proId }}">Approve</button>
+                                        </div>
+                                    </div>
+                                   
+                                   </div>
+                                   @endif
+                                
+                           
+                            <div class="row">
+                                <div class="col-4">name1</div>
+                                <div class="col-2">:</div>
+                                <div class="col-4">
+                                    <strong>{{ $com->field1 }}</strong>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-4">name2</div>
+                                <div class="col-2">:</div>
+                                <div class="col-4">
+                                    <strong>{{ $com->field2 }}</strong>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-4">name3</div>
+                                <div class="col-2">:</div>
+                                <div class="col-4">
+                                    <strong>{{ $com->field3 }}</strong>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-4">file1</div>
+                                <div class="col-2">:</div>
+                                <div class="col-4">
+                                  @if($com->file1)
+                               
+                                  <button class="btn btn-danger btn-sm view-file" data-id="{{ $projectId->documentId }}" data-type="file1"><i class="bi bi-file-earmark-pdf-fill"></i></button>
+                                  @endif
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-4">photo1</div>
+                                <div class="col-2">:</div>
+                                <div class="col-4">
+                                    <img src="{{ asset('documents24/'.$com->photo1 )}}"  height="100" width="100" alt="">
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-4">photo2</div>
+                                <div class="col-2">:</div>
+                                <div class="col-4">
+                                    <img src="{{ asset('documents24/'.$com->photo2 )}}"  height="100" width="100" alt="">
+                                </div>
+                            </div>
+
+
+
 
                         </div>
                         </div>
-                    @endif
-                </div>
-            </div>
-        </div>
+                             
+                        </div>
+                        </div>
+
+
+
+
+
+
+
+
+   
+
+
+</div>
     </div>
-</div>
-</div>
 </div>
 
 
@@ -452,6 +629,51 @@
             ]
             });
         });  
+        //Implentation stage 
+        $(document).ready(function() {
+    $('#ImplementTable').DataTable({
+            processing: true,
+            serverSide: true,
+            destroy: true,
+            searching: true,
+            dom: "<'row'<'col-sm-6'B><'col-sm-6'f>>" +
+                 "<'row'<'col-sm-12'tr>>" +
+                 "<'row'<'col-sm-4'l><'col-sm-8'ip>>",
+            buttons: [
+                {
+                    extend: 'csvHtml5',
+                    text: 'Download Excel',
+                    title: 'Implementation Details',
+                    titleAttr: 'Export to CSV',
+                    className: 'custombutton',
+                    exportOptions: {
+                        columns: function (idx, data, node) {
+                        return true;
+            }
+                    }
+                }
+            ],
+            lengthMenu: [
+                [10, 25, 50, -1],
+                ['10 Implementations', '25 Implementations', '50 Implementations', 'All Implementations']
+            ],
+            ajax: {
+                url: `{{ url('/admin/project/details/stage5/implementation/datatable') }}`,
+                type: 'GET',
+                dataSrc: 'data',
+                
+            },
+                "columns": [
+                    {"data":"billId"},
+                    {"data": "input"},  
+                    {"data":"amount"}, 
+                    {"data":"utilized"},    
+                    {"data":"current"},   
+                    {"data":"balance"},                          
+            ],
+            });
+        });  
+
 
 
 
@@ -671,6 +893,105 @@ $(document).on('click', '#fundApprove', function(e) {
             }
         });
     });
+
+    //Approve bill 
+    $(document).on('click', '#billApprove', function(e) {
+        e.preventDefault();
+        var projectId = $(this).data('id');
+
+        $.ajax({
+            url: `{{ url('/admin/project/details/stage5/bill/approve') }}/${projectId}`,
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                stage4_status: 1
+            },
+            success: function(response) {
+                toastr.success(response.message, 'Success');
+                $('#billApprove').removeClass('btn-danger').addClass('btn-success').text('Approved');
+                setTimeout(function() {
+                    location.reload(); // Reload the page
+                }, 2000); 
+                
+                // Store the active tab in local storage
+                localStorage.setItem('activeTab', '#admin-stage5');
+                
+            },
+            error: function(response) {
+                toastr.error(response.responseJSON.message || 'An error occurred. Please try again.', 'Error');
+            }
+        });
+    });
+    //approve completion
+
+    $(document).on('click', '#approveCompletion', function(e) {
+        e.preventDefault();
+        var projectId = $(this).data('id');
+
+        $.ajax({
+            url: `{{ url('/admin/project/details/stage6/completion/approve') }}/${projectId}`,
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                stage4_status: 1
+            },
+            success: function(response) {
+                toastr.success(response.message, 'Success');
+                $('#approveCompletion').removeClass('btn-danger').addClass('btn-success').text('Approved');
+                setTimeout(function() {
+                    location.reload(); // Reload the page
+                }, 2000); 
+                
+                // Store the active tab in local storage
+                localStorage.setItem('activeTab', '#admin-stage6');
+                
+            },
+            error: function(response) {
+                toastr.error(response.responseJSON.message || 'An error occurred. Please try again.', 'Error');
+            }
+        });
+    }); 
+
+    //download file on completion
+    //download document 
+$(document).ready(function() {       
+        $('.view-file').click(function() {
+            event.preventDefault();
+            var docId = $(this).data('id');
+            var docType = $(this).data('type');
+
+            $.ajax({
+                url: `{{ url('/admin/download/completion/file')}}`, // Adjust this to your download route
+                method: 'GET',
+                data: {
+                    id: docId,
+                    type: docType
+                },
+                xhrFields: {
+                    responseType: 'blob' // Important for downloading files
+                },
+                success: function(data, status, xhr) {
+                    var blob = new Blob([data], { type: xhr.getResponseHeader('Content-Type') });
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = docType + '.pdf'; // Change this to your desired filename
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    setTimeout(function() {
+                    location.reload(); // Reload the page
+                }, 2000); 
+                
+                // Store the active tab in local storage
+                localStorage.setItem('activeTab', '#admin-stage6');
+                },
+                error: function() {
+                    alert('Error downloading file');
+                }
+            });
+        });
+    }); 
+
 
 
 </script>

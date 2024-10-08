@@ -91,7 +91,7 @@ Route::get('/education/centre/application/edit/{id}',[EducationCenterAppControll
 Route::post('/education/centre/application/update',[EducationCenterAppController::class,'updateEducationCentreApplication'])->name('admin.updateEducationCentreApplication');
 Route::delete('/education/centre/application/delete/{id}',[EducationCenterAppController::class, 'deleteEducationCentreApplication'])->name('admin.deleteEducationCentreApplication');
 
-//Cultular Centre Application Routes
+//Cultural Centre Application Routes
 Route::get('/cultural/center/application/view',[CulturalCenterAppController::class,'getCulturalCenterApp'])->name('admin.getCulturalCenterApp');
 Route::post('/cultural/centre/application/new',[CulturalCenterAppController::class,'doCulturalCentreApplication'])->name('admin.doCulturalCentreApplication');
 Route::get('/cultural/centre/application/datatable',[CulturalCenterAppController::class,'getCulturalCentreDataTable'])->name('admin.getCulturalCentreDataTable');
@@ -129,7 +129,11 @@ Route::post('/project/details/applicant/approve/{id}',[ProjectDetailsController:
 Route::get('/download-document',[ProjectDetailsController::class,'download'])->name('admin.download'); 
 Route::post('/project/details/files/approve/{proId}',[ProjectDetailsController::class,'fileApproval'])->name('admin.fileApproval');
 Route::get('/project/details/stage4/fund/view',[ProjectDetailsController::class,'fundAllocatedView'])->name('admin.fundAllocatedView');
-Route::post('/project/details/stage4/fund/approve/{id}',[ProjectDetailsController::class,'fundApproval'])->name('admin.fundApproval');
+Route::post('/project/details/stage4/fund/approve/{id}',[ProjectDetailsController::class,'fundApproval'])->name('admin.fundApproval'); 
+Route::get('/project/details/stage5/implementation/datatable',[ProjectDetailsController::class,'viewImplementation'])->name('admin.viewImplementation');
+Route::post('/project/details/stage5/bill/approve/{id}',[ProjectDetailsController::class,'billApprove'])->name('admin.billApprove');
+Route::post('/project/details/stage6/completion/approve/{id}',[ProjectDetailsController::class,'approveCompletion'])->name('admin.approveCompletion');
+Route::get('/download/completion/file',[ProjectDetailsController::class,'downloadFile'])->name('admin.downloadFile');
 });   
 
 
@@ -198,7 +202,11 @@ Route::delete('/projects/details/stage5/fund/delete/{id}',[UserProjectDetailsCon
 Route::post('/projects/details/stage5/submit/bill/{id}',[UserProjectDetailsController::class,'submitBill'])->name('user.submitBill');
 Route::get('/projects/details/stage5/implementation/datatable',[UserProjectDetailsController::class,'getImplementationTable'])->name('user.getImplementationTable');
 Route::get('/projects/details/implementation/current/request/{id}',[UserProjectDetailsController::class,'requestCurrent'])->name('user.requestCurrent');
-Route::post('/projects/details/stage5/implementation/update/{id}',[UserProjectDetailsController::class,'updateCurrent'])->name('yser.updateCurrent');
+Route::post('/projects/details/stage5/implementation/update/{id}',[UserProjectDetailsController::class,'updateCurrent'])->name('user.updateCurrent');
+Route::post('/project/details/stage6/completion/new',[UserProjectDetailsController::class,'completionStage'])->name('user.completionStage');
+Route::get('/project/details/stag6/completion/view',[UserProjectDetailsController::class,'getCompletion'])->name('user.getCompletion');
+Route::get('/download/completion/file',[UserProjectDetailsController::class,'downloadFile'])->name('user.downloadFile');
+Route::post('/project/details/completion/update',[UserProjectDetailsController::class,'updateCompletion'])->name('user.updateCompletion');
 });
 
 

@@ -16,8 +16,8 @@
                 <div class="card overflow-hidden">
                     <div class="hh">
                         <div class="text-primary text-center p-4">
-                            <h5 class="text-white font-size-20">Admin Login</h5>
-                            <p class="text-white-50">Sign in to continue to Admin dashboard</p>
+                            <h5 class="text-white font-size-20">Login</h5>
+                            <p class="text-white-50">Sign in to continue to dashboard</p>
                             <a href="index" class="logo logo-admin">
                                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjXGugPZ8GDVwlB7BkMUCHcO_lXL8qwSXhdmPdJEVSmYIygYl3UgffAm12sVE0ttk8r4o&usqp=CAU" height="50px" alt="logo">
                             </a>

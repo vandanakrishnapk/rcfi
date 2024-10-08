@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Input;
 use App\Models\Fund;
 use App\Models\Bill;
+use App\Models\Completion;
 
 class UserProjectDetailsController extends Controller
 {
@@ -113,10 +114,18 @@ if(!$inputs)
 {
     $inputs=null;
 }
+$com =DB::table('completions')
+->join('project_details','project_details.proId','=','completions.proId')
+->select('completions.*')
+->first();
+if(!$com)
+{
+    $com=null;
+}
 
 
 
-        return view('user.project_details',compact('projectId','stage1Status','stage2Status','applicants','stage3Status','stage4Status','inputs','stage5Status','stage6Status','applicantId'));
+        return view('user.project_details',compact('projectId','stage1Status','stage2Status','applicants','stage3Status','stage4Status','inputs','stage5Status','stage6Status','applicantId','com'));
     } 
     
 
@@ -416,6 +425,7 @@ public function submitBill($id)
 
    $data= Bill::create([
         'fundId' =>$fundId,
+        'proId'=>$proId,
     ]);
     if ($data) {
         DB::table('project_details')
@@ -473,7 +483,181 @@ public function updateCurrent(Request $request, $id)
     $fund->save();
 
     return response()->json(['message' => "Request has been sent"]);
+}   
+
+
+public function downloadFile(Request $request)
+{
+    $documentId = $request->input('id');
+    $documentType = $request->input('type');
+
+    // Fetch the document path based on the document ID and type
+    $document = Completion::find($documentId); // Replace with your model
+
+    if ($document && !empty($document->$documentType)) {
+        // Use public_path() to ensure correct file path
+        $filePath = base_path(str_replace('\\', '/', $document->$documentType));
+
+        // Log the resolved file path for debugging
+        \Log::info('Resolved file path: ' . $filePath);
+
+        // Check if the file exists
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        } else {
+            return response()->json(['message' => 'File not found on the server'], 404);
+        }
+    }
+} 
+
+public function completionStage(Request $request)
+{
+    // Validate the request with custom messages
+    $validator = Validator::make($request->all(), [
+        'field1' => 'required|string|max:255',
+        'field2' => 'required|string|max:255',
+        'field3' => 'required|string|max:255',
+        'file1' => 'required|file|mimes:pdf|max:2048',
+        'photo1' => 'required|file|image|mimes:jpg,png,jpeg|max:2048',
+        'photo2' => 'required|file|image|mimes:jpg,png,jpeg|max:2048',
+    ], [
+        'field1.required' => 'Field 1 is required.',
+        'field1.string' => 'Field 1 must be a string.',
+        'field1.max' => 'Field 1 cannot exceed 255 characters.',
+        'field2.required' => 'Field 2 is required.',
+        'field3.required' => 'Field 3 is required.',
+        'file1.required' => 'File 1 is required.',
+        'file1.mimes' => 'File 1 must be a PDF.',
+        'file1.max' => 'File 1 cannot exceed 2MB.',
+        'photo1.required' => 'Photo 1 is required.',
+        'photo1.image' => 'Photo 1 must be an image.',
+        'photo1.max' => 'Photo 1 cannot exceed 2MB.',
+        'photo2.required' => 'Photo 2 is required.',
+        'photo2.image' => 'Photo 2 must be an image.',
+        'photo2.max' => 'Photo 2 cannot exceed 2MB.',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
+    }
+
+    // Get the last project ID
+    $getLastID = DB::table('project_details')->select('applicantId')->where('proId', '=', $request->proId)->first();
+    $last_reg_num = $getLastID ? substr($getLastID->applicantId, -9) : 0;
+
+    // Format the incremented number
+    $application_no = 'APLRCFI' . $last_reg_num;
+
+    // Prepare data for files
+    $documentData = [];
+    $documentFields = ['file1', 'photo1', 'photo2'];
+
+    foreach ($documentFields as $field) {
+        if ($request->hasFile($field)) {
+            $file = $request->file($field);
+            $filename = $application_no . '_' . $field . '.' . $file->getClientOriginalExtension();
+            $filePath = 'documents24'; // Set your desired path
+
+            // Move the file to the designated location
+            $file->move(public_path($filePath), $filename);
+
+            // Store the file path for database entry
+            $documentData[$field] = $filename; // Save filename
+        }
+    }
+
+    // Create or update the document record
+    $document = Completion::create([
+        'proId' => $request->proId,
+        'field1' => $request->field1,
+        'field2' => $request->field2,
+        'field3' => $request->field3,
+        'file1' => $documentData['file1'] ?? null, // Safely access the filename
+        'photo1' => $documentData['photo1'] ?? null,
+        'photo2' => $documentData['photo2'] ?? null,
+    ]);
+
+    // Update the project_details table
+    DB::table('project_details')->where('proId', $document->proId)
+        ->update(['stage6_status' => 1]);
+
+    return response()->json(['message' => 'Completion stage done successfully!']);
+} 
+
+public function updateCompletion(Request $request)
+{
+    // Validate the request with custom messages
+    $validator = Validator::make($request->all(), [
+        'field1' => 'string|max:255',
+        'field2' => 'string|max:255',
+        'field3' => 'string|max:255',
+        'file1' => 'file|mimes:pdf|max:2048',
+        'photo1' => 'file|image|mimes:jpg,png,jpeg|max:2048',
+        'photo2' => 'file|image|mimes:jpg,png,jpeg|max:2048',
+    ], [
+   
+        'field1.string' => 'Field 1 must be a string.',
+        'field1.max' => 'Field 1 cannot exceed 255 characters.',
+        'file1.mimes' => 'File 1 must be a PDF.',
+        'file1.max' => 'File 1 cannot exceed 2MB.',
+        'photo1.image' => 'Photo 1 must be an image.',
+        'photo1.max' => 'Photo 1 cannot exceed 2MB.',
+        'photo2.image' => 'Photo 2 must be an image.',
+        'photo2.max' => 'Photo 2 cannot exceed 2MB.',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
+    }
+    $getLastID = DB::table('project_details')->select('applicantId')->where('proId', '=', $request->proId)->first();
+    $last_reg_num = $getLastID ? substr($getLastID->applicantId, -9) : 0;
+
+    // Format the incremented number
+    $application_no = 'APLRCFI' . $last_reg_num;
+
+    // Check if a Completion record exists for the given proId
+    $completion = Completion::where('proId', $request->proId)->first();
+
+    if ($completion) {
+        // Prepare data for files
+        $documentData = [];
+        $documentFields = ['file1', 'photo1', 'photo2'];
+
+        foreach ($documentFields as $field) {
+            if ($request->hasFile($field)) {
+                $file = $request->file($field);
+                $filename = $application_no . '_' . $field . '.' . $file->getClientOriginalExtension();
+                $filePath = 'documents24'; // Set your desired path
+
+                // Move the file to the designated location
+                $file->move(public_path($filePath), $filename);
+
+                // Store the file path for database entry
+                $documentData[$field] = $filename; // Save filename
+            } else {
+                // If no new file is uploaded, keep the existing value
+                $documentData[$field] = $completion->$field;
+            }
+        }
+
+        // Update the document record
+        $completion->update(array_merge([
+            'field1' => $request->field1,
+            'field2' => $request->field2,
+            'field3' => $request->field3,
+        ], $documentData));
+
+        // Update the project_details table
+        DB::table('project_details')->where('proId', $completion->proId)
+            ->update(['stage6_status' => 2]);
+
+        return response()->json(['message' => 'Completion stage updated successfully!']);
+    } else {
+        return response()->json(['error' => 'Completion record not found.'], 404);
+    }
 }
 
-    }
+
+
+}
 

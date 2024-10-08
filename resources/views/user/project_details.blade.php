@@ -548,16 +548,165 @@
       
                 <div class="card">
                     <div class="card-header but mt-5">
-                        <h2 class="p-4 mt-3"> STAGE</h2>
+                        <h2 class="p-4 mt-3"> COMPLETION STAGE</h2>
                     </div>
                     <div class="card-body">
-                        @if($stage5Status === 0 && Auth::user()->role ===3 || Auth::user()->role===4 || Auth::user()->role ===1)
-       
-                        <h1>Hello</h1>
-
+                    @if($stage5Status === 2 && Auth::user()->role ===3 && $stage6Status != 1 && $stage6Status!=2)
+                                    
+                        <form id="completionForm" method="post" enctype="multipart/form-data">
+                        @csrf
+                            <!-- Text Fields -->
+                            <div>
+                                <input type="hidden" name="proId" value="{{ $projectId->proId }}">
+                                <label for="text1">Text Field 1:</label>
+                                <input type="text" id="text1" name="field1" class="form-control">
+                                <span class="text-danger" id="text1Error"></span>
+                            </div><br>
+                            <div>
+                                <label for="text2">Text Field 2:</label>
+                                <input type="text" id="text2" name="field2" class="form-control">
+                                <span class="text-danger" id="text2Error"></span>
+                            </div><br>
+                            <div>
+                                <label for="text3">Text Field 3:</label>
+                                <input type="text" id="text3" name="field3" class="form-control">
+                                <span class="text-danger" id="text3Error"></span>
+                            </div><br>
+                        
+                            <!-- File Uploads -->
+                            <div>
+                                <label for="file1">File Upload 1:</label>
+                                <input type="file" id="file1" name="file1" class="form-control">
+                                <span class="text-danger" id="file1Error"></span>
+                            </div><br>
+                           
+                            <!-- Photo Uploads -->
+                            <div>
+                                <label for="photo1">Photo Upload 1:</label>
+                                <input type="file" id="photo1" name="photo1" class="form-control">
+                                <span class="text-danger" id="photo1Error"></span>
+                            </div><br>
+                            <div>
+                                <label for="photo2">Photo Upload 2:</label>
+                                <input type="file" id="photo2" name="photo2" class="form-control">
+                                <span class="text-danger" id="photo2Error"></span>
+                            </div>
+                           
+                        
+                    <div class="row">
+                        <div class="col-5"></div>
+                        <div class="col-5">
+                            <button type="submit" class="btn but mt-2">Submit</button>
+                        </div>
+                    </div>
+                            
+                        </form>
+                @elseif($stage6Status === 1 && Auth::user()->role ===3)         
+                  <div class="completionView p-4">    
+                    <div class="row">
+                        <div class="col-10"></div>
+                        <div class="col-2">
+                            <div class="col-1">
+                                <button type="button" class="btn but btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#editCompletionModal" style="width:100px" data-id="{{ $projectId->proId }}">
+                                  Edit
+                                  </button> </div>
+                        </div>                       
+                       </div> 
+                              
+                    <div class="row">
+                        <div class="col-4">name1</div>
+                        <div class="col-2">:</div>
+                        <div class="col-4">
+                            <strong>{{ $com->field1 }}</strong>
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-4">name2</div>
+                        <div class="col-2">:</div>
+                        <div class="col-4">
+                            <strong>{{ $com->field2 }}</strong>
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-4">name3</div>
+                        <div class="col-2">:</div>
+                        <div class="col-4">
+                            <strong>{{ $com->field3 }}</strong>
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-4">file1</div>
+                        <div class="col-2">:</div>
+                        <div class="col-4">
+                            @if($com->file1)
+                                  <button class="btn btn-danger btn-sm view-file" data-id="{{ $projectId->documentId }}" data-type="{{ $doc }}"><i class="bi bi-file-earmark-pdf-fill"></i></button>
+                            
+                            @endif
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-4">photo1</div>
+                        <div class="col-2">:</div>
+                        <div class="col-4">
+                          <img src="{{ asset('/documents24/'.$com->photo1.'')}}"  height="100" width="100" alt="">
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-4">photo2</div>
+                        <div class="col-2">:</div>
+                        <div class="col-4">
+                            <img src="{{ asset('/documents24/' . $com->photo2.'') }}" height="100" width="100" alt="">
 
                         </div>
-                </div>
+                    </div>
+                    @elseif($stage6Status === 2 && Auth::user()->role ===3)
+                    <div class="row">
+                        <div class="col-4">name1</div>
+                        <div class="col-2">:</div>
+                        <div class="col-4">
+                            <strong>{{ $com->field1 }}</strong>
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-4">name2</div>
+                        <div class="col-2">:</div>
+                        <div class="col-4">
+                            <strong>{{ $com->field2 }}</strong>
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-4">name3</div>
+                        <div class="col-2">:</div>
+                        <div class="col-4">
+                            <strong>{{ $com->field3 }}</strong>
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-4">file1</div>
+                        <div class="col-2">:</div>
+                        <div class="col-4">
+                            @if($com->file1)
+                                  <button class="btn btn-danger btn-sm view-file" data-id="{{ $projectId->documentId }}" data-type="{{ $doc }}"><i class="bi bi-file-earmark-pdf-fill"></i></button>
+                            
+                                  @endif
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-4">photo1</div>
+                        <div class="col-2">:</div>
+                        <div class="col-4">
+                          <img src="{{ asset('documents24/'.$com->photo1.'')}}"  height="100" width="100" alt="">
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-4">photo2</div>
+                        <div class="col-2">:</div>
+                        <div class="col-4">
+                            <img src="{{ asset('documents24/'.$com->photo2.'')}}" height="100" width="100" alt="">
+                        </div>
+                    </div>
+                   
+                   
                 @else 
                 <div class="row">
                     <div class="col-12">
@@ -567,14 +716,80 @@
                     </div>
                 </div>
                 @endif
+            </div>
+            </div>
            </div>
            </div>
+
+
+           <!--Edit completion modal-->
+           <div class="modal fade" id="editCompletionModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header but">
+                        <h5 class="modal-title" id="editModalLabel">Edit Form</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editCompletionForm" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <input type="hidden" name="proId" id="proId" value="{{ $projectId->proId}}">
+        
+                            <!-- Text Fields -->
+                            <div>
+                                <label for="text1">Text Field 1:</label>
+                                <input type="text" id="text1" name="field1" class="form-control" value="{{ $com->field1 }}">
+                                <span class="text-danger" id="text1Error"></span>
+                            </div><br>
+                            <div>
+                                <label for="text2">Text Field 2:</label>
+                                <input type="text" id="text2" name="field2" class="form-control" value="{{ $com->field2 }}">
+                                <span class="text-danger" id="text2Error"></span>
+                            </div><br>
+                            <div>
+                                <label for="text3">Text Field 3:</label>
+                                <input type="text" id="text3" name="field3" class="form-control" value="{{ $com->field3 }}">
+                                <span class="text-danger" id="text3Error"></span>
+                            </div><br>
+        
+                            <!-- File Uploads -->
+                            <div>
+                                <label for="file1">File Upload 1:</label>
+                                <input type="file" id="file1" name="file1" class="form-control" value="{{ $com->file1 }}">
+                                <span class="text-danger" id="file1Error"></span>
+                            </div><br>
+        
+                            <!-- Photo Uploads -->
+                            <div>
+                                <label for="photo1">Photo Upload 1:</label>
+                                <input type="file" id="photo1" name="photo1" class="form-control" value="{{ $com->photo1 }}">
+                                <span class="text-danger" id="photo1Error"></span>
+                            </div><br>
+                            <div>
+                                <label for="photo2">Photo Upload 2:</label>
+                                <input type="file" id="photo2" name="photo2" class="form-control" value="{{ $com->photo2 }}">
+                                <span class="text-danger" id="photo2Error"></span>
+                            </div>
+        
+                            <div class="row">
+                                <div class="col-5"></div>
+                                <div class="col-5">
+                                    <button type="submit" class="btn but mt-2">Update</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
+
+
+
+
 </div>
-
-
-
-
+</div>
 </div>
 
 
@@ -1167,6 +1382,117 @@ $(document).on('click', '.submit', function() {
                 toastr.error('Something went wrong!', 'Error', {
                     positionClass: 'toast-top-right'
                 });
+            }
+        });
+    });
+});
+
+//completion form submit 
+$(document).ready(function() {
+            $('#completionForm').on('submit', function(e) {
+                e.preventDefault(); // Prevent the default form submission
+
+                // Create a FormData object
+                var formData = new FormData(this);
+
+                // AJAX request
+                $.ajax({
+                    url: `{{ url('/user/project/details/stage6/completion/new') }}`, // Your Laravel route
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                toastr.success(response.message); // Display success message
+                $('#completionModal').modal('hide');
+            },
+            error: function(xhr) {
+                // Check if the error response is a validation error
+                if (xhr.status === 422) {
+                    const errors = xhr.responseJSON.errors;
+
+                    // Use $.each to iterate over the errors
+                    $.each(errors, function(field, messages) {
+                        // Assuming field names match the input names
+                        $('#' + field + 'Error').text(messages[0]); // Display the first error message for each field
+                    });
+                } else {
+                    toastr.error('There was an error submitting the form.'); // Display general error message
+                }
+            }
+                });
+            });
+        }); 
+
+
+        //doenload file on completion 
+        $(document).ready(function() {       
+        $('.view-file').click(function() {
+            event.preventDefault();
+            var docId = $(this).data('id');
+            var docType = $(this).data('type');
+
+            $.ajax({
+                url: `{{ url('/user/download/completion/file')}}`, // Adjust this to your download route
+                method: 'GET',
+                data: {
+                    id: docId,
+                    type: docType
+                },
+                xhrFields: {
+                    responseType: 'blob' // Important for downloading files
+                },
+                success: function(data, status, xhr) {
+                    var blob = new Blob([data], { type: xhr.getResponseHeader('Content-Type') });
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = docType + '.pdf'; // Change this to your desired filename
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    setTimeout(function() {
+                    location.reload(); // Reload the page
+                }, 2000); 
+                
+                // Store the active tab in local storage
+                localStorage.setItem('activeTab', '#admin-stage6');
+                },
+                error: function() {
+                    alert('Error downloading file');
+                }
+            });
+        });
+    });  
+
+
+    //update completion form 
+    $(document).ready(function() {
+    $('#editCompletionForm').on('submit', function(e) {
+        e.preventDefault(); // Prevent the default form submission
+     
+        var formData = new FormData(this); // Collect form data
+
+        $.ajax({
+            url: `{{ url('/user/project/details/completion/update')}}`, // Your Laravel route for the update
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                toastr.success(response.message); // Display success message
+                $('#editCompletionModal').modal('hide'); // Hide the modal
+                // Optionally refresh data or update the UI
+            },
+            error: function(xhr) {
+                // Handle validation errors
+                if (xhr.status === 422) {
+                    const errors = xhr.responseJSON.errors;
+                    for (let field in errors) {
+                        $('#' + field + 'Error').text(errors[field][0]); // Display errors below the respective fields
+                    }
+                } else {
+                    toastr.error('There was an error updating the form.');
+                }
             }
         });
     });

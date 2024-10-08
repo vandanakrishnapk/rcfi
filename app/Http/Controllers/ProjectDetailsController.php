@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Document;
+use App\Models\Completion;
 
 
 class ProjectDetailsController extends Controller
@@ -89,6 +90,8 @@ class ProjectDetailsController extends Controller
         $stage2Status =null; 
         $stage3Status =null;
         $stage4Status =null;
+        $stage5Status =null;
+        $stage6Status = null;
         $applicantId =null;
     } else {
         $stage1Status = $projectId->stage1_status; // safely access the property
@@ -96,8 +99,21 @@ class ProjectDetailsController extends Controller
         $stage3Status = $projectId->stage3_status;
         $applicantId = $projectId->applicantId;
         $stage4Status = $projectId->stage4_status;
+        $stage5Status =$projectId->stage5_status;
+        $stage6Status =$projectId->stage6_status;
     }    
-        return view('admin.project_details',compact('projectId','stage1Status','stage2Status','appdetOC','appdetEC','appdetSW','appdetCC','stage3Status','applicantId','stage4Status'));
+
+    $com =DB::table('completions')
+->join('project_details','project_details.proId','=','completions.proId')
+->select('completions.*')
+->first();
+
+if(!$com)
+{
+    $com=null;
+}
+
+        return view('admin.project_details',compact('projectId','stage1Status','stage2Status','appdetOC','appdetEC','appdetSW','appdetCC','stage3Status','applicantId','stage4Status','stage5Status','com','stage6Status'));
     } 
 
     
@@ -244,7 +260,7 @@ public function fileApproval(Request $request,$proId)
         $projectDetail->stage3_status = 2; // Approved
         $projectDetail->save();
 
-        return response()->json(['message' => 'Project approved successfully!']);
+        return response()->json(['message' => 'Files approved successfully!']);
 }
 
 
@@ -284,10 +300,93 @@ public function fundApproval(Request $request,$proId)
         $projectDetail->stage4_status = 2; // Approved
         $projectDetail->save();
 
-        return response()->json(['message' => 'Project approved successfully!']);
+        return response()->json(['message' => 'Fund Allocation approved successfully!']);
 }
 
 
+}  
+
+public function viewImplementation() 
+{
+    $data = DB::table('funds')
+    ->join('bills', 'bills.fundId', '=', 'funds.fundId')
+    ->select('bills.billId','funds.input', 'funds.amount', 'funds.utilized', 'funds.current', 'funds.balance')
+    ->get();
+
+    
+    $totalRecords = count( $data); // Total records in your data source
+    $filteredRecords = count( $data); // Number of records after applying filters
+
+    return response()->json(['draw' => request()->get('draw'),
+                            'recordsTotal' => $totalRecords,
+                             'recordsFiltered' => $filteredRecords,
+                              'data' =>  $data]);
+    return response()->json(['error' => 'Invalid request'], 400);
+
+    
 } 
 
+public function billApprove(Request $request,$proId)
+{
+   // Check if the user has the right role (role ID 2)
+   if (Auth::user()->role != 2) {
+    return response()->json(['message' => 'Unauthorized'], 403);
+}
+
+// Find the project detail using the project ID
+$projectDetail = ProjectDetail::where('proId', $proId)->first();
+if ($projectDetail) {
+    // Update status
+    $projectDetail->stage5_status = 2; // Approved
+    $projectDetail->save();
+
+    return response()->json(['message' => 'Bill approved successfully!']);
+
+} 
+} 
+
+public function approveCompletion(Request $request,$proId)
+{
+     // Check if the user has the right role (role ID 2)
+   if (Auth::user()->role != 2) {
+    return response()->json(['message' => 'Unauthorized'], 403);
+}
+
+// Find the project detail using the project ID
+$projectDetail = ProjectDetail::where('proId', $proId)->first();
+if ($projectDetail) {
+    // Update status
+    $projectDetail->stage6_status = 2; // Approved
+    $projectDetail->save();
+
+    return response()->json(['message' => 'Completion approved successfully!']);
+
+}
+
+
+
+}
+public function downloadFile(Request $request)
+{
+    $documentId = $request->input('id');
+    $documentType = $request->input('type');
+
+    // Fetch the document path based on the document ID and type
+    $document = Completion::find($documentId); // Replace with your model
+
+    if ($document && !empty($document->$documentType)) {
+        // Use public_path() to ensure correct file path
+        $filePath = base_path(str_replace('\\', '/', $document->$documentType));
+
+        // Log the resolved file path for debugging
+        \Log::info('Resolved file path: ' . $filePath);
+
+        // Check if the file exists
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        } else {
+            return response()->json(['message' => 'File not found on the server'], 404);
+        }
+    }
+}
 }

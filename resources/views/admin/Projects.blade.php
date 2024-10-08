@@ -314,6 +314,7 @@ $(document).ready(function() {
                 <a href="{{ url('/admin/project/details/view') }}/${row.proId}" class="btn btn-dark btn-sm ms-1">
                     <i class="bi bi-eye"></i>
                 </a>
+             
             </div>
         `;
     }
