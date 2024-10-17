@@ -13,13 +13,17 @@ use App\Http\Controllers\userProjectController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectDetailsController;
 use App\Http\Controllers\UserProjectDetailsController;
-use Illuminate\Support\Facades\Artisan;
-
 use App\Http\Controllers\userMarkazOrphanCareController;
 use App\Http\Controllers\userEducationCentreController;
 use App\Http\Controllers\userSweetWaterProjectController;
 use App\Http\Controllers\userCulturalCentreController;
 use App\Http\Controllers\userApplicationController;
+use App\Http\Controllers\ConstructionController;
+use App\Http\Controllers\DifferenltlyAbledController;
+use App\Http\Controllers\FamilyController;
+use App\Http\Controllers\GeneralProjectController;
+use App\Http\Controllers\ShopController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -57,7 +61,6 @@ Route::post('/doAddDonor',[AdminController::class,'doAddDonor'])->name('do.AddDo
 
 
 //user routes 
-
 Route::get('/users/data', [UserController::class, 'getUserData'])->name('users.data');
 Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
 Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
@@ -113,6 +116,7 @@ Route::delete('/sweetwater/project/delete/{id}',[SweetWaterProjectController::cl
 
 
 Route::get('/application/view',[AdminController::class,'getApplications'])->name('admin.getApplications'); 
+//project routes
 Route::get('/projects/view',[ProjectController::class,'getProjects'])->name('admin.getProjects');
 Route::post('/projects/new',[ProjectController::class,'doProject'])->name('admin.doProject');
 Route::get('/projects/datatable',[ProjectController::class,'getProjectData'])->name('admin.getProjectData');
@@ -120,12 +124,11 @@ Route::get('/projects/view/more/{id}',[ProjectController::class,'projectViewMore
 Route::get('/projects/edit/{id}',[ProjectController::class,'editProject'])->name('admin.editProject');
 Route::post('projects/update',[ProjectController::class,'updateProject'])->name('admin.updateProject');
 Route::delete('projects/delete/{id}',[ProjectController::class, 'deleteProject'])->name('admin.deleteProject');
-
+//project details route
 Route::get('/project/details/view/{id}',[ProjectDetailsController::class,'getProjectDetails'])->name('admin.getProjectDetails');
 Route::post('/projects/details/do',[ProjectDetailsController::class,'doProjectDetails'])->name('admin.doProjectDetails');
 Route::post('/projects/details/approval/{id}',[ProjectDetailsController::class,'projectApproval'])->name('admin.projectApproval');
 Route::post('/project/details/applicant/approve/{id}',[ProjectDetailsController::class,'applicantApprove'])->name('admin.applicantApprove');
-
 Route::get('/download-document',[ProjectDetailsController::class,'download'])->name('admin.download'); 
 Route::post('/project/details/files/approve/{proId}',[ProjectDetailsController::class,'fileApproval'])->name('admin.fileApproval');
 Route::get('/project/details/stage4/fund/view',[ProjectDetailsController::class,'fundAllocatedView'])->name('admin.fundAllocatedView');
@@ -134,7 +137,47 @@ Route::get('/project/details/stage5/implementation/datatable',[ProjectDetailsCon
 Route::post('/project/details/stage5/bill/approve/{id}',[ProjectDetailsController::class,'billApprove'])->name('admin.billApprove');
 Route::post('/project/details/stage6/completion/approve/{id}',[ProjectDetailsController::class,'approveCompletion'])->name('admin.approveCompletion');
 Route::get('/download/completion/file',[ProjectDetailsController::class,'downloadFile'])->name('admin.downloadFile');
-});   
+Route::get('/projects/details/implementation/utilized/{id}',[ProjectDetailsController::class,'editUtilized'])->name('user.editUtilized');
+Route::post('/projects/details/stage5/utilized/update/{id}',[ProjectDetailsController::class,'updateUtilized'])->name('user.updateUtilized');
+Route::post('/projects/details/notifications/{id}/mark-as-read', [ProjectDetailsController::class, 'markAsRead'])->name('notifications.markAsRead'); 
+
+//construction project 
+Route::get('/construction/project/view',[ConstructionController::class,'getConstruction'])->name('admin.getConstruction');
+//differently abled
+Route::get('/applications/differenltly/abled/view',[DifferenltlyAbledController::class,'getDifferentlyAbled'])->name('admin.DifferentlyAbled');
+Route::post('/application/differently/abled/new',[DifferenltlyAbledController::class,'doDifferentlyAbled'])->name('admin.doDifferentlyabled');
+Route::get('/application/differently/abled/datatable',[DifferenltlyAbledController::class,'viewDifferentlyabled'])->name('admin.viewDifferentlyabled'); 
+Route::get('/application/differently/abled/view/more/{id}',[DifferenltlyAbledController::class,'diffViewMore'])->name('admin.diffViewMore');
+Route::get('/application/diffabled/edit/{id}',[DifferenltlyAbledController::class,'EditDiffAbled'])->name('admin.EditDiffAbled');
+Route::post('/application/diffabled/update',[DifferenltlyAbledController::class,'updateDiffAbled'])->name('admin.UpdateDiffAbled');
+Route::delete('/application/diffabled/delete/{id}',[DifferenltlyAbledController::class,'deleteDiffAbled'])->name('admin.deleteDiffabled');
+
+
+//family welfare 
+Route::get('/application/family/welfare/view',[FamilyController::class,'getFamilyView'])->name('admin.getFamily');
+Route::post('/application/family/welfare/new',[FamilyController::class,'doFamilyWelfare'])->name('admin.familyWelfare');
+Route::get('/application/family/welfare/datatable',[FamilyController::class,'familyDataTable'])->name('admin.familyDataTable');
+Route::get('/application/family/welfare/view/more/{id}',[FamilyController::class,'viewMoreFamily'])->name('admin.viewMoreFamily');
+Route::get('/application/family/welfare/edit/{id}',[FamilyController::class,'editFamily'])->name('admin.editFamily');
+Route::post('/application/family/welfare/update',[FamilyController::class,'updateFamily'])->name('admin.updateFamily');
+Route::delete('/application/family/welfare/delete/{id}',[FamilyController::class,'deleteFamily'])->name('admin.deleteFamily');
+
+//general project 
+Route::get('/application/general/project/view',[GeneralProjectController::class,'getGeneralProject'])->name('admin.getGeneralProject');
+Route::post('/application/general/type/new',[GeneralProjectController::class,'doappType'])->name('admin.doappType');
+Route::post('/application/general/project/new',[GeneralProjectController::class,'doGeneralProject'])->name('admin.doGeneralProject');
+Route::get('/application/general/project/datatable',[GeneralProjectController::class,'generalDatatable'])->name('admin.generalDatatable');
+Route::get('/application/general/project/view/more/{id}',[GeneralProjectController::class,'viewMoreGeneral'])->name('admin.viewMoreGeneral');
+Route::get('/application/general/project/edit/{id}',[GeneralProjectController::class,'generalProjectEdit'])->name('admin.generalProjectEdit');
+Route::post('/application/general/project/update',[GeneralProjectController::class,'updateGeneral'])->name('admin.updateGeneral'); 
+Route::delete('/application/general/project/delete/{id}',[GeneralProjectController::class,'deleteGeneral'])->name('admin.deleteGeneral');
+
+
+//shops andothers route 
+Route::get('/construction/project/shops/others/view',[ShopController::class,'getShopAndOthers'])->name('admin.getShopAndOthers');
+
+});  
+
 
 
 

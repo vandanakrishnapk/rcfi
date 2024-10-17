@@ -1,5 +1,16 @@
 @extends('user.template.master')
 @section('content')
+@section('css')
+<link href="{{ asset('assets/css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css">
+<!-- Icons Css -->
+<link href="{{ asset('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css">
+<!-- App Css-->
+<link href="{{ asset('assets/css/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css">
+
+<link href="{{ asset('assets/libs/chartist/chartist.min.css')}}" rel="stylesheet">
+<link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+<!-- Bootstrap Css -->
+@endsection
 <div class="row mt-4">
     <div class="col-xl-3 col-md-6">
         <div class="card mini-stat text-white box">
@@ -87,3 +98,19 @@
     </div>
 </div>
 @endsection
+ @section('scripts')
+
+    <!-- Peity chart-->
+    <script src="{{ asset('assets/libs/peity/peity.min.js') }}"></script>
+
+    <!-- Plugin Js-->
+    <script src="{{ asset('assets/libs/chartist/chartist.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/chartist-plugin-tooltips/chartist-plugin-tooltips.min.js') }}"></script>
+
+    <script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script>
+
+    <script src="{{ asset('assets/js/app.js') }}"></script>
+    
+
+    @endsection
+   

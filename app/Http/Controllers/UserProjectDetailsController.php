@@ -8,6 +8,7 @@ use App\Models\Project;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProjectDetail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File; 
 use App\Models\Document;
@@ -16,6 +17,8 @@ use App\Models\Input;
 use App\Models\Fund;
 use App\Models\Bill;
 use App\Models\Completion;
+use App\Notifications\CurrentValueUpdated; 
+use Illuminate\Notifications\Notifiable;
 
 class UserProjectDetailsController extends Controller
 {
@@ -123,9 +126,13 @@ if(!$com)
     $com=null;
 }
 
+$notifications = Auth::user()->notifications; // Fetch notifications for the COO
+if(!$notifications)
+{
+    $notifications=null;
+}
 
-
-        return view('user.project_details',compact('projectId','stage1Status','stage2Status','applicants','stage3Status','stage4Status','inputs','stage5Status','stage6Status','applicantId','com'));
+        return view('user.project_details',compact('projectId','stage1Status','stage2Status','applicants','stage3Status','stage4Status','inputs','stage5Status','stage6Status','applicantId','com','notifications'));
     } 
     
 
@@ -279,7 +286,6 @@ if(!$com)
 {
     $documentId = $request->input('id');
     $documentType = $request->input('type');
-
     // Fetch the document path based on the document ID and type
     $document = Document::find($documentId); // Replace with your model
 
@@ -446,8 +452,10 @@ public function getImplementationTable()
         ->join('inputs', 'inputs.inputId', '=', 'funds.input')
         ->join('project_details', 'project_details.proId', '=', 'funds.proId')
         ->join('projects', 'projects.proId', '=', 'funds.proId')
-        ->select('inputs.inputName as input', 'funds.fundId', 'funds.amount', 'funds.utilized', 'funds.current', 'funds.balance')
+        ->select('inputs.inputName as input', 'funds.fundId', 'funds.amount', 'funds.utilized', 'funds.current', DB::raw('funds.amount - funds.utilized as balance'))
         ->get();
+        
+    
 
     $totalRecords = count($details);
     $filteredRecords = $totalRecords; // Update if you apply filters
@@ -474,16 +482,39 @@ public function requestCurrent($id)
 
 public function updateCurrent(Request $request, $id)
 {
-    $request->validate([
-        'current' => 'required|numeric',
-    ]);
+   // Validate the incoming request
+   $request->validate([
+    'current' => 'required|numeric',
+]);
 
-    $fund = Fund::findOrFail($id);
-    $fund->current = $request->current;
-    $fund->save();
+// Find the fund by ID
+$fund = Fund::findOrFail($id);
 
-    return response()->json(['message' => "Request has been sent"]);
-}   
+// Update the current value
+$fund->current = $request->current;
+$fund->save();
+
+// Fetch the input name associated with the fund
+$input = DB::table('funds')
+    ->join('inputs', 'inputs.inputId', '=', 'funds.input')
+    ->select('inputs.inputName')
+    ->where('funds.fundId', $id)
+    ->first();
+
+   // Get users with roles 1 and 2
+   $users = User::whereIn('role', [1, 2])->get();
+
+   // Ensure that $input is not null
+   $inputName = $input ? $input->inputName : 'Unknown Input';
+
+   // Notify all users with roles 1 and 2
+   foreach ($users as $user) {
+       $user->notify(new CurrentValueUpdated($fund->current, $inputName));
+   }
+return response()->json(['message' => "Current value updated and COO has been notified."]);
+}
+
+  
 
 
 public function downloadFile(Request $request)

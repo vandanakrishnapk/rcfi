@@ -1,21 +1,28 @@
 @extends('layouts.master')
 @section('title') Data tables @endsection
+
 @section('css')
-<link href="{{ asset('assets/libs/datatables/datatables.min.css')}}" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+<link href="{{ asset('assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<link href="{{ asset('assets/css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css">
+<!-- Icons Css -->
+<link href="{{ asset('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css">
+<!-- App Css-->
+<link href="{{ asset('assets/css/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css">
+
+<link href="{{ asset('assets/libs/chartist/chartist.min.css')}}" rel="stylesheet">
+<link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+<!-- Bootstrap Css -->
 @endsection
 @section('body') <body data-sidebar="light"> @endsection
 @section('content')
-@component('components.breadcrumb')
-@slot('page_title') Data tables @endslot
-@slot('subtitle') Tables @endslot
-@endcomponent 
+
 <!-- more donor modal -->
 <div class="row">
     <div class="col-11"></div>
 <div class="col-1">
-    <button type="button" class="btn btn-success mb-2 float-end rounded-circle" data-bs-toggle="modal" data-bs-target="#addPartnerModal">
+    <button type="button" class="btn btn-success mb-2 float-end rounded-circle mt-2" data-bs-toggle="modal" data-bs-target="#addPartnerModal">
         <i class="bi bi-person-plus-fill fs-5"></i>
     </button>
 </div>
@@ -176,6 +183,7 @@
                 <table id="donorsTable" class="table table-bordered dt-responsive nowrap display" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
                         <tr>
+                            <th>S.No</th>
                           <th>Partner Name</th>                         
                           <th>Partner Website</th>
                           <th>Type Of Partner</th>
@@ -207,21 +215,28 @@
 </div>
 @endsection
 @section('scripts')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script src="{{ asset('assets/libs/datatables/datatables.min.js')}}"></script>
+ <!-- Peity chart-->
+ <script src="{{ asset('assets/libs/peity/peity.min.js') }}"></script>
+
+ <!-- Plugin Js-->
+ <script src="{{ asset('assets/libs/chartist/chartist.min.js') }}"></script>
+ <script src="{{ asset('assets/libs/chartist-plugin-tooltips/chartist-plugin-tooltips.min.js') }}"></script>
+
+
 <script src="{{ asset('assets/js/pages/datatables.init.js')}}"></script>
+<script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script>
 <script src="{{ asset('assets/js/app.js')}}"></script>
+@endsection
+@push('scripts')
 
 <script>
 $(document).ready(function() {
     $('#donorsTable').DataTable({
-        processing: true,
-            serverSide: true,
-            destroy: true,
-            searching: true,
-            dom: "<'row'<'col-sm-6'B><'col-sm-6'f>>" +
-                 "<'row'<'col-sm-12'tr>>" +
-                 "<'row'<'col-sm-4'l><'col-sm-8'ip>>",
+        select: true,
+        serverSide: false, // Set this to true if you’re using server-side processing
+        dom: 'Bfrtlip',
             buttons: [
                 {
                     extend: 'csvHtml5',
@@ -251,6 +266,15 @@ $(document).ready(function() {
             }
         },
         columns: [
+            {
+                data: null, 
+                orderable: false, 
+                searchable: false, 
+                className: 'text-center',
+                render: function(data, type, row, meta) {
+                    return meta.row + 1; // Serial number starts from 1
+                }
+            },
             { data: 'partner_name', name: 'partner_name' },
             { data: 'partner_website', name: 'partner_website' },
             { data: 'type_of_partner', name: 'type_of_partner' },
@@ -505,4 +529,4 @@ $(document).on('click', '.delete-donor', function() {
 
 
 </script>
-  @endsection
+  @endpush

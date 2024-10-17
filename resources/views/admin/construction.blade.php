@@ -11,87 +11,45 @@
 <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 <!-- Bootstrap Css -->
 @endsection
+
 <div class="row mt-4">
-    <div class="col-xl-3 col-md-6">
-        <div class="card mini-stat text-white box">
-            <div class="card-body box rounded">
-                <div class="mb-4">
-                    <div class="float-start mini-stat-img me-4">
  
-                        <i class="bi bi-buildings-fill fa-2x"></i>
+    
+    <div class="col-xl-3 col-md-6">
+        <div class="card mini-stat bg-primary text-white">
+            <div class="card-body box rounded">
+                <div class="mb-4">
+                    <div class="float-start mini-stat-img me-4 fs-2">
+                        <i class="bi bi-book-half"></i>
                     </div>
-                    <h5 class="fs-6 text-white">CONSTRUCTION PROJECT</h5>
-                    <h4 class="fw-medium font-size-24">6</h4>
-                
+                    <h5 class="fs-6 text-uppercase text-white">Education Centre</h5>
+                    <h4 class="fw-medium font-size-24">{{ $eduCount }}</i></h4>
+                   
                 </div>
                 <div class="pt-2">
                     <div class="float-end">
-                        <a href="{{ route('admin.getConstruction') }}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                        <a href="{{ route('admin.getEducationCenterApplication')}}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
                     </div>
 
-                    <p class="text-white-50 mb-0 mt-1">View Applications</p>
+                   <a href=""> <p class="text-white-50 mb-0 mt-1">View Applications</p></a>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-xl-3 col-md-6">
         <div class="card mini-stat bg-primary text-white">
-            <div class="card-body box rounded">
-                <div class="mb-4">
-                    <div class="float-start mini-stat-img me-4">   
-                        <i class="bi bi-droplet-half fs-2"></i>
-                    </div>
-                    <h5 class="fs-6 text-uppercase text-white">Sweet Water Project</h5>
-                    <h4 class="fw-medium font-size-24">{{ $sweetCount }}</h4>
-                    
-                </div>
-                <div class="pt-2">
-                    <div class="float-end">
-                        <a href="{{ route('admin.getSweetWaterProject')}}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
-                    </div>
-
-                    <p class="text-white-50 mb-0 mt-1">View Applications</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-md-6">
-        <div class="card mini-stat text-white box">
             <div class="card-body box rounded">
                 <div class="mb-4">
                     <div class="float-start mini-stat-img me-4">
-                        <i class="fa fa-handshake-o fa-2x" aria-hidden="true"></i>
+                        <i class="bi bi-brilliance fs-2"></i>
                     </div>
-                    <h5 class="fs-6 text-white">ORPHAN CARE</h5>
-                    <h4 class="fw-medium font-size-24">{{ $markazCount }}</h4>
+                    <h5 class="fs-6 text-uppercase text-white">Cultural Centre</h5>
+                    <h4 class="fw-medium font-size-24">{{ $culturalCount }}</h4>
                 
                 </div>
                 <div class="pt-2">
                     <div class="float-end">
-                        <a href="{{ route('admin.getMarkazOrphanCare')}}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
-                    </div>
-
-                    <p class="text-white-50 mb-0 mt-1">View Applications</p>
-                </div>
-            </div>
-        </div>
-    </div> 
-
-    <div class="col-xl-3 col-md-6">
-        <div class="card mini-stat bg-primary text-white">
-            <div class="card-body box rounded">
-                <div class="mb-4">
-                    <div class="float-start mini-stat-img me-4">   
-                     
-                        <i class="bi bi-person-wheelchair fs-2"></i>
-                    </div>
-                    <h5 class="fs-6 text-uppercase text-white">Differently Abled</h5>
-                    <h4 class="fw-medium font-size-24">{{ $diffCount }}</h4>
-                    
-                </div>
-                <div class="pt-2">
-                    <div class="float-end">
-                        <a href="{{ route('admin.DifferentlyAbled')}} " class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                        <a href="{{ route('admin.getCulturalCenterApp')}}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
                     </div>
 
                     <p class="text-white-50 mb-0 mt-1">View Applications</p>
@@ -105,37 +63,82 @@
             <div class="card-body box rounded">
                 <div class="mb-4">
                     <div class="float-start mini-stat-img me-4">   
-                        <i class="fa fa-users fa-2x" aria-hidden="true"></i>
+                        <i class="bi bi-hospital fs-2"></i>
                     </div>
-                    <h5 class="fs-6 text-uppercase text-white">Family aid</h5>
-                    <h4 class="fw-medium font-size-24">{{ $famCount }}</h4>
-                    
-                </div>
-                <div class="pt-2">
-                    <div class="float-end">
-                        <a href="{{ route('admin.getFamily') }}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
-                    </div>
-
-                    <p class="text-white-50 mb-0 mt-1">View Applications</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-3 col-md-6">
-        <div class="card mini-stat bg-primary text-white">
-            <div class="card-body box rounded">
-                <div class="mb-4">
-                    <div class="float-start mini-stat-img me-4">   
-                        <i class="bi bi-file-earmark-ruled-fill fs-2"></i>
-                    </div>
-                    <h5 class="fs-6 text-uppercase text-white">General Project</h5>
+                    <h5 class="fs-6 text-uppercase text-white">Hospitals or Clinics</h5>
                     <h4 class="fw-medium font-size-24">#</h4>
                     
                 </div>
                 <div class="pt-2">
                     <div class="float-end">
-                        <a href="{{ route('admin.getGeneralProject')}}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                        <a href="#" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                    </div>
+
+                    <p class="text-white-50 mb-0 mt-1">View Applications</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card mini-stat bg-primary text-white">
+            <div class="card-body box rounded">
+                <div class="mb-4">
+                    <div class="float-start mini-stat-img me-4">   
+                        <i class="bi bi-water fs-2"></i>
+                    </div>
+                    <h5 class="text-uppercase text-white w-100" style="font-size: 12px;">Drinking Water-<span class="text-capitalize">Group level</span></h5>
+                    <h4 class="fw-medium font-size-24">#</h4>
+                    
+                </div>
+                <div class="pt-2">
+                    <div class="float-end">
+                        <a href="#" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                    </div>
+
+                    <p class="text-white-50 mb-0 mt-1">View Applications</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card mini-stat bg-primary text-white">
+            <div class="card-body box rounded">
+                <div class="mb-4">
+                    <div class="float-start mini-stat-img me-4">   
+                        <i class="bi bi-building-fill-add fs-2"></i>
+                    </div>
+                    <h5 class="fs-6 text-uppercase text-white">Shops and Other</h5>
+                    <h4 class="fw-medium font-size-24">#</h4>
+                    
+                </div>
+                <div class="pt-2">
+                    <div class="float-end">
+                        <a href="{{ route('admin.getShopAndOthers') }}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                    </div>
+
+                    <p class="text-white-50 mb-0 mt-1">View Applications</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card mini-stat bg-primary text-white">
+            <div class="card-body box rounded">
+                <div class="mb-4">
+                    <div class="float-start mini-stat-img me-4">   
+                        <i class="bi bi-shop-window fs-2"></i>
+                    </div>
+                    <h5 class="fs-6 text-uppercase text-white">House</h5>
+                    <h4 class="fw-medium font-size-24">#</h4>
+                    
+                </div>
+                <div class="pt-2">
+                    <div class="float-end">
+                        <a href="#" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
                     </div>
 
                     <p class="text-white-50 mb-0 mt-1">View Applications</p>
@@ -146,8 +149,19 @@
 
 
 
+
+
 </div>
 @endsection
+
+
+
+
+
+
+
+
+
 @section('scripts')
 
 <!-- Peity chart-->

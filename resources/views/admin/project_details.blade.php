@@ -1,10 +1,18 @@
 @extends('layouts.master')
 
 @section('css')
-<!-- DataTables -->
 <link href="{{ asset('assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<link href="{{ asset('assets/css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css">
+<!-- Icons Css -->
+<link href="{{ asset('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css">
+<!-- App Css-->
+<link href="{{ asset('assets/css/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css">
+
+<link href="{{ asset('assets/libs/chartist/chartist.min.css')}}" rel="stylesheet">
+<link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+<!-- Bootstrap Css -->
 @endsection
 
 @section('content')
@@ -433,6 +441,8 @@
                            
                            </div>
                            @endif
+
+
                                
                                 <div class="row">
                                  <div class="col-12">
@@ -445,6 +455,7 @@
                                                 <th>Utilized</th>
                                                 <th>Current</th>
                                                 <th>balance</th>
+                                                <th>Action</th>
                                                
                                              
                                              
@@ -455,6 +466,61 @@
                                             <!-- Repeat for other materials -->
                                         </tbody>
                                     </table>
+                                 
+
+                                     <div aria-live="polite" aria-atomic="true" style="position: relative;">
+                                        <div class="toast-container position-fixed top-0 end-0 p-3">
+                                            @foreach ($notifications as $notification)
+                                                @if (is_null($notification->read_at))
+                                                    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                                        <div class="toast-header but">
+                                                            <strong class="me-auto">Notification</strong>
+                                                            <small class="text-muted">
+                                                                {{ \Carbon\Carbon::parse($notification->created_at)->format('d-m-Y H:i') }} <!-- Adjust format as needed -->
+                                                            </small>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="toast-body text-white">
+                                                            {{ $notification->data['message'] }}
+                                                            <form action="{{ route('notifications.markAsRead', $notification->id) }}" method="POST" style="display:inline;">
+                                                                @csrf
+                                                                <div class="row">
+                                                                    <div class="col-8"></div>
+                                                                    <div class="col-4">
+                                                                        <button type="submit" class="btn btn-sm but mt-3">Mark as Read</button>
+                                                                    </div>
+                                                                </div>
+                                                               
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    
+                                 
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header but">
+                <h5 class="modal-title" id="editModalLabel">Request utilized</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="fundId" value="">
+                <div class="mb-3">
+                    <label for="utilized">utilized Value:</label>
+                    <input type="number" name="utilized" id="utilized" class="form-control">
+                  </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn but" id="saveChanges">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
                                    
                                   </div>
                                 </div>
@@ -481,7 +547,9 @@
                             <h2 class="p-4 mt-3">COMPLETION STAGE</h2>
                         </div>
                         <div class="card-body">
-                            @if($stage6Status === 2)
+                            @if(($stage6Status === 1 || $stage6Status ===0) && (Auth::user()->role===2 || Auth::user()->role===1))
+                            
+                            @if($stage6Status ===2)
                             <div class="row">
                                
                             <div class="col-12 p-3">
@@ -550,7 +618,7 @@
                             </div>
 
 
-
+@endif
 
                         </div>
                         </div>
@@ -581,23 +649,28 @@
 
 
 @endsection
+@section('scripts')
 
-@push('scripts')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('assets/libs/datatables/datatables.min.js')}}"></script>
-<script src="{{ asset('assets/js/pages/datatables.init.js')}}"></script>
-<script src="{{ asset('assets/js/app.js')}}"></script>  
+ <!-- Peity chart-->
+ <script src="{{ asset('assets/libs/peity/peity.min.js') }}"></script>
 
+ <!-- Plugin Js-->
+ <script src="{{ asset('assets/libs/chartist/chartist.min.js') }}"></script>
+ <script src="{{ asset('assets/libs/chartist-plugin-tooltips/chartist-plugin-tooltips.min.js') }}"></script>
+
+
+<script src="{{ asset('assets/js/pages/datatables.init.js')}}"></script>
+<script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script>
+<script src="{{ asset('assets/js/app.js')}}"></script>
+@endsection
+@push('scripts')
 <script>  
  $(document).ready(function() {
     $('#fundTable').DataTable({
-            processing: true,
-            serverSide: true,
-            destroy: true,
-            searching: true,
-            dom: "<'row'<'col-sm-6'B><'col-sm-6'f>>" +
-                 "<'row'<'col-sm-12'tr>>" +
-                 "<'row'<'col-sm-4'l><'col-sm-8'ip>>",
+        select: true,
+        serverSide: false, // Set this to true if you’re using server-side processing
+        dom: 'Bfrtlip',
             buttons: [
                 {
                     extend: 'csvHtml5',
@@ -629,16 +702,12 @@
             ]
             });
         });  
-        //Implentation stage 
-        $(document).ready(function() {
+        //Implentation stage  datatable
+$(document).ready(function() {
     $('#ImplementTable').DataTable({
-            processing: true,
-            serverSide: true,
-            destroy: true,
-            searching: true,
-            dom: "<'row'<'col-sm-6'B><'col-sm-6'f>>" +
-                 "<'row'<'col-sm-12'tr>>" +
-                 "<'row'<'col-sm-4'l><'col-sm-8'ip>>",
+        select: true,
+        serverSide: false, // Set this to true if you’re using server-side processing
+        dom: 'Bfrtlip',
             buttons: [
                 {
                     extend: 'csvHtml5',
@@ -669,7 +738,25 @@
                     {"data":"amount"}, 
                     {"data":"utilized"},    
                     {"data":"current"},   
-                    {"data":"balance"},                          
+                    {"data":"balance"},     
+                    {
+                data: null,
+                name: 'action',
+                orderable: false,
+                searchable: false,
+                render: function(data, type, row, meta) {
+                                      
+                    return `
+                    <div class="dd d-flex">
+                       <button class="btn btn-warning btn-sm edit-utilized me-1" data-id="${row.fundId}" title="Edit">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                                      
+                       
+                    `;
+                }
+
+                    }                     
             ],
             });
         });  
@@ -990,7 +1077,92 @@ $(document).ready(function() {
                 }
             });
         });
-    }); 
+    });  
+
+
+    // edit utilized by coo 
+    //edit current input
+$(document).ready(function() {
+
+// Event for opening the edit modal
+$('#ImplementTable').on('click', '.edit-utilized', function() {
+    var fundId = $(this).data('id');
+    $.get(`{{ url('/admin/projects/details/implementation/utilized') }}/${fundId}`, function(data) {
+        // Fill the form with data
+    $('#fundId').val(data.fundId);
+    $('#utilized').val(data.utilized);
+    $('#editModal').modal('show'); 
+    });
+});
+
+// Save changes on the modal
+$('#saveChanges').on('click', function() {
+    var fundId = $('#fundId').val();
+    var utilized = $('#utilized').val();
+
+    $.ajax({
+        url: `{{ url('/admin/projects/details/stage5/utilized/update') }}/${fundId} `, // Adjust your URL
+        type: 'POST',
+        data: {
+             utilized: utilized,
+            _token: $('meta[name="csrf-token"]').attr('content') // Include CSRF token
+        },
+        success: function(response) {
+            $('#editModal').modal('hide');
+            setTimeout(function() {
+                    location.reload(); 
+                }, 2000);
+
+        },
+        error: function(xhr) {
+            alert('Error updating the current value.');
+        }
+    });
+});
+});
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var toasts = document.querySelectorAll('.toast');
+        toasts.forEach(function(toast) {
+            var bsToast = new bootstrap.Toast(toast, {
+                autohide: false // Disable auto-hide
+            });
+            bsToast.show();
+
+            // Optional: Add a close button functionality
+            var closeButton = toast.querySelector('.btn-close');
+            closeButton.addEventListener('click', function() {
+                bsToast.hide();
+            });
+        });
+
+        // Handle AJAX form submission for marking as read
+        document.querySelectorAll('.mark-as-read').forEach(function(form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                var toast = this.closest('.toast'); // Find the closest toast
+                var formData = new FormData(this);
+
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // Ensure to include CSRF token
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        // Hide the toast
+                        var bsToast = bootstrap.Toast.getInstance(toast);
+                        bsToast.hide();
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    });
 
 
 

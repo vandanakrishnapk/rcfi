@@ -1,19 +1,26 @@
 @extends('layouts.master')
 @section('title') Data tables @endsection
+
 @section('css')
-<link href="{{ asset('assets/libs/datatables/datatables.min.css')}}" rel="stylesheet" type="text/css">
+<link href="{{ asset('assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<link href="{{ asset('assets/css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css">
+<!-- Icons Css -->
+<link href="{{ asset('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css">
+<!-- App Css-->
+<link href="{{ asset('assets/css/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css">
 
 <link href="{{ asset('assets/libs/chartist/chartist.min.css')}}" rel="stylesheet">
-
-<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+<!-- Bootstrap Css -->
 @endsection
 @section('body') <body data-sidebar="light"> @endsection
 @section('content')
 
 <div class="row">
     <div class="float-end d-none d-md-block">
-        <button type="button" class="btn btn-success mb-2 float-end rounded-circle" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <button type="button" class="btn btn-success mb-2 float-end rounded-circle mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
             <i class="bi bi-person-plus-fill fs-5"></i>
         </button>
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -92,9 +99,8 @@
             <div class="modal-body p-4" id="editDetails">
                 <!-- Form will be injected here -->
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
+           
+
         </div>
     </div>
 </div>   
@@ -167,7 +173,7 @@
 </div>
 @endsection
 @section('scripts')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script src="{{ asset('assets/libs/datatables/datatables.min.js')}}"></script>
  <!-- Peity chart-->
  <script src="{{ asset('assets/libs/peity/peity.min.js') }}"></script>
@@ -178,18 +184,17 @@
 
 
 <script src="{{ asset('assets/js/pages/datatables.init.js')}}"></script>
+<script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script>
 <script src="{{ asset('assets/js/app.js')}}"></script>
+@endsection
+@push('scripts')
 
 <script>
    $(document).ready(function() {
     $('#usersTable').DataTable({
-        processing: true,
-            serverSide: true,
-            destroy: true,
-            searching: true,
-            dom: "<'row'<'col-sm-6'B><'col-sm-6'f>>" +
-                 "<'row'<'col-sm-12'tr>>" +
-                 "<'row'<'col-sm-4'l><'col-sm-8'ip>>",
+        select: true,
+        serverSide: false, // Set this to true if you’re using server-side processing
+        dom: 'Bfrtlip',
             buttons: [
                 {
                     extend: 'csvHtml5',
@@ -216,9 +221,10 @@
         },
         columns: [
             {
-                data: null,
-                orderable: false,
-                searchable: false,
+                data: null, 
+                orderable: false, 
+                searchable: false, 
+                className: 'text-center',
                 render: function(data, type, row, meta) {
                     return meta.row + 1; // Serial number starts from 1
                 }
@@ -303,9 +309,15 @@ $(document).on('click', '.edit-user', function() {
                     <label for="designation" class="form-label">designation</label>
                     <input type="text" class="form-control" id="designation" name="designation" value="${data.designation}">
                 </div>
-        
-                <button type="submit" class="btn btn-primary">Save changes</button>
-            </form>
+        <div class="row">
+            <div class="col-8"></div>
+            <div class="col-4">
+
+                <button type="submit" class="btn but">Save changes</button>
+           
+            </div>
+        </div>
+         </form>
         `;
         
         // Inject the form HTML into the modal
@@ -425,4 +437,4 @@ $(document).on('click', '.delete-user', function() {
 
 
  </script>
-@endsection
+@endpush

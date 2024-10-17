@@ -1,11 +1,19 @@
 @extends('user.template.master')
 @section('css')
-<!-- DataTables -->
 <link href="{{ asset('assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css">
-
-<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<link href="{{ asset('assets/css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css">
+<!-- Icons Css -->
+<link href="{{ asset('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css">
+<!-- App Css-->
+<link href="{{ asset('assets/css/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css">
+
+<link href="{{ asset('assets/libs/chartist/chartist.min.css')}}" rel="stylesheet">
+<link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+<!-- Bootstrap Css -->
 @endsection
+
 @section('content')
 
      
@@ -498,6 +506,38 @@
         </div>
     </div>
 </div>
+<div aria-live="polite" aria-atomic="true" style="position: relative;">
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        
+        @foreach ($notifications as $notification)
+            @if (is_null($notification->read_at))
+                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header but">
+                        <strong class="me-auto">Notification</strong>
+                        <small class="text-muted">
+                            {{ \Carbon\Carbon::parse($notification->created_at)->format('d-m-Y H:i') }} <!-- Adjust format as needed -->
+                        </small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body text-white">
+                        {{ $notification->data['message'] }}
+                        <form action="{{ route('notifications.markAsRead', $notification->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            <div class="row">
+                                <div class="col-8"></div>
+                                <div class="col-4">
+                                    <button type="submit" class="btn btn-sm but mt-3">Mark as Read</button>
+                                </div>
+                            </div>
+                           
+                        </form>
+                    </div>
+                </div>
+            @endif
+        @endforeach
+    </div>
+</div>
+
 
 
 <!--Send bill confirmation modal-->
@@ -797,7 +837,21 @@
 
 
 @endsection
+@section('scripts')
 
+<!-- Peity chart-->
+<script src="{{ asset('assets/libs/peity/peity.min.js') }}"></script>
+
+<!-- Plugin Js-->
+<script src="{{ asset('assets/libs/chartist/chartist.min.js') }}"></script>
+<script src="{{ asset('assets/libs/chartist-plugin-tooltips/chartist-plugin-tooltips.min.js') }}"></script>
+
+<script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script>
+
+<script src="{{ asset('assets/js/app.js') }}"></script>
+
+
+@endsection
 
 
 @push('scripts')
@@ -834,13 +888,9 @@
 
     $(document).ready(function() {
     $('#fundTable').DataTable({
-            processing: true,
-            serverSide: true,
-            destroy: true,
-            searching: true,
-            dom: "<'row'<'col-sm-6'B><'col-sm-6'f>>" +
-                 "<'row'<'col-sm-12'tr>>" +
-                 "<'row'<'col-sm-4'l><'col-sm-8'ip>>",
+        select: true,
+        serverSide: false, // Set this to true if you’re using server-side processing
+        dom: 'Bfrtlip',
             buttons: [
                 {
                     extend: 'csvHtml5',
@@ -901,13 +951,9 @@
         //Implementation datatable 
     $(document).ready(function() {
     $('#ImplementationTable').DataTable({
-            processing: true,
-            serverSide: true,
-            destroy: true,
-            searching: true,
-            dom: "<'row'<'col-sm-6'B><'col-sm-6'f>>" +
-                 "<'row'<'col-sm-12'tr>>" +
-                 "<'row'<'col-sm-4'l><'col-sm-8'ip>>",
+        select: true,
+        serverSide: false, // Set this to true if you’re using server-side processing
+        dom: 'Bfrtlip',
             buttons: [
                 {
                     extend: 'csvHtml5',

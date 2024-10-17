@@ -1,11 +1,18 @@
 @extends('layouts.master')
 
 @section('css')
-
 <link href="{{ asset('assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link href="{{ asset('assets/css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css">
+<!-- Icons Css -->
+<link href="{{ asset('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css">
+<!-- App Css-->
+<link href="{{ asset('assets/css/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css">
+
+<link href="{{ asset('assets/libs/chartist/chartist.min.css')}}" rel="stylesheet">
+<link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+<!-- Bootstrap Css -->
 @endsection
 
 @section('body')
@@ -870,8 +877,9 @@
 
 
 @endsection
-@push('scripts')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+@section('scripts')
+
 <script src="{{ asset('assets/libs/datatables/datatables.min.js')}}"></script>
  <!-- Peity chart-->
  <script src="{{ asset('assets/libs/peity/peity.min.js') }}"></script>
@@ -882,19 +890,16 @@
 
 
 <script src="{{ asset('assets/js/pages/datatables.init.js')}}"></script>
+<script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script>
 <script src="{{ asset('assets/js/app.js')}}"></script>
-
-
+@endsection
+@push('scripts')
 <script>
     $(document).ready(function() {
     $('#EducationCentreDataTable').DataTable({
-            processing: true,
-            serverSide: true,
-            destroy: true,
-            searching: true,
-            dom: "<'row'<'col-sm-6'B><'col-sm-6'f>>" +
-                 "<'row'<'col-sm-12'tr>>" +
-                 "<'row'<'col-sm-4'l><'col-sm-8'ip>>",
+        select: true,
+        serverSide: false, // Set this to true if you’re using server-side processing
+        dom: 'Bfrtlip',
             buttons: [
                 {
                     extend: 'csvHtml5',

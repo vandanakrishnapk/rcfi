@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
   
@@ -25,7 +26,13 @@ class UserController extends Controller
     
         public function home()
         {
-            return view('user.home');
+            $markaz =DB::table('markaz_orphan_cares')->count();
+            $educ =DB::table('education_centres')->count();
+            $sweet =DB::table('sweet_water_projects')->count();
+            $cult =DB::table('cultural_centres')->count();
+            $applications =$markaz+$educ+$sweet+$cult;
+            $pro =DB::table('projects')->count();
+            return view('user.home',compact('applications','pro'));
         } 
         public function show($id)
         {

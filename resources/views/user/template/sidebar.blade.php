@@ -21,7 +21,7 @@
                 
                 <li>
                     <a href="{{ route('user.getApplications') }}" class="waves-effect">
-                        <i class="bi bi-houses-fill"></i>
+                        <i class="bi bi-file-earmark-medical-fill"></i>
                         <span>Applications</span>
                     </a>
                 </li> 

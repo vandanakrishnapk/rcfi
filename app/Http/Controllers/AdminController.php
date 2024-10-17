@@ -23,7 +23,16 @@ class AdminController extends Controller
 
 public function admin_home()
 {
-    return view('admin.admin_home');
+    $user =DB::table('users')->count();
+    $donor = DB::table('donors')->count();
+
+    $markaz =DB::table('markaz_orphan_cares')->count();
+    $educ =DB::table('education_centres')->count();
+    $sweet =DB::table('sweet_water_projects')->count();
+    $cult =DB::table('cultural_centres')->count();
+    $applications =$markaz+$educ+$sweet+$cult;
+    $pro =DB::table('projects')->count();
+    return view('admin.admin_home',compact('user','donor','applications','pro'));
 }
 
 public function forgot_password()
@@ -250,11 +259,14 @@ if ($validator->fails()) {
 public function getApplications()
 {
     $markazCount = DB::table('markaz_orphan_cares')->count();
-    $eduCount = DB::table('education_centres')->count();
-    $culturalCount = DB::table('cultural_centres')->count();
+
     $sweetCount = DB::table('sweet_water_projects')->count();
 
-    return view('admin.applications',compact('markazCount','eduCount','culturalCount','sweetCount'));
+    $diffCount = DB::table('differently_abled')->count();
+
+    $famCount = DB::table('families')->count();
+
+    return view('admin.applications',compact('markazCount','sweetCount','diffCount','famCount'));
 }
  
 

@@ -10,8 +10,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Models\Document;
+use App\Models\Document; 
+use App\Models\Fund;
 use App\Models\Completion;
+use App\Notifications\UtilizedUpdated;
+use Illuminate\Support\Facades\Notification;
 
 
 class ProjectDetailsController extends Controller
@@ -112,8 +115,13 @@ if(!$com)
 {
     $com=null;
 }
+$notifications = Auth::user()->notifications; // Fetch notifications for the COO
+if(!$notifications)
+{
+    $notifications=null;
+}
 
-        return view('admin.project_details',compact('projectId','stage1Status','stage2Status','appdetOC','appdetEC','appdetSW','appdetCC','stage3Status','applicantId','stage4Status','stage5Status','com','stage6Status'));
+        return view('admin.project_details',compact('projectId','stage1Status','stage2Status','appdetOC','appdetEC','appdetSW','appdetCC','stage3Status','applicantId','stage4Status','stage5Status','com','stage6Status','notifications'));
     } 
 
     
@@ -310,7 +318,8 @@ public function viewImplementation()
 {
     $data = DB::table('funds')
     ->join('bills', 'bills.fundId', '=', 'funds.fundId')
-    ->select('bills.billId','funds.input', 'funds.amount', 'funds.utilized', 'funds.current', 'funds.balance')
+    ->select('bills.billId', 'funds.fundId', 'funds.input', 'funds.amount','funds.current',
+             'funds.utilized', DB::raw('funds.amount - funds.utilized as balance'))
     ->get();
 
     
@@ -388,5 +397,45 @@ public function downloadFile(Request $request)
             return response()->json(['message' => 'File not found on the server'], 404);
         }
     }
+} 
+
+//update utilized 
+public function editUtilized($id)
+{
+    $fund = Fund::findOrFail($id);
+    return response()->json($fund);
+} 
+
+public function updateUtilized(Request $request, $id)
+{
+    $request->validate([
+        'utilized' => 'required|numeric',
+    ]);
+
+    $fund = Fund::findOrFail($id);
+    $fund->utilized = $request->utilized;
+    $fund->save();
+    $projectManagers = User::where('role', 3)->get();
+
+    // Send notification
+    Notification::send($projectManagers, new UtilizedUpdated($fund));
+
+    return response()->json(['message' => "Utilized updated"]);
+}   
+public function markAsRead($notificationId)
+{
+    $notification = Auth::user()->notifications()->find($notificationId);
+    if ($notification) {
+        $notification->markAsRead();
+    }
+
+    return back(); // Redirect back to the previous page
 }
+
+
+public function diffViewMore()
+{
+
+}
+
 }
