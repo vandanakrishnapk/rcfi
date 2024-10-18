@@ -36,32 +36,28 @@
                 <div class="col-12">
         
           
-        <div class="modal fade" id="shopModal" tabindex="-1" aria-labelledby="shopModalLabel" aria-hidden="true">
+        <div class="modal fade" id="houseModal" tabindex="-1" aria-labelledby="houseModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header box">
-                        <h1 class="modal-title fs-5 text-light" id="MarkazOrphanCareModalLabel">Shop and Others Under Construction</h1>
+                        <h1 class="modal-title fs-5 text-light" id="houseModalLabel">Dream Home Application Form</h1>
                         <button type="button" class="btn-close cls" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-               <div class="modal-body p-4 shopModalBody">
-
-
-    <h4 style="margin-left: 200px">Applicant/Committee Description Form</h4>
-    <form id="shopForm">
-        @csrf
+               <div class="modal-body p-4 houseModalBody">
+    <form id="houseForm" method="post">
         <div class="row">
             <div class="col-6">
                 <div class="form-group mb-3">
-                    <label for="applicantName">Name of Applicant:</label>
-                    <input type="text" name="applicantName" class="form-control" id="applicantName" >
-                    <span id="applicantNameError" class="text-danger"></span>
+                    <label for="name">Name:</label>
+                    <input type="text" name="name" class="form-control" id="name">
+                    <span id="nameError" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-6">
                 <div class="form-group mb-3">
-                    <label for="committeeName">Name of Committee:</label>
-                    <input type="text" name="committeeName" class="form-control" id="committeeName" >
-                    <span id="committeeNameError" class="text-danger"></span>
+                    <label for="age">Age:</label>
+                    <input type="number" name="age" class="form-control" id="age">
+                    <span id="ageError" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -69,16 +65,16 @@
         <div class="row">
             <div class="col-6">
                 <div class="form-group mb-3">
-                    <label for="registerNumber">Register Number:</label>
-                    <input type="text" name="registerNumber" class="form-control" id="registerNumber" >
-                    <span id="registerNumberError" class="text-danger"></span>
+                    <label for="fathersName">Father's Name:</label>
+                    <input type="text" name="fathersName" class="form-control" id="fathersName">
+                    <span id="fathersNameError" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-6">
                 <div class="form-group mb-3">
-                    <label for="year">Year:</label>
-                    <input type="text" name="year" class="form-control" id="year" >
-                    <span id="yearError" class="text-danger"></span>
+                    <label for="mothersName">Mother's Name:</label>
+                    <input type="text" name="mothersName" class="form-control" id="mothersName">
+                    <span id="mothersNameError" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -86,88 +82,15 @@
         <div class="row">
             <div class="col-6">
                 <div class="form-group mb-3">
-                    <label for="place">Place:</label>
-                    <input type="text" name="place" class="form-control" id="place" >
-                    <span id="placeError" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="form-group mb-3">
-                    <label for="village">Village:</label>
-                    <input type="text" name="village" class="form-control" id="village" >
-                    <span id="villageError" class="text-danger"></span>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-6">
-                <div class="form-group mb-3">
-                    <label for="post">Post:</label>
-                    <input type="text" name="post" class="form-control" id="post" >
-                    <span id="postError" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="form-group mb-3">
-                    <label for="panchayat">Panchayat:</label>
-                    <input type="text" name="panchayat" class="form-control" id="panchayat" >
-                    <span id="panchayatError" class="text-danger"></span>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-6">
-                <div class="form-group mb-3">
-                    <label for="mobileNumber">District</label>
-                    <input type="tel" name="district1" class="form-control" id="district1" >
-                    <span id="district1Error" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="form-group mb-3">
-                    <label for="state">State:</label>
-                    <input type="text" name="state1" class="form-control" id="state1" >
-                    <span id="state1Error" class="text-danger"></span>
-                </div>
-            </div>
-        </div>
-          
-
-            <div class="row">
-                <div class="col-6">
-                    <div class="form-group mb-3">
-                        <label for="mobileNumber">Mobile Number1</label>
-                        <input type="tel" name="mobileNumber1" class="form-control" id="mobileNumber1" >
-                        <span id="mobileNumber1Error" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="form-group mb-3">
-                        <label for="mobileNumber">Mobile Number2</label>
-                        <input type="tel" name="mobileNumber2" class="form-control" id="mobileNumber2" >
-                        <span id="mobileNumber2Error" class="text-danger"></span>
-                    </div>
-                </div>
-            </div>
-            
-        
-
-       <h4 style="margin-left: 200px">Description of the project site:</h4>
-
-        <div class="row">
-            <div class="col-6">
-                <div class="form-group mb-3">
-                    <label for="mahalName">Name of Mahal:</label>
-                    <input type="text" name="mahalName" class="form-control" id="mahalName" >
-                    <span id="mahalNameError" class="text-danger"></span>
+                    <label for="houseName">House Name:</label>
+                    <input type="text" name="houseName" class="form-control" id="houseName">
+                    <span id="houseNameError" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-6">
                 <div class="form-group mb-3">
                     <label for="location">Location:</label>
-                    <input type="text" name="location" class="form-control" id="location" >
+                    <input type="text" name="location" class="form-control" id="location">
                     <span id="locationError" class="text-danger"></span>
                 </div>
             </div>
@@ -176,16 +99,16 @@
         <div class="row">
             <div class="col-6">
                 <div class="form-group mb-3">
-                    <label for="mahalName">Village</label>
-                    <input type="text" name="village" class="form-control" id="village" >
-                    <span id="villageError" class="text-danger"></span>
+                    <label for="panchayat">Panchayat:</label>
+                    <input type="text" name="panchayat" class="form-control" id="panchayat">
+                    <span id="panchayatError" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-6">
                 <div class="form-group mb-3">
-                    <label for="location">District</label>
-                    <input type="text" name="district2" class="form-control" id="district2" >
-                    <span id="district2Error" class="text-danger"></span>
+                    <label for="po">P.O.:</label>
+                    <input type="text" name="po" class="form-control" id="po">
+                    <span id="poError" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -193,45 +116,16 @@
         <div class="row">
             <div class="col-6">
                 <div class="form-group mb-3">
-                    <label for="goodName">State:</label>
-                    <input type="text" name="state2" class="form-control" id="state2" >
-                    <span id="state2Error" class="text-danger"></span>
+                    <label for="state">State:</label>
+                    <input type="text" name="state" class="form-control" id="state">
+                    <span id="stateError" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-6">
                 <div class="form-group mb-3">
-                    <label for="isBuildingCurrent">Is the building currently...:</label>
-                    <input type="text" name="isBuildingCurrent" class="form-control" id="isBuildingCurrent" >
-                    <span id="isBuildingCurrentError" class="text-danger"></span>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-12">
-                <div class="form-group mb-3">
-                    <label for="currentStatus">Current status if any:</label>
-                    <textarea name="currentStatus" class="form-control" id="currentStatus" rows="4"></textarea>
-                    <span id="currentStatusError" class="text-danger"></span>
-                </div>
-            </div>
-        </div>
-
-    <h4 style="margin-left:200px">Description of the proposed project:</h4>
-
-        <div class="row">
-            <div class="col-6">
-                <div class="form-group mb-3">
-                    <label for="buildingArea">Matham Building Area (Sqft):</label>
-                    <input type="number" name="buildingArea" class="form-control" id="buildingArea" >
-                    <span id="buildingAreaError" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="form-group mb-3">
-                    <label for="placeStreet">Place (St.):</label>
-                    <input type="text" name="placeStreet" class="form-control" id="placeStreet" >
-                    <span id="placeStreetError" class="text-danger"></span>
+                    <label for="pinCode">Pin Code:</label>
+                    <input type="text" name="pinCode" class="form-control" id="pinCode">
+                    <span id="pinCodeError" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -239,16 +133,16 @@
         <div class="row">
             <div class="col-6">
                 <div class="form-group mb-3">
-                    <label for="estimatedAmount">Estimated amount:</label>
-                    <input type="number" name="estimatedAmount" class="form-control" id="estimatedAmount" >
-                    <span id="estimatedAmountError" class="text-danger"></span>
+                    <label for="mobile1">Mobile 1:</label>
+                    <input type="tel" name="mobile1" class="form-control" id="mobile1">
+                    <span id="mobile1Error" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-6">
                 <div class="form-group mb-3">
-                    <label for="familiesBenefited">Families benefited by the scheme:</label>
-                    <input type="number" name="familiesBenefited" class="form-control" id="familiesBenefited" >
-                    <span id="familiesBenefitedError" class="text-danger"></span>
+                    <label for="mobile2">Mobile 2:</label>
+                    <input type="tel" name="mobile2" class="form-control" id="mobile2">
+                    <span id="mobile2Error" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -256,16 +150,18 @@
         <div class="row">
             <div class="col-6">
                 <div class="form-group mb-3">
-                    <label for="legalPermissions">Are legal permissions available:</label>
-                    <input type="text" name="legalPermissions" class="form-control" id="legalPermissions" >
-                    <span id="legalPermissionsError" class="text-danger"></span>
+                    <label>Applicant:</label><br>
+                    <input type="radio" id="male" name="applicant" value="male">
+                    <label for="male">Male</label><br>
+                    <input type="radio" id="female" name="applicant" value="female">
+                    <label for="female">Female</label><br>
                 </div>
             </div>
             <div class="col-6">
                 <div class="form-group mb-3">
-                    <label for="typeApproved">Type Approved:</label>
-                    <input type="text" name="typeApproved" class="form-control" id="typeApproved" >
-                    <span id="typeApprovedError" class="text-danger"></span>
+                    <label for="education">Educational Qualification:</label>
+                    <input type="text" name="education" class="form-control" id="education">
+                    <span id="educationError" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -273,38 +169,169 @@
         <div class="row">
             <div class="col-6">
                 <div class="form-group mb-3">
-                    <label for="area">Area:</label>
-                    <input type="text" name="area" class="form-control" id="area" >
-                    <span id="areaError" class="text-danger"></span>
+                    <label>Married:</label><br>
+                    <input type="radio" id="marriedYes" name="married" value="yes">
+                    <label for="marriedYes">Yes</label><br>
+                    <input type="radio" id="marriedNo" name="married" value="no">
+                    <label for="marriedNo">No</label><br>
                 </div>
             </div>
             <div class="col-6">
                 <div class="form-group mb-3">
-                    <label for="numberOfRooms">How many rooms:</label>
-                    <input type="number" name="numberOfRooms" class="form-control" id="numberOfRooms" >
-                    <span id="numberOfRoomsError" class="text-danger"></span>
+                    <label for="childrenCount">Number of Children:</label>
+                    <input type="number" name="childrenCount" class="form-control" id="childrenCount">
+                    <span id="childrenCountError" class="text-danger"></span>
                 </div>
             </div>
-        </div> 
-        @if(Auth::user()->role ===1 || Auth::user()->role ===2)
+        </div>
+
         <div class="row">
             <div class="col-6">
-             <label for="">For Office Use Only</label>
-             <select name="office_use" id="" class="form-select">
-                <option value="Shop">Shop</option>
-                <option value="Auditorium">Auditorium</option>
-                <option value="Others">Others</option>
-             </select>
+                <div class="form-group mb-3">
+                    <label for="maleChildren">Male Children:</label>
+                    <input type="number" name="maleChildren" class="form-control" id="maleChildren">
+                    <span id="maleChildrenError" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group mb-3">
+                    <label for="femaleChildren">Female Children:</label>
+                    <input type="number" name="femaleChildren" class="form-control" id="femaleChildren">
+                    <span id="femaleChildrenError" class="text-danger"></span>
+                </div>
             </div>
         </div>
-        @endif
-<div class="row">
-    <div class="col-5"></div>
-    <div class="col-4">
-        <button type="submit" class="btn but">Submit</button>
-    </div>
-</div>
-        
+
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group mb-3">
+                    <label>Occupation:</label><br>
+                    <input type="radio" id="occupationYes" name="occupation" value="yes">
+                    <label for="occupationYes">Yes</label><br>
+                    <input type="radio" id="occupationNo" name="occupation" value="no">
+                    <label for="occupationNo">No</label><br>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group mb-3">
+                    <label for="monthlyIncome">Monthly Income:</label>
+                    <input type="number" name="monthlyIncome" class="form-control" id="monthlyIncome">
+                    <span id="monthlyIncomeError" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group mb-3">
+                    <label for="otherIncome">Other Source of Income:</label>
+                    <input type="text" name="otherIncome" class="form-control" id="otherIncome">
+                    <span id="otherIncomeError" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group mb-3">
+                    <label for="healthStatus">Health Status:</label>
+                    <select name="healthStatus" class="form-control" id="healthStatus">
+                        <option value="satisfactory">Satisfactory</option>
+                        <option value="chronically_ill">Chronically Ill</option>
+                        <option value="woman">Woman</option>
+                    </select>
+                    <span id="healthStatusError" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group mb-3">
+                    <label for="accommodation">Accommodation Details:</label>
+                    <select name="accommodation" class="form-control" id="accommodation">
+                        <option value="own_house">Own House</option>
+                        <option value="ancestral_home">Ancestral Home</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <span id="accommodationError" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group mb-3">
+                    <label>Have your own place?</label><br>
+                    <input type="radio" id="ownPlaceYes" name="ownPlace" value="yes">
+                    <label for="ownPlaceYes">Yes</label><br>
+                    <input type="radio" id="ownPlaceNo" name="ownPlace" value="no">
+                    <label for="ownPlaceNo">No</label><br>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group mb-3">
+                    <label for="typeOfLand">Type of Land:</label>
+                    <input type="text" name="typeOfLand" class="form-control" id="typeOfLand">
+                    <span id="typeOfLandError" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group mb-3">
+                    <label for="desiredModel">Desired Model:</label>
+                    <input type="text" name="desiredModel" class="form-control" id="desiredModel">
+                    <span id="desiredModelError" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group mb-3">
+                    <label for="totalSqrFt">Total Sqr ft:</label>
+                    <input type="number" name="totalSqrFt" class="form-control" id="totalSqrFt">
+                    <span id="totalSqrFtError" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group mb-3">
+                    <label for="expectedAmount">Expected Amount:</label>
+                    <input type="number" name="expectedAmount" class="form-control" id="expectedAmount">
+                    <span id="expectedAmountError" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group mb-3">
+                    <label for="permission">Permission:</label><br>
+                    <input type="radio" id="permissionYes" name="permission" value="yes">
+                    <label for="permissionYes">Yes</label><br>
+                    <input type="radio" id="permissionNo" name="permission" value="no">
+                    <label for="permissionNo">No</label><br>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group mb-3">
+                    <label for="formOfIntendedHouse">Form of Intended House:</label>
+                    <select name="formOfIntendedHouse" class="form-control" id="formOfIntendedHouse">
+                        <option value="sheet">Sheet</option>
+                        <option value="concrete">Concrete</option>
+                        <option value="2bhk">2BHK</option>
+                        <option value="flat">Flat</option>
+                    </select>
+                    <span id="formOfIntendedHouseError" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <div class="row">
+                <div class="col-5"></div>
+                <div class="col-4">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+   
+        </div>
     </form>
 </div>
 </div>

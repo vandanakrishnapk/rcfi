@@ -173,8 +173,21 @@ Route::post('/application/general/project/update',[GeneralProjectController::cla
 Route::delete('/application/general/project/delete/{id}',[GeneralProjectController::class,'deleteGeneral'])->name('admin.deleteGeneral');
 
 
-//shops andothers route 
+//shops and others route 
 Route::get('/construction/project/shops/others/view',[ShopController::class,'getShopAndOthers'])->name('admin.getShopAndOthers');
+Route::post('/construction/project/shops/others/new',[ShopController::class,'doShopAndOthers'])->name('admin.doShopAndOthers');
+Route::get('/construction/project/shops/others/datatable',[ShopController::class,'viewShopAndOther'])->name('admin.viewShopAndOther');
+Route::get('/construction/project/shops/others/view/more/{id}',[ShopController::class,'viewMoreShopAndOther'])->name('admin.viewMoreShopAndOther');
+Route::get('/construction/project/shops/others/edit/{id}',[ShopController::class,'EditShopAndOther'])->name('admin.EditShopAndOther');
+Route::post('/construction/project/shops/others/update',[ShopController::class,'updateShopAndOther'])->name('admin.updateShopAndOther');
+Route::delete('/construction/project/shops/others/delete/{id}',[ShopController::class,'deleteShopAndOther'])->name('admin.deleteAhopAndOther');
+
+//Dream house Routes 
+
+
+
+
+
 
 });  
 
