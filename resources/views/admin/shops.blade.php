@@ -24,7 +24,7 @@
 <div class="row mt-3">
     <div class="col-12">
         <div class="float-start">
-            <a href="{{ route('admin.getApplications')}}" class="btn btn-success btn-sm rounded-circle"><i class="bi bi-box-arrow-in-left fs-4 ms-1"></i></a>
+            <a href="{{ route('admin.getConstruction')}}" class="btn btn-success btn-sm rounded-circle"><i class="bi bi-box-arrow-in-left fs-4 ms-1"></i></a>
         </div>
         <div class="float-end d-none d-md-block">
             <button type="button" class="btn btn-success mb-1 me-3 float-end rounded-circle" data-bs-toggle="modal" data-bs-target="#shopModal">
@@ -323,7 +323,7 @@
                             
                                 <div class="col-12">
             
-                                    <h4 class="but p-3 rounded fw-bold border border-success text-center" style="color:white;">GENERAL PROJECT APPLICATIONS</h4>
+                                    <h4 class="but p-3 rounded fw-bold border border-success text-center" style="color:white;">SHOPS AND OTHER APPLICATIONS</h4>
                         
                                 </div>
                             </div>

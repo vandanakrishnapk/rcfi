@@ -25,7 +25,7 @@
        
         <div class="col-12">
             <div class="float-start">
-                <a href="{{ route('admin.getApplications')}}" class="btn btn-success btn-sm rounded-circle"><i class="bi bi-box-arrow-in-left fs-4 ms-1"></i></a>
+                <a href="{{ route('admin.getConstruction')}}" class="btn btn-success btn-sm rounded-circle"><i class="bi bi-box-arrow-in-left fs-4 ms-1"></i></a>
             </div>
     <div class="float-end d-none d-md-block"> 
         <button type="button" class="btn btn-success mb-1 float-end rounded-circle me-3" data-bs-toggle="modal" data-bs-target="#EducationCenterModal">

@@ -64,66 +64,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- creates user -->
 @stack('scripts')
-<script>
-                      
-  $(document).ready(function() {
-    $(".submit-application").click(function(e) {
-        e.preventDefault();
-        let form = $('#submitApplication')[0];
-        let data = new FormData(form);
 
-        $.ajax({
-            url: "{{ route('do.add_user') }}",
-            type: "POST",
-            data: data,
-            dataType: "JSON",
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                console.log(response); // Log response for debugging
-
-                // Clear previous error messages
-                $('.error').text('');
-
-                if (response.status === 0) {
-                    $.each(response.error, function(key, value) {
-                        $('#' + key).next('.error').text(value);
-                    });
-                    iziToast.error({
-                        title: 'Validation Error',
-                        message: 'Please fix the errors and try again.',
-                        position: 'topRight'
-                    });
-                } else if (response.status === 1) {
-                    iziToast.success({
-                        title: 'Success',
-                        message: response.message,
-                        position: 'topRight'
-                    });
-                    $('#submitApplication')[0].reset(); // Clear form fields
-                    $('#exampleModal').modal('hide'); // Optionally, close the modal
-                    $('#usersTable').DataTable().ajax.reload();
-                } else {
-                    iziToast.error({
-                        title: 'Error',
-                        message: 'Unexpected response format',
-                        position: 'topRight'
-                    });
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-                iziToast.error({
-                    title: 'Error',
-                    message: 'Something went wrong!',
-                    position: 'topRight'
-                });
-            }
-        });
-    });
-});
-
-</script>
 <script>
 // creates donor
 $(document).ready(function() {

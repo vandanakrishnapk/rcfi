@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Completion extends Model
 {
-    use HasFactory; 
-    protected $guarded =[];
-    protected $primaryKey ='completionId';
+    use HasFactory;
+    protected $guarded = [];
+    protected $primaryKey = 'completionId';
 }

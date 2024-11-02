@@ -15,11 +15,11 @@
         </div>
 
         <div class="d-flex">
-
+           
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="user dropdown">
                     <img class="rounded-circle header-profile-user" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6WbkrAqlGF2Xzmb-prbginrkDNrv6zT05ID6KEjTbP2F-gn9w-wg1L3_NiSeXLq3HsqI&usqp=CAU" alt="Header Avatar"><br>
-                    <span>{{ Auth::user()->name }}</span>
+                    <span style="font-size:10px;font-weight:bolder">{{ Auth::user()->designation }} : {{ Auth::user()->name }}</span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
                     <!-- item-->

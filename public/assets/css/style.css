@@ -114,5 +114,28 @@
         .collapse {
             display: block !important;
             opacity: 1 !important;
-        }
+        } 
+
+.widgetcolor
+{
+    background-color: #68a9c5;
+    color:white;
+   
+
+} 
+.widgetcolor:hover 
+{
+    background-color: #25283a;
+} 
+.pro 
+{
+    background-color: #68a9c5;
+    color:white;
+   
+}
+.pro:hover 
+{
+    background-color: #25283a !important;
+    color: white !important; 
+}
     }

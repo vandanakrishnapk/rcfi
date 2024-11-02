@@ -66,12 +66,12 @@
                         <i class="bi bi-hospital fs-2"></i>
                     </div>
                     <h5 class="fs-6 text-uppercase text-white">Hospitals or Clinics</h5>
-                    <h4 class="fw-medium font-size-24">#</h4>
+                    <h4 class="fw-medium font-size-24">{{ $medical }}</h4>
                     
                 </div>
                 <div class="pt-2">
                     <div class="float-end">
-                        <a href="#" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                        <a href="{{ route('admin.getMedical') }}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
                     </div>
 
                     <p class="text-white-50 mb-0 mt-1">View Applications</p>
@@ -111,7 +111,7 @@
                         <i class="bi bi-building-fill-add fs-2"></i>
                     </div>
                     <h5 class="fs-6 text-uppercase text-white">Shops and Other</h5>
-                    <h4 class="fw-medium font-size-24">#</h4>
+                    <h4 class="fw-medium font-size-24">{{ $shops }}</h4>
                     
                 </div>
                 <div class="pt-2">
@@ -133,12 +133,12 @@
                         <i class="bi bi-shop-window fs-2"></i>
                     </div>
                     <h5 class="fs-6 text-uppercase text-white">House</h5>
-                    <h4 class="fw-medium font-size-24">#</h4>
+                    <h4 class="fw-medium font-size-24">{{ $house }}</h4>
                     
                 </div>
                 <div class="pt-2">
                     <div class="float-end">
-                        <a href="#" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                        <a href="{{ route('admin.getHouse') }}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
                     </div>
 
                     <p class="text-white-50 mb-0 mt-1">View Applications</p>

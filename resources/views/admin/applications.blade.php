@@ -130,7 +130,7 @@
                         <i class="bi bi-file-earmark-ruled-fill fs-2"></i>
                     </div>
                     <h5 class="fs-6 text-uppercase text-white">General Project</h5>
-                    <h4 class="fw-medium font-size-24">#</h4>
+                    <h4 class="fw-medium font-size-24">{{ $general }}</h4>
                     
                 </div>
                 <div class="pt-2">

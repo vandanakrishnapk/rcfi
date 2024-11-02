@@ -29,7 +29,7 @@
                 </div>
                 <div class="pt-2">
                     <div class="float-end">
-                        <a href="{{ url('/admin/application/view') }}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                        <a href="{{ url('/user/application/view') }}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
                     </div>
 
                     <p class="text-white-50 mb-0 mt-1">View Applications</p>
@@ -50,7 +50,7 @@
                 </div>
                 <div class="pt-2">
                     <div class="float-end">
-                        <a href="{{ url('/admin/projects/view') }}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                        <a href="{{ url('/user/projects/view') }}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
                     </div>
 
                     <p class="text-white-50 mb-0 mt-1">View Projects</p>

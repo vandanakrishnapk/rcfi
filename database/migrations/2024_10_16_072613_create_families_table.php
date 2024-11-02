@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('families', function (Blueprint $table) {
             $table->id('familyId');
+            $table->string('applicationId');
             $table->string('name');
             $table->string('father_name');
             $table->string('mother_name');

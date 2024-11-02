@@ -53,7 +53,10 @@
                                         <option value="Admin">Admin</option>
                                         <option value="COO">COO</option>
                                         <option value="Project Manager">Project Manager</option>
-                                        <option value="Project Executive">Project Executive</option>
+                                        <option value="Project Engineer">Project Engineer</option>
+                                        <option value="Financial Manager">Financial Manager</option>
+                                        <option value="HOD">HOD</option>
+                                      
                                     </select>
                                     <span class="error designation_error text-danger"></span>
                                     
@@ -255,6 +258,63 @@
         ]
     });
 
+    $(document).ready(function() {
+    $(".submit-application").click(function(e) {
+        e.preventDefault();
+        let form = $('#submitApplication')[0];
+        let data = new FormData(form);
+
+        $.ajax({
+            url: "{{ route('do.add_user') }}",
+            type: "POST",
+            data: data,
+            dataType: "JSON",
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                console.log(response); // Log response for debugging
+
+                // Clear previous error messages
+                $('.error').text('');
+
+                if (response.status === 0) {
+                    $.each(response.error, function(key, value) {
+                        $('#' + key).next('.error').text(value);
+                    });
+                    iziToast.error({
+                        title: 'Validation Error',
+                        message: 'Please fix the errors and try again.',
+                        position: 'topRight'
+                    });
+                } else if (response.status === 1) {
+                    iziToast.success({
+                        title: 'Success',
+                        message: response.message,
+                        position: 'topRight'
+                    });
+                    $('#submitApplication')[0].reset(); // Clear form fields
+                    $('#exampleModal').modal('hide'); // Optionally, close the modal
+                    $('#usersTable').DataTable().ajax.reload();
+                } else {
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Unexpected response format',
+                        position: 'topRight'
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Something went wrong!',
+                    position: 'topRight'
+                });
+            }
+        });
+    });
+});
+
     $(document).on('click', '.more-user', function() {
         const userId = $(this).data('id');
         console.log('Clicked user ID:', userId);
@@ -357,6 +417,7 @@ $(document).on('submit', '#editUserForm', function(event) {
                 });
                 $('#editUserForm')[0].reset();
                 $('#editDetailsModal').modal('hide');
+                $('#usersTable').DataTable().ajax.reload();
             } else {
                 iziToast.error({
                     title: 'Error',
@@ -418,7 +479,7 @@ $(document).on('click', '.delete-user', function() {
                         positionClass: 'toast-top-right'
                     });
                 }
-                $('#SweetWaterTable').DataTable().ajax.reload();
+                $('#usersTable').DataTable().ajax.reload();
                 $('#deleteConfirmationModal').modal('hide'); // Hide the modal on success
             },
             error: function(xhr, status, error) {

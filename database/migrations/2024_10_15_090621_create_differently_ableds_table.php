@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('differently_abled', function (Blueprint $table) {
             $table->id('diffId');
+            $table->string('applicationId');
             $table->string('applicant_name');
             $table->string('father_name');
             $table->string('fathers_father');

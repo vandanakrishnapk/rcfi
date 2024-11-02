@@ -14,233 +14,142 @@
 <!-- Bootstrap Css -->
 @endsection
 @section('content')
-<div class="row mt-3">
-    <div class="float-end d-none d-md-block">
-        <button type="button" class="btn btn-success mb-2 float-end rounded-circle" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            <i class="bi bi-folder-plus fs-4"></i>
-        </button>
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header box">
-                        <h1 class="modal-title fs-5 text-light" id="exampleModalLabel">Add Project</h1>
-                        <button type="button" class="btn-close cls" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="row mt-4">
+    <div class="col-xl-3 col-md-6">
+        <div class="card mini-stat text-white widgetcolor">
+            <div class="card-body widgetcolor rounded">
+                <div class="mb-4">
+                    <div class="float-start mini-stat-img me-4">
+ 
+                        <i class="bi bi-buildings-fill fa-2x"></i>
                     </div>
-                    <div class="modal-body p-4">
-                        <form id="projectForm" method="POST">
-                         @csrf
-                            <div class="mb-3">
-                                <label for="projectNo" class="form-label">Agency Project No.</label>
-                                <input type="text" class="form-control" id="projectNo" name="agencyProjectNo">
-                                <span class="error text-danger" id="agencyProjectNo-error"></span>
-                            </div>
-                            <div class="mb-3">
-                                <label for="donorName" class="form-label">Donor Name</label>
-                                <select class="form-select" id="donorName" name="donorName">
-                                    <option value="" disabled selected>Select a donor</option>
-                                    @foreach($donor as $donors)
-                                    <option value="{{ $donors->donor_id }}">{{ $donors->partner_name }}</option>
-                                    @endforeach
-                                </select>
-                                <span class="error text-danger" id="donorName-error"></span>
-                            </div>
-                            <div class="mb-3">
-                                <label for="projectManager" class="form-label">Project Manager</label>
-                                <select class="form-select" id="projectManager" name="projectManager">
-                                    <option value="" disabled selected>Select a manager</option>
-                                    @foreach($projectmanager as $pro)
-                                    <option value="{{ $pro->id }}">{{ $pro->name }}</option>
-                                    @endforeach
-                                </select>
-                                <span class="error text-danger" id="projectManager-error"></span>
-                            </div>
-                            <div class="mb-3">
-                                <label for="availableBudget" class="form-label">Available Budget</label>
-                                <input type="text" class="form-control" id="availableBudget" name="availableBudget">
-                                <span class="error text-danger" id="availableBudget-error"></span>
-                            </div>
-                            <div class="mb-3">
-                                <label for="projectType" class="form-label">Type of Project</label>
-                                <select class="form-select" id="projectType" name="typeOfProject">
-                                    <option value="" disabled selected>Select Project type</option>
-                                    <option value="Markaz Open Care">Markaz Open Care</option>
-                                    <option value="Education Centre">Education Centre</option>
-                                    <option value="Cultural Centre">Cultural Centre</option>
-                                    <option value="Sweet Water">Sweet Water</option>
-                                </select>
-                                <span class="error text-danger" id="typeOfProject-error"></span>
-                            </div>
-                            <div class="mb-3">
-                                <label for="remarks" class="form-label">Remarks</label>
-                                <textarea class="form-control" id="remarks" rows="3" name="remarks"></textarea>
-                                <span class="error text-danger" id="remarks-error"></span>
-                            </div>
-                            <div class="row">
-                                <div class="col-5"></div>
-                                <div class="col-6">
+                    <h5 class="fs-6 text-white">CONSTRUCTION PROJECT</h5>
+                    <h4 class="fw-medium font-size-24">6</h4>
+                
+                </div>
+                <div class="pt-2">
+                    <div class="float-end">
+                        <a href="{{ route('admin.getProConstruction') }}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                    </div>
 
-                                    <button type="submit" class="btn btn-success submit-project">Submit</button>
-                      
-                                </div>
-                            </div>  </form>
+                    <p class="text-white-50 mb-0 mt-1">View Applications</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card mini-stat bg-primary text-white">
+            <div class="card-body widgetcolor rounded">
+                <div class="mb-4">
+                    <div class="float-start mini-stat-img me-4">   
+                        <i class="bi bi-droplet-half fs-2"></i>
                     </div>
+                    <h5 class="fs-6 text-uppercase text-white">Sweet Water Project</h5>
+                    <h4 class="fw-medium font-size-24">{{ $sweetCount }}</h4>
+                    
+                </div>
+                <div class="pt-2">
+                    <div class="float-end">
+                        <a href="{{ route('admin.sweet')}}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                    </div>
+
+                    <p class="text-white-50 mb-0 mt-1">View Applications</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card mini-stat text-white widgetcolor">
+            <div class="card-body widgetcolor rounded">
+                <div class="mb-4">
+                    <div class="float-start mini-stat-img me-4">
+                        <i class="fa fa-handshake-o fa-2x" aria-hidden="true"></i>
+                    </div>
+                    <h5 class="fs-6 text-white">ORPHAN CARE</h5>
+                    <h4 class="fw-medium font-size-24">{{ $markazCount }}</h4>
+                
+                </div>
+                <div class="pt-2">
+                    <div class="float-end">
+                        <a href="{{ route('admin.orphancare')}}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                    </div>
+
+                    <p class="text-white-50 mb-0 mt-1">View Applications</p>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card mini-stat bg-primary text-white">
+            <div class="card-body widgetcolor rounded">
+                <div class="mb-4">
+                    <div class="float-start mini-stat-img me-4">   
+                     
+                        <i class="bi bi-person-wheelchair fs-2"></i>
+                    </div>
+                    <h5 class="fs-6 text-uppercase text-white">Differently Abled</h5>
+                    <h4 class="fw-medium font-size-24">{{ $diffCount }}</h4>
+                    
+                </div>
+                <div class="pt-2">
+                    <div class="float-end">
+                        <a href="{{ route('admin.diffabled')}} " class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                    </div>
+
+                    <p class="text-white-50 mb-0 mt-1">View Applications</p>
                 </div>
             </div>
         </div>
     </div>
 
-   <!-- Project Details Modal -->
-   <div class="modal fade" id="ProjectDetailsModal" tabindex="-1" aria-labelledby="ProjectDetailsModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header box">
-                <h1 class="modal-title fs-5 text-light" id="ProjectDetailsModalLabel">Project Details</h1>
-                <button type="button" class="btn-close cls" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-4" id="ProjectDetails">
-                <!-- Project details will be loaded here -->
-            </div>
-        </div>
-    </div>
-</div>  
+    <div class="col-xl-3 col-md-6">
+        <div class="card mini-stat bg-primary text-white">
+            <div class="card-body widgetcolor rounded">
+                <div class="mb-4">
+                    <div class="float-start mini-stat-img me-4">   
+                        <i class="fa fa-users fa-2x" aria-hidden="true"></i>
+                    </div>
+                    <h5 class="fs-6 text-uppercase text-white">Family aid</h5>
+                    <h4 class="fw-medium font-size-24">{{ $famCount }}</h4>
+                    
+                </div>
+                <div class="pt-2">
+                    <div class="float-end">
+                        <a href="{{ route('admin.familyaid') }}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                    </div>
 
-<!--edit modal -->
-<div class="modal fade" id="EditexampleModal" tabindex="-1" aria-labelledby="EditexampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header box">
-                <h1 class="modal-title fs-5 text-light" id="EditexampleModalLabel">Edit Project</h1>
-                <button type="button" class="btn-close cls" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-4">
-                <form id="EditprojectForm" method="POST">
-                    @csrf
-                    <input type="text" name="proId" id="editProjectId"> <!-- Hidden field for project ID -->
-                    <div class="mb-3">
-                        <label for="editAgencyProjectNo" class="form-label">Agency Project No.</label>
-                        <input type="text" class="form-control" name="agencyProjectNo" id="editAgencyProjectNo">
-                        <span class="error text-danger" id="agencyProjectNo-error"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editDonorName" class="form-label">Donor Name</label>
-                        <select class="form-select" name="donorName" id="editDonorName">
-                            <option value="">Select a donor</option>
-                            @foreach($donor as $donors)
-                            <option value="{{ $donors->donor_id }}">{{ $donors->partner_name }}</option>
-                            @endforeach
-                        </select>
-                        <span class="error text-danger" id="donorName-error"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editProjectManager" class="form-label">Project Manager</label>
-                        <select class="form-select" name="projectManager" id="editProjectManager">
-                            <option value="">Select a manager</option>
-                            @foreach($projectmanager as $pro)
-                            <option value="{{ $pro->id }}">{{ $pro->name }}</option>
-                            @endforeach
-                        </select>
-                        <span class="error text-danger" id="projectManager-error"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editAvailableBudget" class="form-label">Available Budget</label>
-                        <input type="text" class="form-control" name="availableBudget" id="editAvailableBudget">
-                        <span class="error text-danger" id="availableBudget-error"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editProjectType" class="form-label">Type of Project</label>
-                        <select class="form-select" name="typeOfProject" id="editProjectType">
-                            <option value="" disabled selected>Select Project type</option>
-                            <option value="Markaz Open Care">Markaz Open Care</option>
-                            <option value="Education Centre">Education Centre</option>
-                            <option value="Cultural Centre">Cultural Centre</option>
-                            <option value="Sweet Water">Sweet Water</option>
-                        </select>
-                        <span class="error text-danger" id="typeOfProject-error"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editRemarks" class="form-label">Remarks</label>
-                        <textarea class="form-control" name="remarks" id="editRemarks" rows="3"></textarea>
-                        <span class="error text-danger" id="remarks-error"></span>
-                    </div>
-                    <div class="row">
-                        <div class="col-5"></div>
-                        <div class="col-6">
-                            <button type="submit" class="btn btn-success">Submit</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--Delete confirmation modal-->
-<!-- Bootstrap Modal -->
-<div id="deleteConfirmationModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header custommodal">
-                <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Deletion</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p id="modalMessage"></p>
-                <p>Agency Project Number: <span id="modalUserName"></span></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn but cancel" data-dismiss="modal">Cancel</button>
-                <button type="button" id="confirmDelete" class="btn btn-danger">Delete</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-  
-<!--data table -->
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <div class="row">
-                  
-                    <div class="col-12">
-    
-                        <h4 class="but p-3 text-center rounded fw-bold border border-success" style="color:white;">PROJECT LIST</h4>
-            
-                    </div>
+                    <p class="text-white-50 mb-0 mt-1">View Applications</p>
                 </div>
             </div>
-    
-            <div class="card-body">
-    
-    <table id="projectTable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-        <thead>
-            <tr>
-                <th>S.No</th>
-                <th>Project ID</th>
-                <th>Agency Project No</th>
-                <th>Donor Name</th>
-                <th>Project Manager</th>
-                <th>Available Budget</th>
-                <th>Type of Project</th>
-                <th>Remarks</th>
-                <th>Action</th>
-                      
-        </tr>
-        </thead>
-        <tbody>
-            <!-- Data will be populated here by DataTables -->
-        </tbody>
-      
-    </table>
-    
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card mini-stat bg-primary text-white">
+            <div class="card-body widgetcolor rounded">
+                <div class="mb-4">
+                    <div class="float-start mini-stat-img me-4">   
+                        <i class="bi bi-file-earmark-ruled-fill fs-2"></i>
+                    </div>
+                    <h5 class="fs-6 text-uppercase text-white">General Project</h5>
+                    <h4 class="fw-medium font-size-24">{{ $general }}</h4>
+                    
+                </div>
+                <div class="pt-2">
+                    <div class="float-end">
+                        <a href="{{ route('admin.general')}}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                    </div>
+
+                    <p class="text-white-50 mb-0 mt-1">View Applications</p>
+                </div>
             </div>
         </div>
     </div>
-    </div>
-    
+
+
+
+</div>
     
 @endsection 
 @section('scripts')

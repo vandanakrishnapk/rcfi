@@ -15,50 +15,143 @@
 @endsection
 
 @section('content')  
-<!--data table -->
-<div class="row mt-5">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <div class="row">
-                  
-                    <div class="col-12">
-    
-                        <h4 class="but p-3 text-center rounded fw-bold border border-success" style="color:white;">PROJECT LIST</h4>
-            
+<div class="row mt-4">
+    <div class="col-xl-3 col-md-6">
+        <div class="card mini-stat text-white widgetcolor">
+            <div class="card-body widgetcolor rounded">
+                <div class="mb-4">
+                    <div class="float-start mini-stat-img me-4">
+ 
+                        <i class="bi bi-buildings-fill fa-2x"></i>
                     </div>
+                    <h5 class="fs-6 text-white">CONSTRUCTION PROJECT</h5>
+                    <h4 class="fw-medium font-size-24">6</h4>
+                
                 </div>
-            </div>
-    
-            <div class="card-body">
-    
-    <table id="projectTable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-        <thead>
-            <tr>
-                <th>S.No</th>
-                <th>Project ID</th>
-                <th>Agency Project No</th>
-                <th>Donor Name</th>
-                <th>Project Manager</th>
-                <th>Available Budget</th>
-                <th>Type of Project</th>
-                <th>Remarks</th>
-                <th>Action</th>
-                      
-        </tr>
-        </thead>
-        <tbody>
-            <!-- Data will be populated here by DataTables -->
-        </tbody>
-      
-    </table>
-    
+                <div class="pt-2">
+                    <div class="float-end">
+                        <a href="{{ route('user.getProConstruction') }}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                    </div>
+
+                    <p class="text-white-50 mb-0 mt-1">View Applications</p>
+                </div>
             </div>
         </div>
     </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card mini-stat bg-primary text-white">
+            <div class="card-body widgetcolor rounded">
+                <div class="mb-4">
+                    <div class="float-start mini-stat-img me-4">   
+                        <i class="bi bi-droplet-half fs-2"></i>
+                    </div>
+                    <h5 class="fs-6 text-uppercase text-white">Sweet Water Project</h5>
+                    <h4 class="fw-medium font-size-24">{{ $sweetCount }}</h4>
+                    
+                </div>
+                <div class="pt-2">
+                    <div class="float-end">
+                        <a href="{{ route('user.sweet')}}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                    </div>
+
+                    <p class="text-white-50 mb-0 mt-1">View Applications</p>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    
+    <div class="col-xl-3 col-md-6">
+        <div class="card mini-stat text-white widgetcolor">
+            <div class="card-body widgetcolor rounded">
+                <div class="mb-4">
+                    <div class="float-start mini-stat-img me-4">
+                        <i class="fa fa-handshake-o fa-2x" aria-hidden="true"></i>
+                    </div>
+                    <h5 class="fs-6 text-white">ORPHAN CARE</h5>
+                    <h4 class="fw-medium font-size-24">{{ $markazCount }}</h4>
+                
+                </div>
+                <div class="pt-2">
+                    <div class="float-end">
+                        <a href="{{ route('user.orphancare')}}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                    </div>
+
+                    <p class="text-white-50 mb-0 mt-1">View Applications</p>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card mini-stat bg-primary text-white">
+            <div class="card-body widgetcolor rounded">
+                <div class="mb-4">
+                    <div class="float-start mini-stat-img me-4">   
+                     
+                        <i class="bi bi-person-wheelchair fs-2"></i>
+                    </div>
+                    <h5 class="fs-6 text-uppercase text-white">Differently Abled</h5>
+                    <h4 class="fw-medium font-size-24">{{ $diffCount }}</h4>
+                    
+                </div>
+                <div class="pt-2">
+                    <div class="float-end">
+                        <a href="{{ route('user.diffabled')}} " class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                    </div>
+
+                    <p class="text-white-50 mb-0 mt-1">View Applications</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card mini-stat bg-primary text-white">
+            <div class="card-body widgetcolor rounded">
+                <div class="mb-4">
+                    <div class="float-start mini-stat-img me-4">   
+                        <i class="fa fa-users fa-2x" aria-hidden="true"></i>
+                    </div>
+                    <h5 class="fs-6 text-uppercase text-white">Family aid</h5>
+                    <h4 class="fw-medium font-size-24">{{ $famCount }}</h4>
+                    
+                </div>
+                <div class="pt-2">
+                    <div class="float-end">
+                        <a href="{{ route('user.familyaid') }}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                    </div>
+
+                    <p class="text-white-50 mb-0 mt-1">View Applications</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card mini-stat bg-primary text-white">
+            <div class="card-body widgetcolor rounded">
+                <div class="mb-4">
+                    <div class="float-start mini-stat-img me-4">   
+                        <i class="bi bi-file-earmark-ruled-fill fs-2"></i>
+                    </div>
+                    <h5 class="fs-6 text-uppercase text-white">General Project</h5>
+                    <h4 class="fw-medium font-size-24">{{ $general }}</h4>
+                    
+                </div>
+                <div class="pt-2">
+                    <div class="float-end">
+                        <a href="{{ route('user.general')}}" class="text-white"><i class="mdi mdi-arrow-right h5"></i></a>
+                    </div>
+
+                    <p class="text-white-50 mb-0 mt-1">View Applications</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
 @endsection 
 @section('scripts')
 
@@ -80,78 +173,4 @@
 <script src="{{ asset('assets/libs/datatables/datatables.min.js')}}"></script>
 <script src="{{ asset('assets/js/pages/datatables.init.js')}}"></script>
 <script src="{{ asset('assets/js/app.js')}}"></script>
-<script>
-
-$(document).ready(function() {
-    $('#projectTable').DataTable({
-        select: true,
-        serverSide: false, // Set this to true if you’re using server-side processing
-        dom: 'Bfrtlip',
-            buttons: [
-                {
-                    extend: 'csvHtml5',
-                    text: 'Download Excel',
-                    title: 'Projects',
-                    titleAttr: 'Export to Excel',
-                    className: 'custombutton',
-                    exportOptions: { 
-                        columns: function (idx, data, node)
-                         {               
-                         return true;
-                         } 
-                           }
-                 }
-                ],
-            lengthMenu: [
-                [10, 25, 50, -1],
-                ['10 Projects', '25 Projects', '50 Projects', 'All Projects']
-            ],
-            ajax: {
-                url: `{{ url('/user/projects/datatable') }}`,
-                type: 'GET',
-                dataSrc: 'data',
-                
-            },
-            "columns": [
-                {
-                data: null,
-                orderable: false,
-                searchable: false,
-                render: function(data, type, row, meta) {
-                    return meta.row + 1; // Serial number starts from 1
-                }
-                },
-                {data:'projectID'},
-            { data: 'agencyProjectNo' },
-            { data: 'donorName' },
-            { data: 'projectManager' },
-            { data: 'availableBudget' },
-            { data: 'typeOfProject' },  
-            { data: 'remarks' },            
-            {
-                data: null,
-                name: 'action',
-                orderable: false,
-                searchable: false,
-                render: function(data, type, row, meta) {
-                                      
-                    return `
-                    <div class="dd d-flex">
-                         
-                        
-
-                        <a href="{{ url('/user/project/details/view')}}/${row.proId}" class="btn btn-dark btn-sm ms-1" data-id="${row.proId}" data-pro=${row.agencyProjectNo}>  <i class="bi bi-eye"></i></a>
-                     
-                       
-                    `;
-                } 
-            },
-                    
-                ]
-            });
-        });
-
-
-
-</script>
 @endpush

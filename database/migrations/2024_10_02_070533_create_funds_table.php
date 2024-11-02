@@ -16,9 +16,11 @@ return new class extends Migration
             $table->UnsignedBigInteger('input');
             $table->unsignedBigInteger('proId');
             $table->Integer('amount');
-            $table->string('unit');
+            $table->Integer('utilized');
             $table->Integer('current');
             $table->Integer('balance');
+            $table->Integer('previous_current');
+            $table->Integer('previous_updates');
             $table->timestamps();
             $table->foreign('proId')->references('proId')->on('project_details')->onDelete('cascade');
             $table->foreign('input')->references('inputId')->on('inputs')->onDelete('cascade');
