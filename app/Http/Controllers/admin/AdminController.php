@@ -171,6 +171,9 @@ switch ($designation) {
     case 'HOD':
         $role = 6;
         break;
+    case 'HR':
+         $role = 7;
+    break;
     default:
         return response()->json([
             'status' => 0,

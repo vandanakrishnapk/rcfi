@@ -19,6 +19,7 @@
 @section('content')
 
 <div class="row">
+
     <div class="float-end d-none d-md-block">
         <button type="button" class="btn btn-success mb-2 float-end rounded-circle mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
             <i class="bi bi-person-plus-fill fs-5"></i>
@@ -56,6 +57,7 @@
                                         <option value="Project Engineer">Project Engineer</option>
                                         <option value="Financial Manager">Financial Manager</option>
                                         <option value="HOD">HOD</option>
+                                        <option value="HR">HR</option>
                                       
                                     </select>
                                     <span class="error designation_error text-danger"></span>
@@ -134,19 +136,19 @@
 
 <div class="row">
     <div class="col-12">
-        <div class="card">
+        <div class="card rounded shadow shadow-dark p-5">
             <div class="card-header">
                 <div class="row">
            
                     <div class="col-12">
 
-                        <h4 class="but p-3 rounded fw-bold border border-success text-center" style="color:white;">USERS </h4>
+                        <h4 class="p-3 rounded fw-bold border border-success text-center rounded-pill but" style="color:white;">USERS </h4>
             
                     </div>
                 </div>
             </div>
             <div class="card-body">
-                <table id="usersTable" class="table table-bordered dt-responsive nowrap display" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                <table id="usersTable" class="table table-bordered dt-responsive nowrap display rounded table-dark table-hover" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
                         <tr>
                             <th>S.No</th>

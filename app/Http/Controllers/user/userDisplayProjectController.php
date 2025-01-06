@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Donor;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+
 class userDisplayProjectController extends Controller
 {
     
@@ -48,7 +49,9 @@ class userDisplayProjectController extends Controller
       {
           $donor = Donor::all();
           $projectmanager = User::where('designation','=','Project Manager')->get();
-          return view('user.projects.orphancare',compact('donor','projectmanager'));
+          $opcare = DB::table('markaz_orphan_cares')->get();
+          $projectmanager = User::where('designation','=','Project Manager')->get();
+          return view('user.projects.orphancare',compact('donor','projectmanager','opcare'));
       } 
     
       public function getOrphanCareProjectData(Request $request)
@@ -80,9 +83,10 @@ class userDisplayProjectController extends Controller
     
       public function diffabled()
       {
-          $donor = Donor::all();
-          $projectmanager = User::where('designation','=','Project Manager')->get();
-          return view('user.projects.diffabled',compact('donor','projectmanager'));
+        $donor = Donor::all();
+        $opcare = DB::table('differently_abled')->get();
+        $projectmanager = User::where('designation','=','Project Manager')->get();
+          return view('user.projects.diffabled',compact('donor','projectmanager','opcare'));
       }
       public function getDiffabledProjectData(Request $request)
       {
@@ -111,9 +115,10 @@ class userDisplayProjectController extends Controller
       
       public function familyaid()
       {
-          $donor = Donor::all();
-          $projectmanager = User::where('designation','=','Project Manager')->get();
-          return view('user.projects.familyaid',compact('donor','projectmanager'));
+        $donor = Donor::all();
+        $opcare = DB::table('families')->get();
+        $projectmanager = User::where('designation','=','Project Manager')->get();
+          return view('user.projects.familyaid',compact('donor','projectmanager','opcare'));
       }
     public function getfamilyaidProjectData(Request $request)
     {

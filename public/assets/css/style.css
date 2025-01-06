@@ -82,12 +82,27 @@
 {
     background-color: #3cc88f;
     color:white;
+    border-radius: 0.5rem;   
    
-
 } 
 .box:hover 
 {
     background-color: #25283a;
+ 
+} 
+.box1
+{
+    background-color: #3cc88f;
+    color:white;
+    border-radius: 0.5rem!important;   
+    box-shadow: 5px 5px 5px #ace0cb;
+    transition: transform 1s ease-in-out;
+} 
+.box1:hover 
+{
+    background-color: #25283a;
+    transform: scale(1.05);
+    
 } 
 .cls:hover 
 {
@@ -120,12 +135,31 @@
 {
     background-color: #68a9c5;
     color:white;
+    border-radius: 0.5rem;   
    
 
 } 
 .widgetcolor:hover 
 {
     background-color: #25283a;
+    
+} 
+
+
+.widgetcolor1
+{
+    background-color: #68a9c5;
+    color:white;
+    border-radius: 0.5rem;   
+    box-shadow: 5px 5px 5px #a3cee0;
+    transition: transform 1s ease-in-out;
+
+} 
+.widgetcolor1:hover 
+{
+    background-color: #25283a;
+    transform: scale(1.05);
+    
 } 
 .pro 
 {
@@ -138,4 +172,220 @@
     background-color: #25283a !important;
     color: white !important; 
 }
+
+.sidebarli 
+{
+   
+    /* border:1px solid #3cc88f; */
+   padding-top: 5px;
+   padding-bottom: 5px;
+   padding-right:5px;
+   padding-left:5px;
+}
+
+.sidebara 
+{
+   
+    border:none;
+    color:#36b378!important;
+    font-weight:bold;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right:5px;
+    padding-left:5px;
+    border-radius:0.5rem;
+}  
+body[data-sidebar=light] .mm-active .active {
+
+    background-color: #36b378!important;
+    color:white!important;
+    border-radius:0.5rem;
+    box-shadow:#98baac 2px 2px 2px;
+   }
+   .mm-active>a {
+    background-color: #36b378;
+    color:white!important;
+    border-radius:0.5rem;
+    box-shadow:#98baac 2px 2px 2px;
+
+}
+
+body[data-sidebar=light] #sidebar-menu ul>li>a.mm-active {
+    background-color: #36b378!important;
+    border-radius:0.5rem;
+    box-shadow:#98baac 2px 2px 2px;
+
+    } 
+   /* Remove the background from the dropdown item itself */
+.dropdown-item {
+    background-color: transparent !important; /* Ensure dropdown item has no background */
+    color: white; /* Set text color to white */
+}
+
+/* Remove background from dropdown menu (if necessary) */
+.dropdown-menu {
+    background-color: transparent !important; /* Remove background from dropdown menu */
+    border: none;
+}
+
+/* Remove any hover background on dropdown item */
+.dropdown-item:hover {
+    background-color: transparent !important; /* Make hover state transparent */
+    color: white; /* Maintain text color */
+    border: none;
+}
+
+/* If the dropdown button itself has background, remove it */
+.btn.dropdown-toggle {
+    background-color: transparent !important; /* Remove background for the toggle button */
+    border: none; /* Optional: Remove button borders */
+}
+
+/* Ensure button in dropdown is gradient and not overridden */
+.btn-logout {
+    background: linear-gradient(135deg, #00b09b, #96c93d); /* Green gradient */
+    color: white;
+    border: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 8px 20px; /* Adjust padding */
+    box-shadow: none; /* Remove box-shadow */
+}
+
+/* Button hover effect with reversed gradient */
+.btn-logout:hover {
+    background: linear-gradient(135deg, #96c93d, #00b09b);
+    color: white;
+    text-decoration: none;
+} 
+.metismenu 
+{
+    padding-right:5px !important;
+    padding-left:5px!important;
+    color:#3cc88f!important;
+ 
+ 
+} 
+
+.vertical-collpsed .vertical-menu #sidebar-menu>ul>li>a i { 
+
+    margin-left:0px!important;
+   color:#3cc88f!important;
+ 
+   padding-right:10px!important;
+    } 
+    .vertical-collpsed .vertical-menu #sidebar-menu>ul>li>a { 
+        background-color: white;
+        padding-right:35px!important;
+        border-radius: 0.5rem!important;
+       
+}
+.vertical-collpsed .vertical-menu #sidebar-menu>ul>li>ul{ 
+    border-radius: 0.5rem!important;
+
     }
+    .vertical-collpsed .vertical-menu #sidebar-menu>ul>li>ul>li{ 
+        border-radius: 0.5rem!important;
+    
+        }
+    .vertical-collpsed .vertical-menu #sidebar-menu>ul>li>ul>li:hover
+    { 
+        background-color: #36b378;
+        color:white!important;
+    }
+    .vertical-collpsed .vertical-menu #sidebar-menu>ul>li>ul>li>a:hover
+    {
+        color:white!important;
+    } 
+   
+
+    }
+    /* Enhance Table Borders */
+#usersTable {
+    border: 1px solid #ddd; /* Light border around the table */
+    border-radius: 8px; /* Rounded corners */
+}
+
+/* Style the table header */
+#usersTable thead {
+    background-color: #3cc88f; /* Gradient or solid color for header */
+    color: white; /* White text */
+    font-weight: bold; /* Bold text */
+    text-align: center; /* Center the text */
+    border-radius: 8px 8px 0 0; /* Rounded corners on the header */
+}
+
+/* Style the header cells */
+#usersTable th {
+    padding: 12px; /* Padding inside the header */
+    font-size: 16px; /* Font size */
+}
+
+/* Style the table rows */
+#usersTable tbody tr {
+    transition: background-color 0.3s ease-in-out; /* Smooth transition for hover */
+}
+
+/* Row hover effect */
+#usersTable tbody tr:hover {
+    background-color: #f2f2f2; /* Light gray background on hover */
+}
+
+/* Alternate row coloring */
+#usersTable tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Light gray for even rows */
+}
+
+/* Add padding inside table cells */
+#usersTable td {
+    padding: 12px; /* Padding inside cells */
+    vertical-align: middle; /* Center-align vertically */
+    font-size: 14px; /* Slightly smaller text */
+}
+
+/* Add rounded corners to individual cells */
+#usersTable td, #usersTable th {
+    border: 1px solid #ddd; /* Light gray border around cells */
+    border-radius: 6px; /* Rounded corners on cells */
+}
+
+/* Styling for action buttons */
+#usersTable .btn {
+    border-radius: 4px; /* Rounded button corners */
+    padding: 5px 12px; /* Padding inside the button */
+    font-size: 14px; /* Font size for buttons */
+}
+
+/* Customize button colors */
+#usersTable .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+#usersTable .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+/* Make the table responsive */
+@media (max-width: 768px) {
+    #usersTable {
+        font-size: 12px; /* Reduce font size for smaller screens */
+    }
+
+    #usersTable thead {
+        font-size: 14px; /* Adjust header font size */
+    } 
+
+    .active>.page-link, .page-link.active {
+        z-index: 3;
+        color: var(--bs-pagination-active-color);
+        background-color:#3cc88f!important;
+        border-color: var(--bs-pagination-active-border-color);
+    } 
+    .toast-yellow 
+    {
+        background-color: yellow!important;
+    }
+}
+

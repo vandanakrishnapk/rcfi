@@ -13,8 +13,8 @@
 @endsection
 <div class="row mt-4">
     <div class="col-xl-3 col-md-6">
-        <div class="card mini-stat text-white box">
-            <div class="card-body box rounded">
+        <div class="card mini-stat text-white box1">
+            <div class="card-body box1 rounded">
                 <div class="mb-4">
                     <div class="float-start mini-stat-img me-4">
  
@@ -36,7 +36,7 @@
     </div>
     <div class="col-xl-3 col-md-6">
         <div class="card mini-stat bg-primary text-white">
-            <div class="card-body box rounded">
+            <div class="card-body box1 rounded">
                 <div class="mb-4">
                     <div class="float-start mini-stat-img me-4">   
                         <i class="bi bi-droplet-half fs-2"></i>
@@ -56,8 +56,8 @@
         </div>
     </div>
     <div class="col-xl-3 col-md-6">
-        <div class="card mini-stat text-white box">
-            <div class="card-body box rounded">
+        <div class="card mini-stat text-white box1">
+            <div class="card-body box1 rounded">
                 <div class="mb-4">
                     <div class="float-start mini-stat-img me-4">
                         <i class="fa fa-handshake-o fa-2x" aria-hidden="true"></i>
@@ -79,7 +79,7 @@
 
     <div class="col-xl-3 col-md-6">
         <div class="card mini-stat bg-primary text-white">
-            <div class="card-body box rounded">
+            <div class="card-body box1 rounded">
                 <div class="mb-4">
                     <div class="float-start mini-stat-img me-4">   
                      
@@ -102,7 +102,7 @@
 
     <div class="col-xl-3 col-md-6">
         <div class="card mini-stat bg-primary text-white">
-            <div class="card-body box rounded">
+            <div class="card-body box1 rounded">
                 <div class="mb-4">
                     <div class="float-start mini-stat-img me-4">   
                         <i class="fa fa-users fa-2x" aria-hidden="true"></i>
@@ -124,7 +124,7 @@
 
     <div class="col-xl-3 col-md-6">
         <div class="card mini-stat bg-primary text-white">
-            <div class="card-body box rounded">
+            <div class="card-body box1 rounded">
                 <div class="mb-4">
                     <div class="float-start mini-stat-img me-4">   
                         <i class="bi bi-file-earmark-ruled-fill fs-2"></i>

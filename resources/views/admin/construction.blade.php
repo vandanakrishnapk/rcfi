@@ -17,7 +17,7 @@
     
     <div class="col-xl-3 col-md-6">
         <div class="card mini-stat bg-primary text-white">
-            <div class="card-body box rounded">
+            <div class="card-body box1 rounded">
                 <div class="mb-4">
                     <div class="float-start mini-stat-img me-4 fs-2">
                         <i class="bi bi-book-half"></i>
@@ -38,7 +38,7 @@
     </div>
     <div class="col-xl-3 col-md-6">
         <div class="card mini-stat bg-primary text-white">
-            <div class="card-body box rounded">
+            <div class="card-body box1 rounded">
                 <div class="mb-4">
                     <div class="float-start mini-stat-img me-4">
                         <i class="bi bi-brilliance fs-2"></i>
@@ -60,7 +60,7 @@
 
     <div class="col-xl-3 col-md-6">
         <div class="card mini-stat bg-primary text-white">
-            <div class="card-body box rounded">
+            <div class="card-body box1 rounded">
                 <div class="mb-4">
                     <div class="float-start mini-stat-img me-4">   
                         <i class="bi bi-hospital fs-2"></i>
@@ -82,7 +82,7 @@
 
     <div class="col-xl-3 col-md-6">
         <div class="card mini-stat bg-primary text-white">
-            <div class="card-body box rounded">
+            <div class="card-body box1 rounded">
                 <div class="mb-4">
                     <div class="float-start mini-stat-img me-4">   
                         <i class="bi bi-water fs-2"></i>
@@ -105,7 +105,7 @@
 
     <div class="col-xl-3 col-md-6">
         <div class="card mini-stat bg-primary text-white">
-            <div class="card-body box rounded">
+            <div class="card-body box1 rounded">
                 <div class="mb-4">
                     <div class="float-start mini-stat-img me-4">   
                         <i class="bi bi-building-fill-add fs-2"></i>
@@ -127,7 +127,7 @@
 
     <div class="col-xl-3 col-md-6">
         <div class="card mini-stat bg-primary text-white">
-            <div class="card-body box rounded">
+            <div class="card-body box1 rounded">
                 <div class="mb-4">
                     <div class="float-start mini-stat-img me-4">   
                         <i class="bi bi-shop-window fs-2"></i>

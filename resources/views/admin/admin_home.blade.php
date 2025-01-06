@@ -15,8 +15,8 @@
 
     <div class="row mt-4">
         <div class="col-xl-3 col-md-6">
-            <div class="card mini-stat text-white box">
-                <div class="card-body box rounded">
+            <div class="card mini-stat text-white box1">
+                <div class="card-body box1">
                     <div class="mb-4">
                         <div class="float-start mini-stat-img me-4">
                             <i class="bi bi-people-fill fs-2"></i>
@@ -36,8 +36,8 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card mini-stat bg-primary text-white">
-                <div class="card-body box rounded">
+            <div class="card mini-stat text-white">
+                <div class="card-body box1">
                     <div class="mb-4">
                         <div class="float-start mini-stat-img me-4 fs-2">
                             <i class="bi bi-people"></i>
@@ -57,8 +57,8 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card mini-stat bg-primary text-white">
-                <div class="card-body box rounded">
+            <div class="card mini-stat text-white">
+                <div class="card-body box1">
                     <div class="mb-4">
                         <div class="float-start mini-stat-img me-4">
                             <i class="bi bi-file-earmark-medical-fill fs-3"></i>
@@ -78,8 +78,8 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card mini-stat bg-primary text-white">
-                <div class="card-body box rounded">
+            <div class="card mini-stat text-white">
+                <div class="card-body box1">
                     <div class="mb-4">
                         <div class="float-start mini-stat-img me-4">   
                             <i class="bi bi-folder-fill"></i>

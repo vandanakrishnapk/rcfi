@@ -14,18 +14,14 @@ class userProjectController extends Controller
 
     public function getUserProject()
     {
-      $donor = Donor::all();
-        $projectmanager = User::where('designation','=','Project Manager')->get();
-        $markazCount = DB::table('projects')->where('typeOfProject','=','Markaz Orphan Care')->count();
-
-        $sweetCount = DB::table('projects')->where('typeOfProject','=','Sweet Water')->count();
-    
-        $diffCount = DB::table('projects')->where('typeOfProject','=','Differently Abled')->count();
-    
-        $famCount = DB::table('projects')->where('typeOfProject','=','Family Aid')->count();
-    
+       $donor = Donor::all();
+       $projectmanager = User::where('designation','=','Project Manager')->get();    
+       $sweetCount = DB::table('projects')->where('typeOfProject','=','Sweet Water')->count();       
        $general = DB::table('projects')->where('typeOfProject','=','General Project')->count();
-        return view('user.project',compact('markazCount','sweetCount','diffCount','famCount','general'));
+       $markazCount = DB::table('odf_tables')->where('odf_tables.project_id', 'like', '%OC%')->count();
+       $diffCount = DB::table('odf_tables')->where('odf_tables.project_id', 'like', '%DA%')->count();
+       $famCount = DB::table('odf_tables')->where('odf_tables.project_id', 'like', '%FA%')->count();
+       return view('user.project',compact('markazCount','sweetCount','diffCount','famCount','general'));
     }
 
 

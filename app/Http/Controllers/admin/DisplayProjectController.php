@@ -48,8 +48,9 @@ class DisplayProjectController extends Controller
     public function orphancare()
     {
         $donor = Donor::all();
+        $opcare = DB::table('markaz_orphan_cares')->get();
         $projectmanager = User::where('designation','=','Project Manager')->get();
-        return view('admin.projects.orphancare',compact('donor','projectmanager'));
+        return view('admin.projects.orphancare',compact('donor','projectmanager','opcare'));
     } 
 
     public function getOrphanCareProjectData(Request $request)
@@ -82,9 +83,10 @@ class DisplayProjectController extends Controller
 
     public function diffabled()
     {
-        $donor = Donor::all();
-        $projectmanager = User::where('designation','=','Project Manager')->get();
-        return view('admin.projects.diffabled',compact('donor','projectmanager'));
+      $donor = Donor::all();
+      $opcare = DB::table('differently_abled')->get();
+      $projectmanager = User::where('designation','=','Project Manager')->get();
+        return view('admin.projects.diffabled',compact('donor','projectmanager','opcare'));
     }
     public function getDiffabledProjectData(Request $request)
     {
@@ -113,9 +115,10 @@ class DisplayProjectController extends Controller
     
     public function familyaid()
     {
-        $donor = Donor::all();
-        $projectmanager = User::where('designation','=','Project Manager')->get();
-        return view('admin.projects.familyaid',compact('donor','projectmanager'));
+      $donor = Donor::all();
+      $opcare = DB::table('families')->get();
+      $projectmanager = User::where('designation','=','Project Manager')->get();
+        return view('admin.projects.familyaid',compact('donor','projectmanager','opcare'));
     }
   public function getfamilyaidProjectData(Request $request)
   {

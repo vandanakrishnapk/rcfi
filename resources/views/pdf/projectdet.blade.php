@@ -2,6 +2,7 @@
     use Carbon\Carbon;
 @endphp
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +14,14 @@
             width:100%;
             padding:9px;
         }
+        .pdf {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        }
+
+   
     </style>
+    
 </head>
 <body>
   <h3 style="background-color:rgb(200, 196, 196);border-radius:0.5rem;text-align:center;color:white;padding:5px;font-size:32px">PROJECT DETAILS</h3>
@@ -108,7 +116,7 @@
     @if ($key === 'beneficiaries')
         <ul>
             @foreach (json_decode($appdetSW->$key, true) as $beneficiary)
-                <li>{{ $beneficiary['name'] }} - {{ $beneficiary['phone_number'] }}</li>
+                {{ $beneficiary['name'] }} - {{ $beneficiary['phone_number'] }}</li>
             @endforeach
         </ul>
     @else
@@ -295,100 +303,58 @@
 
 
   <h3 style="background-color:rgb(200, 196, 196);border-radius:0.5rem;text-align:center;color:white;padding:5px;font-size:32px">UPLOADED DOCUMENTS</h3>
-  <ul>
-    @foreach($document as $documents)
-        @if($documents->land_document)
-            <li>
-                <strong>Land Document:</strong>
-                <embed src="{{ url('documents24/' . $documents->land_document) }}" width="600" height="400" type="application/pdf">
-            </li>
-        @endif
-        @if($documents->possession_certificate)
-            <li>
-                <strong>Possession Certificate:</strong>
-                <embed src="{{ url('documents24/' . $documents->possession_certificate) }}" width="600" height="400" type="application/pdf">
-            </li>
-        @endif
-        @if($documents->recommendation_letter)
-            <li>
-                <strong>Recommendation Letter:</strong>
-                <embed src="{{ url('documents24/' . $documents->recommendation_letter) }}" width="600" height="400" type="application/pdf">
-            </li>
-        @endif
-        @if($documents->committee_minutes)
-            <li>
-                <strong>Committee Minutes:</strong>
-                <embed src="{{ url('documents24/' . $documents->committee_minutes) }}" width="600" height="400" type="application/pdf">
-            </li>
-        @endif
-        @if($documents->permit_copy)
-            <li>
-                <strong>Permit Copy:</strong>
-                <embed src="{{ url('documents24/' . $documents->permit_copy) }}" width="600" height="400" type="application/pdf">
-            </li>
-        @endif
-        @if($documents->plan)
-            <li>
-                <strong>Plan:</strong>
-                <embed src="{{ url('documents24/' . $documents->plan) }}" width="600" height="400" type="application/pdf">
-            </li>
-        @endif
-        @if($documents->tender_schedule_sheet)
-            <li>
-                <strong>Tender Schedule Sheet:</strong>
-                <embed src="{{ url('documents24/' . $documents->tender_schedule_sheet) }}" width="600" height="400" type="application/pdf">
-            </li>
-        @endif
-        @if($documents->site_study)
-            <li>
-                <strong>Site Study:</strong>
-                <embed src="{{ url('documents24/' . $documents->site_study) }}" width="600" height="400" type="application/pdf">
-            </li>
-        @endif
-        @if($documents->quotations)
-            <li>
-                <strong>Quotations:</strong>
-                <embed src="{{ url('documents24/' . $documents->quotations) }}" width="600" height="400" type="application/pdf">
-            </li>
-        @endif
-        @if($documents->quotations_approval_form)
-            <li>
-                <strong>Quotations Approval Form:</strong>
-                <embed src="{{ url('documents24/' . $documents->quotations_approval_form) }}" width="600" height="400" type="application/pdf">
-            </li>
-        @endif
-        @if($documents->work_order_letter)
-            <li>
-                <strong>Work Order Letter:</strong>
-                <embed src="{{ url('documents24/' . $documents->work_order_letter) }}" width="600" height="400" type="application/pdf">
-            </li>
-        @endif
-        @if($documents->meeting_minutes_copy)
-            <li>
-                <strong>Meeting Minutes Copy:</strong>
-                <embed src="{{ url('documents24/' . $documents->meeting_minutes_copy) }}" width="600" height="400" type="application/pdf">
-            </li>
-        @endif
-        @if($documents->agreement_with_contractor)
-            <li>
-                <strong>Agreement with Contractor:</strong>
-                <embed src="{{ url('documents24/' . $documents->agreement_with_contractor) }}" width="600" height="400" type="application/pdf">
-            </li>
-        @endif
-        @if($documents->agreement_with_committee)
-            <li>
-                <strong>Agreement with Committee:</strong>
-                <embed src="{{ url('documents24/' . $documents->agreement_with_committee) }}" width="600" height="400" type="application/pdf">
-            </li>
-        @endif
-        @if($documents->project_summary_form)
-            <li>
-                <strong>Project Summary Form:</strong>
-                <embed src="{{ url('documents24/' . $documents->project_summary_form) }}" width="600" height="400" type="application/pdf">
-            </li>
-        @endif
-    @endforeach
-</ul>
+  <h5 style="background-color: black;color:yellow;width:100%;text-align:center;border-radius:5rem;font-style:italic">The below files are available with this pdf</h5>
+  <ol>
+
+  @if($documents->land_document)
+     <li><strong>Land Document</strong></li> 
+  @endif
+  @if($documents->possession_certificate)
+      <li><strong>Possession Certificate</strong></li>
+  @endif
+  @if($documents->recommendation_letter)
+      <li><strong>Recommendation Letter</strong></li>
+  @endif
+  @if($documents->committee_minutes)
+      <li><strong>Committee Minutes</strong></li>
+  @endif
+  @if($documents->permit_copy)
+      <li><strong>Permit Copy</strong></li>
+  @endif
+  @if($documents->plan)
+     <li> <strong>Plan</strong></li>
+  @endif
+  @if($documents->tender_schedule_sheet)
+      <li><strong>Tender Schedule Sheet</strong></li>
+  @endif
+  @if($documents->site_study)
+      <li><strong>Site Study</strong></li>
+  @endif
+  @if($documents->quotations)
+     <li><strong>Quotations</strong></li> 
+  @endif
+  @if($documents->quotations_approval_form)
+      <li><strong>Quotations Approval Form</strong></li>
+  @endif
+  @if($documents->work_order_letter)
+      <li><strong>Work Order Letter</strong></li>
+  @endif
+  @if($documents->meeting_minutes_copy)
+      <li><strong>Meeting Minutes Copy</strong></li>
+  @endif
+  @if($documents->agreement_with_contractor)
+      <li><strong>Agreement with Contractor</strong></li>
+  @endif
+  @if($documents->agreement_with_committee)
+      <li><strong>Agreement with Committee</strong></li>
+  @endif
+  @if($documents->project_summary_form)
+      <li><strong>Project Summary Form</strong></li>
+  @endif  
+
+</ol>
+
+    
 
   <h3 style="background-color:rgb(200, 196, 196);border-radius:0.5rem;text-align:center;color:white;padding:5px;font-size:32px">FUND ALLOCATION</h3>
     <table>
@@ -477,36 +443,33 @@
     </table>
 
   <h3 style="background-color:rgb(200, 196, 196);border-radius:0.5rem;text-align:center;color:white;padding:5px;font-size:32px">COMPLETION DETAILS</h3>
-
-    <div class="row">
-        <div class="col-4">Completion Certificate</div>
-        <div class="col-2">:</div>
-        <div class="col-4">
-            @if($completion && $completion->completion_certificate)
-                <a href="{{ url('documents24/' . $completion->completion_certificate) }}" target="_blank">
-                    {{ $completion->completion_certificate }}
-                </a>
-            @else
-                <strong>No completion certificate uploaded</strong>
-            @endif
-        </div>
+  <h5 style="background-color: black;color:yellow;width:100%;text-align:center;border-radius:5rem;font-style:italic">The below files are available with the pdf</h5>
+  <div class="row">
+            <div class="col-8">
+                @if($completion && $completion->completion_certificate)
+                <strong>1.Completion Certificate</strong>
+                @else
+                <strong>1.No completion certificate uploaded</strong>
+                 @endif
+            </div>
     </div><br>
     
     <div class="row">
-        <div class="col-4">Measurement Book</div>
-    
+      
         <div class="col-4">
             @if($completion && $completion->measurement_book)
-                      <a href="{{ url('documents24/' . $completion->measurement_book) }}" target="_blank">
-                    {{ $completion->measurement_book }}
-                </a>
+            <strong>2.Measurement Book</strong>
             @else
-                <strong>No measurement book uploaded</strong>
+                <strong>2.No measurement book uploaded</strong>
             @endif
+            
         </div>
-    </div><br>
+    </div>
+</ol>
+    <br>
     
-    <table style="width: 100%; border-collapse: collapse; border: 2px solid secondary;">
+     
+   <table style="width: 100%; border-collapse: collapse; border: 2px solid secondary;">
         <tr>
             @foreach (range(1, 5) as $i)
                 <td style="border: 2px solid secondary; padding: 15px; text-align: center;">
@@ -560,6 +523,7 @@
             </td>
         </tr>
     </table>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" integrity="sha512-z8IYLHO8bTgFqj+yrPyIJnzBDf7DDhWwiEsk4sY+Oe6J2M+WQequeGS7qioI5vT6rXgVRb4K1UVQC5ER7MKzKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
 </body>
 </html>

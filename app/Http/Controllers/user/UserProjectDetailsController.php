@@ -23,7 +23,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
-
+use setasign\Fpdi\Fpdi;
+use Illuminate\Support\Facades\Response;
 class UserProjectDetailsController extends Controller
 {
     public function getProjectDetails($id)
@@ -152,11 +153,11 @@ if(!$com)
     $com=null;
 }
 
-$notifications = Auth::user()->notifications; // Fetch notifications for the COO
-if(!$notifications)
-{
-    $notifications=null;
-}
+// $notifications = Auth::user()->notifications; // Fetch notifications for the COO
+// if(!$notifications)
+// {
+//     $notifications=null;
+// }
 
 //display applicant details to all 
 $applicantDetails = DB::table('project_details')
@@ -446,7 +447,7 @@ if (str_contains($applicantDetails, 'EC'))
 
 
 
-        return view('user.project_details',compact('projectId','stage1Status','stage2Status','applicants','stage3Status','stage4Status','inputs','stage5Status','stage6Status','applicantId','com','notifications','requiredKeys','appdetOC','appdetEC','appdetSW','appdetCC','appdetCC','appdetDA','appdetFA','appdetGP','appdetHC','appdetSO','appdetHO'));
+        return view('user.project_details',compact('projectId','stage1Status','stage2Status','applicants','stage3Status','stage4Status','inputs','stage5Status','stage6Status','applicantId','com','requiredKeys','appdetOC','appdetEC','appdetSW','appdetCC','appdetCC','appdetDA','appdetFA','appdetGP','appdetHC','appdetSO','appdetHO'));
     } 
     
 
@@ -537,23 +538,22 @@ if (str_contains($applicantDetails, 'EC'))
         'quotations',
         'quotations_approval_form',
         'work_order_letter',
-        'meeting_minutes',
+        'meeting_minutes_copy',
         'agreement_with_contractor',
-        'agreement_committee',
+        'agreement_with_committee',
         'project_summary_form',
     ];
+    $randomNumber = rand(1000, 9999); 
 
     foreach ($documentFields as $field) {
         if ($request->hasFile($field)) {
             $file = $request->file($field);
-            $filename = $application_no . '_' . $field . '.' . $file->getClientOriginalExtension();
+            $filename = $application_no . '_' . $field .'_'.$randomNumber. '.' . $file->getClientOriginalExtension();
             $filePath = 'documents24'; // Set your desired path
-
             // Move the file to the designated location
             $file->move($filePath, $filename);
-
             // Store the file path for database entry
-            $documentData[$field] =  $filePath.'/'.$filename; // Adjust the path as needed
+            $documentData[$field] =  $filename; // Adjust the path as needed
         }
     }
 
@@ -603,12 +603,22 @@ if (str_contains($applicantDetails, 'EC'))
     // Fetch the document path based on the document ID and type
     $document = Document::find($documentId); // Replace with your model
 
-    if ($document && $document->$documentType) {
-        $filePath = base_path($document->$documentType); // Adjust path as necessary
-        return response()->download($filePath);
-    }
+    if ($document && !empty($document->$documentType)) {
+        // Use public_path() to ensure correct file path
+        // $filePath = public_path(str_replace('\\', 'documents24/', $document->$documentType));
+        $filePath = base_path('documents24/' . $document->$documentType);
 
-    return response()->json(['message' => 'File not found'], 404);
+        \Log::info('Document Type: ' . $documentType);
+        \Log::info('File Path: ' . $filePath);
+ 
+
+        // Check if the file exists
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        } else {
+            return response()->json(['message' => 'File not found on the server'], 404);
+        }
+    }
 } 
 
 //do input 
@@ -770,6 +780,14 @@ public function submitBill($id)
     $fund = Fund::findOrFail($id);
     $fundId = $fund->fundId;
     $proId = $fund->proId;
+  // Check if a bill already exists with the same fundId
+  $existingBill = Bill::where('fundId', $fundId)->first();
+  if ($existingBill) {
+      return response()->json([
+          'status' => 0,
+          'message' => 'This bill has already been submitted.'
+      ], 400); // Return a 400 Bad Request status
+  }
 
    $data= Bill::create([
         'fundId' =>$fundId,
@@ -792,10 +810,6 @@ public function getImplementationTable()
 {  
     
     $dataId = Session::get('dataId'); 
-        // Check if dataId exists
-      
- 
-     
     $details = DB::table('funds')
     ->leftjoin('bills', 'bills.fundId', '=', 'funds.fundId')
     ->leftjoin('inputs', 'inputs.inputId', '=', 'funds.input')
@@ -865,7 +879,7 @@ public function getPieChart()
 public function requestCurrent($id)
 {
     $fund = Fund::findOrFail($id);
-    return response()->json($fund);
+    return response()->json($fund->toArray());
 } 
 public function updateCurrent(Request $request, $id)
 {
@@ -967,14 +981,11 @@ public function downloadFile(Request $request)
 
     // Fetch the document path based on the document ID and type
     $document = Completion::find($documentId); // Replace with your model
-
+  
     if ($document && !empty($document->$documentType)) {
         // Use public_path() to ensure correct file path
-        $filePath = base_path(str_replace('\\', '/', $document->$documentType));
-
-        // Log the resolved file path for debugging
-        \Log::info('Resolved file path: ' . $filePath);
-
+        // $filePath = public_path(str_replace('\\', 'documents24/', $document->$documentType));
+        $filePath = public_path('documents24/' . $document->$documentType);
         // Check if the file exists
         if (file_exists($filePath)) {
             return response()->download($filePath);
@@ -988,24 +999,24 @@ public function completionStage(Request $request)
 {
     // Validate the request with custom messages
     $validator = Validator::make($request->all(), [
-        'completion_certificate' => 'required|file|mimes:pdf|max:2048',
+        'completion_certificate' => 'nullable|file|mimes:pdf|max:2048',
         'photos.*' => 'file|mimes:jpg,png,jpeg|max:2048',
         'measurement_book' => 'nullable|file|mimes:pdf|max:2048',
-        'total_amount' => 'required|numeric',
-        'total_amount_paid_by_donor' => 'required|numeric',
-        'community_contribution' => 'required|numeric',
+        'total_amount' => 'nullable|numeric',
+        'total_amount_paid_by_donor' => 'nullable|numeric',
+        'community_contribution' => 'nullable|numeric',
         'any_other' => 'nullable|string',
-        'geo_location' => 'required|string', // Assuming geo_location is stored as a string
+        'geo_location' => 'nullable|string', // Assuming geo_location is stored as a string
         'proId' => 'required|integer', // Assuming there's a projects table
+        'consumptional_sheet' => 'nullable|file|mimes:xlsx,xls,csv|max:4096'
+
     ], [
-        // Custom error messages
-        'completion_certificate.required' => 'Completion certificate is required.',
         'completion_certificate.mimes' => 'Completion certificate must be a PDF.',
-        'photo1.required' => 'Photo 1 is required.',
-        'photos.*.required' => 'At least one photo is required.',
-        'photos.*.max'=>'more than 2mb not allowed',
+        'measurement_book.mimes' => 'Measurement Book must be a PDF.',     
+        'photos.max'=>'more than 2mb not allowed',
         'geo_location.required' => 'Geo location is required.',
-        // Add more custom messages as needed
+        'consumptional_sheet.mimes' =>'Consumption sheet must be an Excel file',
+
     ]);
 
     if ($validator->fails()) {
@@ -1018,7 +1029,7 @@ public function completionStage(Request $request)
 
     // Format the incremented number
     $application_no = 'APLRCFI' . $last_reg_num;
-    $fileFields = ['completion_certificate', 'measurement_book']; // Define individual file fields
+    $fileFields = ['completion_certificate', 'measurement_book','consumptional_sheet']; // Define individual file fields
     $documentData = [
         'completion_certificate' => null,
         'photo1' => null,
@@ -1027,6 +1038,7 @@ public function completionStage(Request $request)
         'photo4' => null,
         'photo5' => null,
         'measurement_book' => null,
+        'consumptional_sheet'=>null,
     ];
     
     // Handle individual file uploads
@@ -1074,6 +1086,7 @@ public function completionStage(Request $request)
         'photo4' => $documentData['photo4'],
         'photo5' => $documentData['photo5'],
         'measurement_book' => $documentData['measurement_book'],
+        'consumptional_sheet' => $documentData['consumptional_sheet'],
         'total_amount' => $request->total_amount,
         'total_amount_paid_by_donor' => $request->total_amount_paid_by_donor,
         'community_contribution' => $request->community_contribution,
@@ -1097,20 +1110,24 @@ public function updateCompletion(Request $request)
 {
     // Validate the request with custom messages
     $validator = Validator::make($request->all(), [
-        'completion_certificate' => 'file|mimes:pdf|max:2048',
+        'completion_certificate' => 'nullable|file|mimes:pdf|max:2048',
         'photos.*' => 'file|mimes:jpg,png,jpeg|max:2048',
         'measurement_book' => 'nullable|file|mimes:pdf|max:2048',
-        'total_amount' => 'required|numeric',
-        'total_amount_paid_by_donor' => 'required|numeric',
-        'community_contribution' => 'required|numeric',
+        'total_amount' => 'nullable|numeric',
+        'total_amount_paid_by_donor' => 'nullable|numeric',
+        'community_contribution' => 'nullable|numeric',
         'any_other' => 'nullable|string',
-        'geo_location' => 'required|string',
-        'proId' => 'required|integer',
+        'geo_location' => 'nullable|string', // Assuming geo_location is stored as a string
+        'proId' => 'required|integer', // Assuming there's a projects table
+        'consumptional_sheet' => 'nullable|file|mimes:xlsx,xls,csv|max:4096'
+
     ], [
-        'completion_certificate.required' => 'Completion certificate is required.',
         'completion_certificate.mimes' => 'Completion certificate must be a PDF.',
-        'photos.*.max' => 'Photos must not be larger than 2MB.',
+        'measurement_book.mimes' => 'Measurement Book must be a PDF.',     
+        'photos.max'=>'more than 2mb not allowed',
         'geo_location.required' => 'Geo location is required.',
+        'consumptional_sheet.mimes' =>'Consumption sheet must be an Excel file',
+
     ]);
 
     if ($validator->fails()) {
@@ -1124,25 +1141,23 @@ public function updateCompletion(Request $request)
     // Format the incremented number
     $application_no = 'APLRCFI' . $last_reg_num;
 
-    $fileFields = ['completion_certificate', 'measurement_book']; 
-    $documentData = [
-        'completion_certificate' => null,
-        'photo1' => null,
-        'photo2' => null,
-        'photo3' => null,
-        'photo4' => null,
-        'photo5' => null,
-        'measurement_book' => null,
-    ];
+    // Fields that are optional and can have files uploaded
+    $fileFields = ['completion_certificate', 'measurement_book','consumptional_sheet']; 
 
-    // Handle individual file uploads
+    // Initialize an array to store updated document data
+    $documentData = [];
+
+    // Handle file uploads for the fields
     foreach ($fileFields as $field) {
         if ($request->hasFile($field)) {
+            // If a file is uploaded, generate a filename and move the file
             $file = $request->file($field);
             $randomNumber = rand(1000, 9999);
             $filename = $application_no . '_' . $field . '_' . $randomNumber . '.' . $file->getClientOriginalExtension();
             $filePath = 'documents24';
             $file->move(public_path($filePath), $filename);
+
+            // Add the new filename to the documentData array
             $documentData[$field] = $filename;
         }
     }
@@ -1165,15 +1180,19 @@ public function updateCompletion(Request $request)
     $document = Completion::where('proId', $request->proId)->first();
 
     if ($document) {
-        // Update the existing record
+        // Only update fields that have changed (if they are not empty)
+        $updateData = [];
+        foreach ($documentData as $field => $newValue) {
+            if (!empty($newValue)) {
+                $updateData[$field] = $newValue; // Only add fields that have a new value
+            }
+        }
+
+        // Update the document record with the new data
+        $document->update($updateData);
+
+        // Update other fields (non-file fields) like total_amount, geo_location, etc.
         $document->update([
-            'completion_certificate' => $documentData['completion_certificate'],
-            'photo1' => $documentData['photo1'],
-            'photo2' => $documentData['photo2'],
-            'photo3' => $documentData['photo3'],
-            'photo4' => $documentData['photo4'],
-            'photo5' => $documentData['photo5'],
-            'measurement_book' => $documentData['measurement_book'],
             'total_amount' => $request->total_amount,
             'total_amount_paid_by_donor' => $request->total_amount_paid_by_donor,
             'community_contribution' => $request->community_contribution,
@@ -1253,6 +1272,31 @@ public function materialsApprovalFm(Request $request,$fundId)
     $bill->save();
     return response()->json(['message' => 'Material approved successfully by Financial Manger!']);
 } 
+
+//update utilized 
+public function editUtilized($id)
+{
+    $fund = Fund::findOrFail($id);
+    return response()->json($fund->toArray());
+} 
+
+public function updateUtilized(Request $request, $id)
+{
+    $request->validate([
+        'utilized' => 'required|numeric',
+    ]);
+
+    $fund = Fund::findOrFail($id);
+    $fund->utilized = $request->utilized;
+   $data = $fund->save();
+   if($data)
+   {
+    $fund->current =0;
+    $fund->save();
+   }
+   
+    return response()->json(['message' => "Utilized updated"]);
+}   
 public function downloadPdf()
 {
     $dataId = Session::get('dataId');
@@ -1555,15 +1599,9 @@ public function downloadPdf()
                      'officeUse',
                  ];
                   
-                 }      
+                 }          
    
-        
-     
-   
-     
- 
-    $document = Document::where('proId','=',$dataId)->get();
-    $fund = DB::table('funds')
+     $fund = DB::table('funds')
     ->leftJoin('inputs', 'inputs.inputId', '=', 'funds.input')
     ->select(
         'funds.proId',
@@ -1583,13 +1621,92 @@ $total_utilized = $fund->sum('utilized');
 $total_balance = $total_amount - $total_utilized;
 
 $completion = DB::table('completions')->where('proId','=',$dataId)->first();
+$documents = DB::table('documents')->where('proId','=',$dataId)->first();
 
-    // Load the view with the data
-    $pdf = PDF::loadView('pdf.projectdet', compact('project','fund','document','total_amount', 'total_utilized', 'total_balance','completion','requiredKeys','appdetOC','appdetEC','appdetSW','appdetCC','appdetCC','appdetDA','appdetFA','appdetGP','appdetHC','appdetSO','appdetHO'));
+   // Load the view with the data
+   $pdf = PDF::loadView('pdf.projectdet', compact('project','fund','documents','total_amount', 'total_utilized', 'total_balance','completion','requiredKeys','appdetOC','appdetEC','appdetSW','appdetCC','appdetCC','appdetDA','appdetFA','appdetGP','appdetHC','appdetSO','appdetHO'));
+   $generatedPdfPath = public_path('documents24/generated.pdf');
+        $pdf->save($generatedPdfPath);
 
-    // Download the PDF
-    return $pdf->download('projectdet.pdf');
+        $attachmentPath = null;
+        if (!empty($completion->completion_certificate)) {
+         $attachmentPath = public_path('documents24/'.$completion->completion_certificate);
+        }
+
+        $measurementBookPath = null;
+        if (!empty($completion->measurement_book)) {
+            $measurementBookPath = public_path('documents24/'.$completion->measurement_book);
+        }
+        
+
+        $documentFields = [
+            'land_document', 'possession_certificate', 'recommendation_letter', 'committee_minutes', 
+            'permit_copy', 'plan', 'tender_schedule_sheet', 'site_study', 'quotations', 
+            'quotations_approval_form', 'work_order_letter', 'meeting_minutes_copy', 
+            'agreement_with_contractor', 'agreement_with_committee', 'project_summary_form',
+        ];
+    
+        // Array to hold the document paths
+        $documentPaths = [];
+        foreach ($documentFields as $field) {
+            // Check if the field is not null before adding it to the document paths
+            if ($documents->$field) {
+                $documentPath = base_path('documents24/' . $documents->$field);
+                if (file_exists($documentPath)) {
+                    $documentPaths[] = $documentPath;
+                } else {
+                    Log::error("File not found: " . $documentPath); // Log an error if the file doesn't exist
+                }
+            }
+        }
+    
+        return $this->mergeAndDownloadPDFs($generatedPdfPath, $attachmentPath,$measurementBookPath,$documentPaths);
+ 
+   }
+
+   private function mergeAndDownloadPDFs($generatedPdfPath, $attachmentPath, $measurementBookPath,$documentPaths)
+   {
+       // Merge both PDFs (generated PDF and attached certificate)
+       $mergedPdf = new \setasign\Fpdi\Fpdi();
+   
+       // Load the generated PDF
+       $pageCount = $mergedPdf->setSourceFile($generatedPdfPath);
+       for ($i = 1; $i <= $pageCount; $i++) {
+           $tpl = $mergedPdf->importPage($i);
+           $mergedPdf->AddPage();
+           $mergedPdf->useTemplate($tpl);
+       }
+   
+       // Load the attached completion certificate PDF
+       $attachmentPageCount = $mergedPdf->setSourceFile($attachmentPath);
+       for ($j = 1; $j <= $attachmentPageCount; $j++) {
+           $tpl = $mergedPdf->importPage($j);
+           $mergedPdf->AddPage();
+           $mergedPdf->useTemplate($tpl);
+       }
+    
+       // Load the measurement book PDF (newly added)
+       if (file_exists($measurementBookPath)) {
+           $measurementBookPageCount = $mergedPdf->setSourceFile($measurementBookPath);
+           for ($k = 1; $k <= $measurementBookPageCount; $k++) {
+               $tpl = $mergedPdf->importPage($k);
+               $mergedPdf->AddPage();
+               $mergedPdf->useTemplate($tpl);
+           }
+       }
+       foreach ($documentPaths as $documentPath) {
+        $pageCount = $mergedPdf->setSourceFile($documentPath);
+        for ($k = 1; $k <= $pageCount; $k++) {
+            $tpl = $mergedPdf->importPage($k);
+            $mergedPdf->AddPage();
+            $mergedPdf->useTemplate($tpl);
+        }
+         }
+   
+       // Output the merged PDF
+       return Response::make($mergedPdf->Output('S'), 200, [
+           'Content-Type' => 'application/pdf',
+           'Content-Disposition' => 'attachment; filename="merged_pdf.pdf"',
+       ]);
+   } 
 }
-
-}
-

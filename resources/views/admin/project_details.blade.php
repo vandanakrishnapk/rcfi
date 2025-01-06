@@ -74,7 +74,7 @@
                                 <div class="col-12 bg-secondary mb-3">
                                     <p class="fs-6 text-primary p-3 mt-3">Please verify the project details once before you approve the project</p>
                                 </div>
-                                @if(Auth::user()->role === 2)
+                                @if(Auth::user()->role ===2)
                                 <div class="col-4">
                                     <a href="#" id="approvebutton" class="btn btn-danger rounded" data-id="{{ $projectId->project_id }}">
                                         Approve
@@ -439,6 +439,41 @@
                 </div>
                                
                 @endif
+
+                @if($appdetSW)
+                <table class="table mt-2">
+                    <thead>
+                        <tr>
+                            <th><strong>Document Name</strong></th>
+                            <th><strong>Action</strong></th>
+                         
+                        </tr>
+                    </thead>
+  
+                    <tbody>
+                   
+                      
+                      @foreach (['land_document', 'possession_certificate','agreement_with_contractor', 'agreement_with_committee'] as $doc)
+                      <tr>
+                          <td>{{ ucfirst(str_replace('_', ' ', $doc)) }}</td>
+                        
+                        
+                          <td>
+                              @if(isset($projectId->$doc))
+                                  <div class="d-flex">
+                                      <button class="btn btn-sm btn-danger view-doc me-1" data-id="{{ $projectId->documentId }}" data-type="{{ $doc }}"><i class="bi bi-file-earmark-pdf-fill"></i></button>
+                                     
+                                  </div>
+                              @else
+                                  No File
+                              @endif
+                          </td>
+                      </tr>
+                      @endforeach
+                  </tbody>
+                  
+                </table>
+                @else
                     <table class="table mt-2">
                         <thead>
                             <tr>
@@ -471,6 +506,7 @@
                       </tbody>
                       
                     </table>
+                    @endif
                     @endif
                         </div>
                     </div>
@@ -572,13 +608,10 @@
                             </div>
                            
                            </div>
-             @endif                     
+             @endif               
               
-                           
-
-
                                
-                                <div class="row">
+             <div class="row">
                                  <div class="col-12">
                                     <table id="ImplementTable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
@@ -591,7 +624,6 @@
                                                 <th>balance</th>
                                                 <th>Previous Current</th>
                                                 <th>Previous updates</th>
-                                                <th>Action</th>
                                                 <th>Approval</th>
                                                 <th>Status</th>
                                                 <th>Remarks</th>                                              
@@ -616,7 +648,6 @@
                                                 <th></th>
                                                 <th></th>
                                                 <th></th>
-                                                <th></th>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -624,7 +655,7 @@
 
                                      <div aria-live="polite" aria-atomic="true" style="position: relative;">
                                         <div class="toast-container position-fixed top-0 end-0 p-3">
-                                            @foreach ($notifications as $notification)
+                                            {{-- @foreach ($notifications as $notification)
                                                 @if (is_null($notification->read_at))
                                                     <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
                                                         <div class="toast-header widgetcolor">
@@ -649,33 +680,11 @@
                                                         </div>
                                                     </div>
                                                 @endif
-                                            @endforeach
+                                            @endforeach --}}
                                         </div>
-                                    </div>
-                                    
+                                    </div>                                  
                                  
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header widgetcolor">
-                <h5 class="modal-title" id="editModalLabel">Update utilized</h5>
-                <button type="widgetcolorton" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" id="fundId">
-                <div class="mb-3">
-                    <label for="utilized">utilized Value:</label>
-                    <input type="number" name="utilized" id="utilized" class="form-control">
-                  </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn pro" id="saveChanges">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
+
                                 </div>
                                 <div class="row">
                                     <div class="col-3"></div>
@@ -701,16 +710,14 @@
                              
                             </div>
                         </div>
-
+            </div>
 
 
 
 
                           <!-- admin stage 6-->
-            <div class="tab-pane fade" id="admin-stage6" role="tabpanel" aria-labelledby="TabControl-Support">
-           
-                
-                <div class="collapse" id="pdp-support">
+            <div class="tab-pane fade" id="admin-stage6" role="tabpanel" aria-labelledby="TabControl-Support">        
+                 <div class="collapse" id="pdp-support">
                     <div class="card">
                         <div class="card-header widgetcolor">
                             <h2 class="p-4 mt-3">COMPLETION STAGE</h2>
@@ -726,7 +733,14 @@
                                       Project successfully approved
                                     </div>
                                 </div>
+                           
+                                <div class="col-10">
+                                    <a href="{{ route('admin.projectdownload') }}" class="btn btn-danger mb-3">
+                                        Download Project Details as PDF
+                                    </a>
+                                </div>
                             </div>
+              
                                    @else
                                    <div class="row">
                                     <div class="col-10"></div>
@@ -739,13 +753,63 @@
                                    </div>
                                    @endif
                                 
-                           
+                                   @if($appdetSW)
+                                   <div class="row">              
+               
+                                       <div class="row mb-3">
+                                           <div class="col-4">Consumption sheet</div>
+                                           <div class="col-2">:</div>
+                                           <div class="col-4">
+                                               <strong>
+                                                   @if($com && $com->consumptional_sheet)
+                                                   <!-- Display consumptional sheet -->
+                                                   <p>{{ $com->consumptional_sheet }}</p>
+                                                   
+                                                   <!-- Check if the file exists before showing the download link -->
+                                                   @if(file_exists(public_path('documents24/' . $com->consumptional_sheet)))
+                                                       <a href="{{ asset('documents24/'.$com->consumptional_sheet) }}" class="btn btn-light btn-sm" target="_blank">
+                                                           <i class="fas fa-file-excel" style="color: #28a745; font-size: 20px;"></i> Download Excel
+                                                       </a>
+                                                   @else
+                                                       <p class="text-danger">File not found.</p>
+                                                   @endif
+                                               @endif
+                                               
+                                               </strong>
+                                           </div>
+                                       </div><br>
+                                       
+                                       <div class="col-4 border border-3 border-secondary p-4">
+                                       @if($com && $com->photo1)
+                                           <img src="{{ asset('documents24/'.$com->photo1) }}" height="300px" width="300px" alt="Photo 1" >
+                                       @else
+                                           <strong>No photo uploaded</strong>
+                                       @endif
+                                   </div>
+                              
+                                   <div class="col-4 border border-3 border-secondary p-4">
+                                       @if($com && $com->photo2)
+                                           <img src="{{ asset('documents24/'.$com->photo2) }}" height="300px" width="300px" alt="Photo 2" >
+                                       @else
+                                           <strong>No photo uploaded</strong>
+                                       @endif
+                                   </div>
+                               
+                      
+                                      <div class="col-4 border border-3 border-secondary p-4">
+                                       @if($com && $com->photo3)
+                                           <img src="{{ asset('documents24/'.$com->photo3) }}" height="300px" width="300px" alt="Photo 3" >
+                                       @else
+                                           <strong>No photo uploaded</strong>
+                                       @endif
+                                    @else
+    
                                    <div class="row">
                                     <div class="col-4">Completion Certificate</div>
                                     <div class="col-2">:</div>
                                     <div class="col-4">
                                         @if($com && $com->completion_certificate)
-                                            <button class="btn btn-danger btn-sm view-file" data-id="{{ $projectId->documentId }}" data-type="{{ $doc }}">
+                                            <button class="btn btn-danger btn-sm view-file" data-id="{{ $com->completionId }}" data-type="completion_certificate">
                                                 <i class="bi bi-file-earmark-pdf-fill"></i> 
                                             </button>
                                         @else
@@ -759,7 +823,7 @@
                                     <div class="col-2">:</div>
                                     <div class="col-4">
                                         @if($com && $com->measurement_book)
-                                            <button class="btn btn-danger btn-sm view-file" data-id="{{ $projectId->documentId }}" data-type="{{ $doc }}">
+                                            <button class="btn btn-danger btn-sm view-file" data-id="{{ $com->completionId }}" data-type="measurement_book">
                                                 <i class="bi bi-file-earmark-pdf-fill"></i>
                                             </button>
                                         @else
@@ -850,29 +914,20 @@
                                         <strong>{{ $com ? $com->geo_location : 'No data available' }}</strong>
                                     </div>
                                 </div><br>
-                        
+                                    
                               
-@endif
+                        @endif
+                        @endif
+
 
                         </div>
                         </div>
                              
+                        </div>                     
+                        </div> <!--tab -->
                         </div>
                         </div>
-
-
-
-
-
-
-
-
-   
-
-
-</div>
-    </div>
-</div>
+                        </div>
 
 
 
@@ -1009,7 +1064,7 @@ $(document).ready(function() {
                 },
                 "columns": [
                     {"data":"billId"},
-                    {"data": "input"},  
+                    {"data": "inputName"},  
                     {"data":"amount",
                     "render": function(data, type, row) {
                   
@@ -1041,23 +1096,7 @@ $(document).ready(function() {
                 },
                  },  
                  {"data":"previous_updates"},  
-                 {
-                data: null,
-                name: 'action',
-                orderable: false,
-                searchable: false,
-                render: function(data, type, row, meta) {
-                                      
-                    return `
-                    <div class="dd d-flex">
-                       <button class="btn btn-dark btn-sm edit-utilized me-1" data-id="${row.fundId}" title="Edit">
-                            Update Utilized
-                        </button>                                                          
-                       
-                    `;
-                }
-
-                    },
+                
                     {
                     data: null,
                     name: 'approval',
@@ -1065,11 +1104,11 @@ $(document).ready(function() {
                     searchable: false,
     render: function(data, type, row, meta) {
         // Check conditions
-        if (row.stage5_status === 1 && row.pmt_status === 1 && row.hod_status === 1 && row.fm_status === 1 && userRole === 2) {
+        if (row.stage5_status === 1 && row.pmt_status === 1 && row.hod_status === 1 &&  userRole === 2) {
             return `<button class="btn btn-danger btn-sm info COO-approval me-1" data-id="${row.fundId}" title="COO Approval">
-                COO Approval
+                Verify by COO
                 </button>`;
-        } else if (row.stage5_status === 1 && row.pmt_status === 1 && userRole === 6) {
+        } else if (row.stage5_status === 1  && userRole === 6) {
             return `<button class="btn btn-danger btn-sm info HOD-approval me-1" data-id="${row.fundId}" title="HOD Approval">
                 HOD Approval
                 </button>`;
@@ -1093,13 +1132,17 @@ $(document).ready(function() {
         if ((row.stage5_status === 1 || row.stage5_status === 2) && row.pmt_status === 1 && row.hod_status === 1 && row.fm_status === 1 && row.coo_status ===1) {
             return `<div class="badge text-bg-info">COO Approved</div>`;
         } 
-        else if ((row.stage5_status === 1|| row.stage5_status === 2) && row.pmt_status === 1 && row.hod_status === 1 && row.fm_status === 1) {
-            return `<div class="badge text-bg-info">Financial Manager Approved</div>`;
+        else if ((row.stage5_status === 1|| row.stage5_status === 2) && row.pmt_status === 1 && row.hod_status === 1 && row.coo_status === 1) {
+            return `<div class="badge text-bg-success">COO Verified</div>`;
         } else if ((row.stage5_status === 1 || row.stage5_status ===2) && row.pmt_status === 1 && row.hod_status === 1) {
-            return `<div class="badge text-bg-info">HOD approved</div>`;
+            return `<div class="badge text-bg-info">Project Engineer & HOD approved</div>`;
         } else if ((row.stage5_status === 1 || row.stage5_status === 2) && row.pmt_status === 1) {
             return `<div class="badge text-bg-info">Project Engineer approved</div>`;
-        }          return ''; 
+        } 
+        else if((row.stage5_status === 1 || row.stage5_status === 2) && row.hod_status === 1) {
+            return `<div class="badge text-bg-info">HOD approved</div>`;
+        } 
+        return `<div class="badge text-bg-secondary">Not Approved</div>`;
       
     }        
                 },  
@@ -1407,45 +1450,7 @@ $(document).ready(function() {
     });  
 
 
-    // edit utilized by coo 
-    //edit current input
-$(document).ready(function() {
-
-// Event for opening the edit modal
-$('#ImplementTable').on('click', '.edit-utilized', function() {
-    var fundId = $(this).data('id');
-    $.get(`{{ url('/admin/projects/details/implementation/utilized') }}/${fundId}`, function(data) {
-        // Fill the form with data
-    $('#fundId').val(data.fundId);
-    $('#utilized').val(data.current);
-    $('#editModal').modal('show'); 
-    });
-});
-
-// Save changes on the modal
-$('#saveChanges').on('click', function() {
-    var fundId = $('#fundId').val();
-    var utilized = $('#utilized').val();
-
-    $.ajax({
-        url: `{{ url('/admin/projects/details/stage5/utilized/update') }}/${fundId} `, // Adjust your URL
-        type: 'POST',
-        data: {
-             utilized: utilized,
-            _token: $('meta[name="csrf-token"]').attr('content') // Include CSRF token
-        },
-        success: function(response) {
-            toastr.success(response.message, 'Success');
-            $('#editModal').modal('hide');
-            setTimeout(function() {
-                    location.reload(); 
-                }, 2000);
-
-        },
-       
-    });
-});
-});
+  
 
 
     document.addEventListener('DOMContentLoaded', function () {

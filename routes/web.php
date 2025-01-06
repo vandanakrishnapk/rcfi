@@ -19,6 +19,13 @@ use App\Http\Controllers\admin\HouseController;
 use App\Http\Controllers\admin\MedicalController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\DisplayProjectController;
+use App\Http\Controllers\admin\ODFProjectController;
+use App\Http\Controllers\admin\diffProjectController;
+use App\Http\Controllers\admin\familyProjectController;
+use App\Http\Controllers\admin\HRController;
+
+
+
 
 
 //user Controllers
@@ -38,8 +45,9 @@ use App\Http\Controllers\user\userGeneralProjectController;
 use App\Http\Controllers\user\userShopController;
 use App\Http\Controllers\user\userHouseController;
 use App\Http\Controllers\user\userDisplayProjectController;
-
-
+use App\Http\Controllers\user\userodfController; 
+use App\Http\Controllers\user\userdiffController; 
+use App\Http\Controllers\user\userFamilyProjectController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -139,7 +147,53 @@ Route::get('/projects/datatable',[ProjectController::class,'getProjectData'])->n
 Route::get('/projects/view/more/{id}',[ProjectController::class,'projectViewMore'])->name('admin.projectViewMore');
 Route::get('/projects/edit/{id}',[ProjectController::class,'editProject'])->name('admin.editProject');
 Route::post('projects/update',[ProjectController::class,'updateProject'])->name('admin.updateProject');
-Route::delete('projects/delete/{id}',[ProjectController::class, 'deleteProject'])->name('admin.deleteProject');
+Route::delete('projects/delete/{id}',[ProjectController::class, 'deleteProject'])->name('admin.deleteProject');  
+//orphan care project routes
+Route::post('/projects/odf/new',[ODFProjectController::class,'doodfProject'])->name('admin.doodfProject');
+Route::post('/projects/odf/datatable',[ODFProjectController::class,'getodfProjectData'])->name('admin.getodfProjectData');
+Route::get('/projects/odf/view/more/{id}',[ODFProjectController::class,'projectodfViewMore'])->name('admin.projectodfViewMore');
+Route::get('/projects/odf/edit/{id}',[ODFProjectController::class,'editodfProject'])->name('admin.editodfProject');
+Route::post('projects/odf/update',[ODFProjectController::class,'updateodfProject'])->name('admin.updateodfProject');
+Route::delete('projects/odf/delete/{id}',[ODFProjectController::class, 'deleteodfProject'])->name('admin.deleteodfProject');
+//Allocate fund 
+Route::get('/project/odf/fund/view',[ODFProjectController::class,'odfFundview'])->name('admin.odfFundview');
+Route::post('/project/odf/fund/new',[ODFProjectController::class,'addFund'])->name('admin.addFund');
+Route::get('/project/odf/current/view',[ODFProjectController::class,'getCurrent'])->name('admin.getCurrrent');
+Route::post('/project/odf/current/update',[ODFProjectController::class,'updateCurrent'])->name('admin.updateCurrrent');
+Route::post('/project/odf/status/update/{id}',[ODFProjectController::class,'updateStatus'])->name('admin.updateStatus');
+
+
+//Differently Abled Project Routes
+Route::post('/projects/diff/new',[diffProjectController::class,'dodiffProject'])->name('admin.dodiffProject');
+Route::post('/projects/diff/datatable',[diffProjectController::class,'getdiffProjectData'])->name('admin.getdiffProjectData');
+Route::get('/projects/diff/view/more/{id}',[diffProjectController::class,'projectdiffViewMore'])->name('admin.projectdiffViewMore');
+Route::get('/projects/diff/edit/{id}',[diffProjectController::class,'editdiffProject'])->name('admin.editdiffProject');
+Route::post('projects/diff/update',[diffProjectController::class,'updatediffProject'])->name('admin.updatediffProject');
+Route::delete('projects/diff/delete/{id}',[diffProjectController::class, 'deletediffProject'])->name('admin.deletediffProject');
+//Allocate fund 
+Route::get('/project/diff/fund/view',[diffProjectController::class,'diffFundview'])->name('admin.diffFundview');
+Route::post('/project/diff/fund/new',[diffProjectController::class,'adddiffFund'])->name('admin.adddiffFund');
+Route::get('/project/diff/current/view',[diffProjectController::class,'getdiffCurrent'])->name('admin.getdiffCurrrent');
+Route::post('/project/diff/current/update',[diffProjectController::class,'updatediffCurrent'])->name('admin.updatediffCurrrent');
+Route::post('/project/diff/status/update/{id}',[diffProjectController::class,'updatediffStatus'])->name('admin.updatediffStatus');
+
+
+//Family Aid Project routes
+Route::post('/projects/family/new',[familyProjectController::class,'dofamilyProject'])->name('admin.dofamilyProject');
+Route::post('/projects/family/datatable',[familyProjectController::class,'getfamilyProjectData'])->name('admin.getfamilyProjectData');
+Route::get('/projects/family/view/more/{id}',[familyProjectController::class,'projectfamilyViewMore'])->name('admin.projectfamilyViewMore');
+Route::get('/projects/family/edit/{id}',[familyProjectController::class,'editfamilyProject'])->name('admin.editfamilyProject');
+Route::post('projects/family/update',[familyProjectController::class,'updatefamilyProject'])->name('admin.updatefamilyProject');
+Route::delete('projects/family/delete/{id}',[familyProjectController::class, 'deletefamilyProject'])->name('admin.deletefamilyProject');
+//Allocate fund 
+Route::get('/project/family/fund/view',[familyProjectController::class,'familyFundview'])->name('admin.familyFundview');
+Route::post('/project/family/fund/new',[familyProjectController::class,'addfamilyFund'])->name('admin.addfamilyFund');
+Route::get('/project/family/current/view',[familyProjectController::class,'getfamilyCurrent'])->name('admin.getfamilyCurrrent');
+Route::post('/project/family/current/update',[familyProjectController::class,'updatefamilyCurrent'])->name('admin.updatefamilyCurrrent');
+Route::post('/project/family/status/update/{id}',[familyProjectController::class,'updatefamilyStatus'])->name('admin.updatefamilyStatus');
+
+
+
 
 
 //project details route
@@ -154,8 +208,6 @@ Route::get('/project/details/stage5/implementation/datatable',[ProjectDetailsCon
 Route::post('/project/details/stage5/bill/approve/{id}',[ProjectDetailsController::class,'billApprove'])->name('admin.billApprove');
 Route::post('/project/details/stage6/completion/approve/{id}',[ProjectDetailsController::class,'approveCompletion'])->name('admin.approveCompletion');
 Route::get('/download/completion/file',[ProjectDetailsController::class,'downloadFile'])->name('admin.downloadFile');
-Route::get('/projects/details/implementation/utilized/{id}',[ProjectDetailsController::class,'editUtilized'])->name('user.editUtilized');
-Route::post('/projects/details/stage5/utilized/update/{id}',[ProjectDetailsController::class,'updateUtilized'])->name('user.updateUtilized');
 Route::post('/projects/details/notifications/{id}/mark-as-read', [ProjectDetailsController::class, 'markAsRead'])->name('notifications.markAsRead'); 
 
 //construction project 
@@ -168,7 +220,6 @@ Route::get('/application/differently/abled/view/more/{id}',[DifferenltlyAbledCon
 Route::get('/application/diffabled/edit/{id}',[DifferenltlyAbledController::class,'EditDiffAbled'])->name('admin.EditDiffAbled');
 Route::post('/application/diffabled/update',[DifferenltlyAbledController::class,'updateDiffAbled'])->name('admin.UpdateDiffAbled');
 Route::delete('/application/diffabled/delete/{id}',[DifferenltlyAbledController::class,'deleteDiffAbled'])->name('admin.deleteDiffabled');
-
 
 //family welfare 
 Route::get('/application/family/welfare/view',[FamilyController::class,'getFamilyView'])->name('admin.getFamily');
@@ -216,8 +267,6 @@ Route::get('/construction/project/medical/view/more/{id}',[MedicalController::cl
 Route::get('/construction/project/medical/edit/{id}',[MedicalController::class,'EditMedical'])->name('admin.EditMedical');
 Route::post('/construction/project/medical/update',[MedicalController::class,'updateMedical'])->name('admin.updateMedical');
 Route::delete('/construction/project/medical/delete/{id}',[MedicalController::class,'deleteMedical'])->name('admin.deleteMedical');
-
-
 Route::get('/construction/project/view/under/project',[ConstructionController::class,'getProConstruction'])->name('admin.getProConstruction');
 
 
@@ -253,7 +302,12 @@ Route::post('/project/details/stage5/coo/material/approval/{id}',[ProjectDetails
 // Route::get('/project/details/bill/status',[ProjectDetailsController::class,'getCooBillStatus'])->name('admin.getCooBillStatus');
 
 Route::get('/project/details/bill/pie-chart', [ProjectDetailsController::class, 'getPieChart'])->name('admin.piechart');
+Route::get('/project/details/download/pdf', [ProjectDetailsController::class, 'downloadPdf'])->name('admin.projectdownload');
 
+
+//hr routes 
+Route::get('/hr/module',[HRController::class,'getHRModule'])->name('admin.getHRModule');
+Route::post('/hr/module/employee/new',[HRController::class,'newEmployee'])->name('admin.newEmployee');
 });  
 
 
@@ -261,13 +315,10 @@ Route::get('/project/details/bill/pie-chart', [ProjectDetailsController::class, 
 
 Route::prefix('user')->middleware(['auth', 'role:3,4,5'])->group(function ()
  {
-    Route::get('/home',[usersController::class,'home'])->name('user.home');
-    Route::get('/project/view',[userProjectController::class,'getUserProject'])->name('user.userProject');
-    Route::get('/projects/datatable',[userProjectController::class,'getProjectData'])->name('user.getProjectData');
-
-    Route::get('/project/details/view/{id}',[UserProjectDetailsController::class,'getProjectDetails'])->name('user.getProjectDetails');
-
-//Applications Route 
+ Route::get('/home',[usersController::class,'home'])->name('user.home');
+ Route::get('/project/view',[userProjectController::class,'getUserProject'])->name('user.userProject');
+ Route::get('/projects/datatable',[userProjectController::class,'getProjectData'])->name('user.getProjectData');
+ Route::get('/project/details/view/{id}',[UserProjectDetailsController::class,'getProjectDetails'])->name('user.getProjectDetails');
 //markaz Open care routes 
 Route::get('/markaz/orphan/care/view',[userMarkazOrphanCareController::class,'getMarkazOrphanCare'])->name('user.getMarkazOrphanCare');
 Route::post('/markaz/orphan/care/new',[userMarkazOrphanCareController::class,'doMarkazOrphanCare'])->name('user.doMarkazOrphanCare');
@@ -401,6 +452,8 @@ Route::get('/projects/familyaid',[userDisplayProjectController::class,'familyaid
 Route::get('/projects/datatable/familyaid',[userDisplayProjectController::class,'getfamilyaidProjectData'])->name('user.getfamilyaidProjectData');
 Route::get('/projects/general',[userDisplayProjectController::class,'general'])->name('user.general');
 Route::get('/projects/datatable/general',[userDisplayProjectController::class,'getgeneralProjectData'])->name('user.getgeneralProjectData');
+
+
 //display construction project routes 
 Route::get('/projects/education',[userDisplayProjectController::class,'education'])->name('user.education');
 Route::get('/projects/datatable/education',[userDisplayProjectController::class,'geteducationProjectData'])->name('user.geteducationProjectData');
@@ -422,6 +475,48 @@ Route::post('/project/details/stage5/fm/material/approval/{id}',[UserProjectDeta
 Route::get('/project/details/bill/pie-chart', [UserProjectDetailsController::class, 'getPieChart'])->name('user.piechart');
 // Route::get('/project/details/bill/status',[UserProjectDetailsController::class,'getCooBillStatus'])->name('user.getCooBillStatus');
 Route::get('/project/details/download/pdf', [UserProjectDetailsController::class, 'downloadPdf'])->name('user.projectdownload');
+Route::get('/projects/details/implementation/utilized/{id}',[UserProjectDetailsController::class,'editUtilized'])->name('user.editUtilized');
+Route::post('/projects/details/stage5/utilized/update/{id}',[UserProjectDetailsController::class,'updateUtilized'])->name('user.updateUtilized');
+
+//odf project routes
+Route::post('/projects/odf/new',[userodfController::class,'doodfProject'])->name('user.doodfProject');
+Route::post('/projects/odf/datatable',[userodfController::class,'getodfProjectData'])->name('user.getodfProjectData');
+Route::get('/projects/odf/view/more/{id}',[userodfController::class,'projectodfViewMore'])->name('user.projectodfViewMore');
+Route::get('/projects/odf/edit/{id}',[userodfController::class,'editodfProject'])->name('user.editodfProject');
+Route::post('projects/odf/update',[userodfController::class,'updateodfProject'])->name('user.updateodfProject');
+Route::delete('projects/odf/delete/{id}',[userodfController::class, 'deleteodfProject'])->name('user.deleteodfProject');
+//Allocate fund 
+Route::get('/project/odf/fund/view',[userodfController::class,'odfFundview'])->name('user.odfFundview');
+Route::post('/project/odf/fund/new',[userodfController::class,'addFund'])->name('user.addFund');
+Route::post('/project/odf/status/update/{id}',[userodfController::class,'updateStatus'])->name('user.updateStatus');
+Route::post('/project/odf/paid/update/{id}',[userodfController::class,'updatepaymentStatus'])->name('user.updatepaymentStatus'); 
+
+//differently abled project routes
+Route::post('/projects/diff/datatable',[userdiffController::class,'getdiffProjectData'])->name('user.getdiffProjectData');
+Route::get('/projects/diff/view/more/{id}',[userdiffController::class,'projectdiffViewMore'])->name('user.projectdiffViewMore');
+Route::get('/projects/diff/edit/{id}',[userdiffController::class,'editdiffProject'])->name('user.editdiffProject');
+Route::post('projects/diff/update',[userdiffController::class,'updatediffProject'])->name('user.updatediffProject');
+Route::delete('projects/diff/delete/{id}',[userdiffController::class, 'deletediffProject'])->name('user.deletediffProject');
+//Allocate fund 
+Route::get('/project/diff/fund/view',[userdiffController::class,'diffFundview'])->name('user.diffFundview');
+Route::post('/project/diff/fund/new',[userdiffController::class,'adddiffFund'])->name('user.adddiffFund');
+Route::get('/project/diff/current/view',[userdiffController::class,'getdiffCurrent'])->name('user.getdiffCurrrent');
+Route::post('/project/diff/current/update',[userdiffController::class,'updatediffCurrent'])->name('user.updatediffCurrrent');
+Route::post('/project/diff/status/update/{id}',[userdiffController::class,'updatediffStatus'])->name('user.updatediffStatus');
+Route::post('/project/diff/paid/update/{id}',[userdiffController::class,'updatediffpaymentStatus'])->name('user.updatediffpaymentStatus');
+//family aid routes
+Route::post('/projects/family/datatable',[userFamilyProjectController::class,'getfamilyProjectData'])->name('user.getfamilyProjectData');
+Route::get('/projects/family/view/more/{id}',[userFamilyProjectController::class,'projectfamilyViewMore'])->name('user.projectfamilyViewMore');
+Route::get('/projects/family/edit/{id}',[userFamilyProjectController::class,'editfamilyProject'])->name('user.editfamilyProject');
+Route::post('projects/family/update',[userFamilyProjectController::class,'updatefamilyProject'])->name('user.updatefamilyProject');
+Route::delete('projects/family/delete/{id}',[userFamilyProjectController::class, 'deletefamilyProject'])->name('user.deletefamilyProject');
+//Allocate fund 
+Route::get('/project/family/fund/view',[userFamilyProjectController::class,'familyFundview'])->name('user.familyFundview');
+Route::post('/project/family/fund/new',[userFamilyProjectController::class,'addfamilyFund'])->name('user.addfamilyFund');
+Route::get('/project/family/current/view',[userFamilyProjectController::class,'getfamilyCurrent'])->name('user.getfamilyCurrrent');
+Route::post('/project/family/current/update',[userFamilyProjectController::class,'updatefamilyCurrent'])->name('user.updatefamilyCurrrent');
+Route::post('/project/family/status/update/{id}',[userFamilyProjectController::class,'updatefamilyStatus'])->name('user.updatefamilyStatus');
+Route::post('/project/family/paid/update/{id}',[userFamilyProjectController::class,'updatefamilypaymentStatus'])->name('user.updatefamilypaymentStatus');
 
 });
 

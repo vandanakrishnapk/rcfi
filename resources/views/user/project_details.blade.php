@@ -431,6 +431,67 @@
             </div>
             <div class="card-body">
                 @if($stage2Status === 2 && (Auth::user()->role ===3 || Auth::user()->role === 4 || Auth::user()->role === 5))
+                @if($appdetSW)
+                <div class="row">
+                    <div class="col-10">
+                      <form id="documentUploadForm" method="POST" enctype="multipart/form-data">
+                        @csrf
+                      
+                        <table class="table">
+                          <thead>
+                              <tr>
+                                  <th><strong>Document Name</strong></th>
+                                  <th><strong>Upload</strong></th>
+                                  <th><strong>Action</strong></th>
+                               
+                              </tr>
+                          </thead>
+        
+                          <tbody>
+                            <tr>
+                                <td colspan="3"> <input type="hidden" name="proId" value="{{ $projectId->project_id }}" class="form-control"></td>
+                            </tr>
+                            
+                            @foreach (['land_document', 'recommendation_letter', 'agreement_with_contractor', 'agreement_with_committee'] as $doc)
+                            <tr>
+                                <td>{{ ucfirst(str_replace('_', ' ', $doc)) }}</td>
+                                <td>
+                                    <input type="file" name="{{ $doc }}" class="form-control">
+                                    <span id="{{ $doc }}Error" class="text-danger"></span>
+                                </td>
+                              
+                                <td>
+                                    @if(isset($projectId->$doc))
+                                        <div class="d-flex">
+                                            <button class="btn btn-sm btn-danger view-doc me-1" data-id="{{ $projectId->documentId }}" data-type="{{ $doc }}"><i class="bi bi-file-earmark-pdf-fill"></i></button>
+                                            <button class="btn btn-warning btn-sm del-doc" data-id="{{ $projectId->documentId }}" data-type="{{ $doc }}"><i class="bi bi-x-lg"></i></button>
+                                        </div>
+                                    @else
+                                        No File
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach 
+                          
+                        </tbody>
+                        
+                      </table>
+
+                      <div class="row">
+                        <div class="col-4"></div>
+                        <div class="col-4">
+      
+                          <button type="submit" class="btn pro">Submit</button>
+                
+                        </div>
+                      </div> 
+                     </form>
+                     </div>
+                </div> 
+            
+                      
+                      
+                @else
                 <div class="row">
                   <div class="col-10">
                     <form id="documentUploadForm" method="POST" enctype="multipart/form-data">
@@ -470,7 +531,8 @@
                                   @endif
                               </td>
                           </tr>
-                          @endforeach
+                          @endforeach 
+                        
                       </tbody>
                       
                     </table>
@@ -484,7 +546,8 @@
                       </div>  </form>
                      </div>
                 </div> 
-                @else 
+                @endif
+            @else 
                 <div class="row">
                     <div class="col-12">
                         <div class="alert alert-primary text-primary">
@@ -787,11 +850,11 @@
                             </table>
 
  <!-- Edit Current Value Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+<div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header widgetcolor">
-                <h5 class="modal-title" id="editModalLabel">Request Current</h5>
+                <h5 class="modal-title" id="requestModalLabel">Request Current</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -812,7 +875,7 @@
 <div aria-live="polite" aria-atomic="true" style="position: relative;">
     <div class="toast-container position-fixed top-0 end-0 p-3">
         
-        @foreach ($notifications as $notification)
+        {{-- @foreach ($notifications as $notification)
             @if (is_null($notification->read_at))
                 <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="toast-header widgetcolor">
@@ -837,7 +900,7 @@
                     </div>
                 </div>
             @endif
-        @endforeach
+        @endforeach --}}
     </div>
 </div>
 
@@ -865,19 +928,28 @@
         </div>
     </div>
 </div>
-{{-- <!-- display status modal-->
-<!-- Modal Structure -->
-<div class="toast" id="statusToast" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; top: 20px; right: 20px; z-index: 1050;">
-    <div class="toast-header widgetcolor">
-        
-        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header widgetcolor">
+                <h5 class="modal-title" id="editModalLabel">Update utilized</h5>
+                <button type="widgetcolorton" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="fundId">
+                <div class="mb-3">
+                    <label for="utilized">utilized Value:</label>
+                    <input type="number" name="utilized" id="utilized" class="form-control">
+                  </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn pro" id="updateUtilized">Save changes</button>
+            </div>
+        </div>
     </div>
-    <div class="toast-body bg-white" id="toastMessage">
-        <!-- Message will be inserted here -->
-    </div>
-</div> --}}
+</div>
+</div>
 
 
 
@@ -912,15 +984,36 @@
                         <h2 class="p-4 mt-3"> COMPLETION STAGE</h2>
                     </div>
                     <div class="card-body">
-                    @if($stage6Status === 1 && (Auth::user()->role ===3 || Auth::user()->role===4 ||Auth::user()->role===5))
-                   
-                          
+                    @if($stage6Status === 1 && (Auth::user()->role ===3 || Auth::user()->role===4 ||Auth::user()->role===5))  
+                    
+                @if($appdetSW)
+                    <form id="completionForm" method="post" enctype="multipart/form-data">
+                    @csrf
+                        <input type="hidden" name="proId" value="{{ $projectId->proId }}">                        
+                       
+                        <div>
+                            <label for="measurement_book">Consumptional Sheet:</label>
+                            <input type="file" id="consumptional_sheet" name="consumptional_sheet" class="form-control">
+                            <span class="text-danger" id="consumptional_sheetError"></span>
+                        </div> <br>
+                        
+                        <!-- Photo Uploads -->
+                        <div>
+                            <label for="photos">Upload 3 Photos of Before During and After </label>
+                            <input type="file" id="photos" name="photos[]" class="form-control" multiple required>
+                            <span class="text-danger" id="photosError"></span>
+                        </div><br>     
+                    <div class="row">
+                            <div class="col-5"></div>
+                            <div class="col-5">
+                                <button type="submit" class="btn pro mt-2">Submit</button>
+                            </div>
+                        </div>
+                </form>
+                @else
                     <form id="completionForm" method="post" enctype="multipart/form-data">
                         @csrf
-                        <!-- Hidden Field for Project ID -->
                         <input type="hidden" name="proId" value="{{ $projectId->proId }}">                        
-                      
-                        <!-- File Uploads -->
                         <div>
                             <label for="completion_certificate">Completion Certificate:</label>
                             <input type="file" id="completion_certificate" name="completion_certificate" class="form-control" required>
@@ -935,7 +1028,7 @@
                         
                         <!-- Photo Uploads -->
                         <div>
-                            <label for="photos">Photo Uploads:</label>
+                            <label for="photos">Upload 5 Photos </label>
                             <input type="file" id="photos" name="photos[]" class="form-control" multiple required>
                             <span class="text-danger" id="photosError"></span>
                         </div><br>
@@ -977,6 +1070,7 @@
                         </div>
                     </form>
                     @endif
+                    @endif
                     @if(($stage6Status === 2 || $stage6Status === 3) && (Auth::user()->role === 3 || Auth::user()->role === 4 || Auth::user()->role === 5))         
                     <div class="completionView p-4">  
                         @if($stage6Status === 3)  
@@ -988,33 +1082,37 @@
                                 </div>
                             </div>
                         @endif
-                
+                @if(!$appdetSW)
                       
                         <div class="row">
                             <div class="col-4">Completion Certificate</div>
                             <div class="col-2">:</div>
                             <div class="col-4">
+                           
+                      
                                 @if($com && $com->completion_certificate)
-                                    <button class="btn btn-danger btn-sm view-file" data-id="{{ $projectId->documentId }}" data-type="{{ $doc }}">
+                                    <button class="btn btn-danger btn-sm view-file" data-id="{{ $com->completionId }}" data-type="completion_certificate">
                                         <i class="bi bi-file-earmark-pdf-fill"></i> 
                                     </button>
                                 @else
                                     <strong>No file uploaded</strong>
                                 @endif
                             </div>
-                        </div><br>
+                        </div>
+                        <br>
                 
                         <div class="row">
                             <div class="col-4">Measurement Book</div>
                             <div class="col-2">:</div>
                             <div class="col-4">
                                 @if($com && $com->measurement_book)
-                                    <button class="btn btn-danger btn-sm view-file" data-id="{{ $projectId->documentId }}" data-type="{{ $doc }}">
-                                        <i class="bi bi-file-earmark-pdf-fill"></i> View Measurement Book
+                                    <button class="btn btn-danger btn-sm view-file" data-id="{{ $com->completionId }}" data-type="measurement_book">
+                                        <i class="bi bi-file-earmark-pdf-fill"></i> 
                                     </button>
                                 @else
                                     <strong>No file uploaded</strong>
                                 @endif
+                            
                             </div>
                         </div><br>
                 
@@ -1102,16 +1200,85 @@
                         </div><br>
                 
                         <div class="row">
-                            <div class="col-4"></div>
-                            <div class="col-2"></div>
-                            <div class="col-4">
-                                <button type="button" class="btn pro rounded edit-completion" data-bs-toggle="modal" data-bs-target="#editCompletionModal" style="width:100px" data-id="{{ $com->completionId }}">
-                                    Edit
+                         
+                            <div class="col-10"></div>
+                            <div class="col-2">
+                                <button type="button" class="btn pro rounded edit-completion float-end" data-bs-toggle="modal" data-bs-target="#editCompletionModal" data-id="{{ $com->completionId }}">
+                              <i class="bi bi-pencil"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
                     @endif
+
+                    @if($appdetSW)
+                    <div class="row">              
+
+                        <div class="row mb-3">
+                            <div class="col-4">Consumption sheet</div>
+                            <div class="col-2">:</div>
+                            <div class="col-4">
+                                <strong>
+                                    @if($com && $com->consumptional_sheet)
+                                    <!-- Display consumptional sheet -->
+                                    <p>{{ $com->consumptional_sheet }}</p>
+                                    
+                                    <!-- Check if the file exists before showing the download link -->
+                                    @if(file_exists(public_path('documents24/' . $com->consumptional_sheet)))
+                                        <a href="{{ asset('documents24/'.$com->consumptional_sheet) }}" class="btn btn-light btn-sm" target="_blank">
+                                            <i class="fas fa-file-excel" style="color: #28a745; font-size: 20px;"></i> Download Excel
+                                        </a>
+                                    @else
+                                        <p class="text-danger">File not found.</p>
+                                    @endif
+                                @endif
+                                
+                                </strong>
+                            </div>
+                        </div><br>
+                        
+                        <div class="col-4 border border-3 border-secondary p-4">
+                        @if($com && $com->photo1)
+                            <img src="{{ asset('documents24/'.$com->photo1) }}" height="300px" width="300px" alt="Photo 1" >
+                        @else
+                            <strong>No photo uploaded</strong>
+                        @endif
+                    </div>
+               
+                    <div class="col-4 border border-3 border-secondary p-4">
+                        @if($com && $com->photo2)
+                            <img src="{{ asset('documents24/'.$com->photo2) }}" height="300px" width="300px" alt="Photo 2" >
+                        @else
+                            <strong>No photo uploaded</strong>
+                        @endif
+                    </div>
+                
+       
+                       <div class="col-4 border border-3 border-secondary p-4">
+                        @if($com && $com->photo3)
+                            <img src="{{ asset('documents24/'.$com->photo3) }}" height="300px" width="300px" alt="Photo 3" >
+                        @else
+                            <strong>No photo uploaded</strong>
+                        @endif
+                    </div>
+
+                    <div class="row">
+                         
+                        <div class="col-10"></div>
+                        <div class="col-2">
+                            <button type="button" class="btn pro rounded edit-completion float-end mt-5" data-bs-toggle="modal" data-bs-target="#editCompletionModal" data-id="{{ $com->completionId }}">
+                          <i class="bi bi-pencil"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+            
+            </div>
+                    @endif
+                    @endif
+
+
+
                
                
             </div>
@@ -1131,6 +1298,32 @@
                         </button>
                     </div>
                     <div class="modal-body">
+                        @if($appdetSW)
+                        <form id="editCompletionForm" method="post" enctype="multipart/form-data">
+                            @csrf
+                                <input type="hidden" name="proId" value="{{ $projectId->proId }}">                        
+                               
+                                <div>
+                                    <label for="measurement_book">Consumptional Sheet:</label>
+                                    <input type="file" id="Editconsumptional_sheet" name="consumptional_sheet" class="form-control">
+                                    <span class="text-danger" id="consumptional_sheetError"></span>
+                                </div> <br>
+                                
+                                <!-- Photo Uploads -->
+                                <div>
+                                    <label for="photos">Upload 3 Photos of Before During and After </label>
+                                    <input type="file" id="photos" name="photos[]" class="form-control" multiple required>
+                                    <span class="text-danger" id="photosError"></span>
+                                </div><br>     
+                            <div class="row">
+                                    <div class="col-5"></div>
+                                    <div class="col-5">
+                                        <button type="submit" class="btn pro mt-2">Submit</button>
+                                    </div>
+                                </div>
+                        </form>
+                        @endif
+                        @if(!$appdetSW)
                         <form id="editCompletionForm" method="post" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="proId" value="{{ $projectId->proId }}">                        
@@ -1188,10 +1381,11 @@
                             <div class="row">
                                 <div class="col-5"></div>
                                 <div class="col-5">
-                                    <button type="submit" class="btn pro mt-2 ">Submit</button>
+                                    <button type="submit" class="btn pro mt-5">Submit</button>
                                 </div>
                             </div>
                         </form>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -1203,11 +1397,6 @@
 </div>
 </div>
 </div>
-
-
-
-
-
 @endsection
 @section('scripts')
 
@@ -1416,19 +1605,30 @@ var userRole = {{ Auth::user()->role }};
                      name: 'action',
                      orderable: false,
                      searchable: false,
-                     render: function(data, type, row, meta) {
-                                      
+                     render: function(data, type, row, meta)
+                      {  
+                        const showPayNowButton = userRole === 5 && 
+                                 row.pmt_status === 1 && 
+                                 row.hod_status === 1 && 
+                                 row.coo_status === 1; 
+                                             
                     return `
                     <div class="dd d-flex">                      
 
-                        <button class="btn btn-warning btn-sm info request me-1" data-id="${row.fundId}" data-input="${row.input}" title="Request">
+                        <button class="btn btn-warning btn-sm info request me-1" data-id="${row.fundId}" data-input="${row.inputName}" title="Request">
                          Request
                         </button>  
                    
                         <button class="btn btn-info btn-sm submit" data-id="${row.fundId}" data-input="${row.inputName}" title="Submit Bill">
                           Submit
                         </button>   
-                                     
+
+                         ${showPayNowButton ? `
+                    <button class="btn btn-dark btn-sm edit-utilized me-1 ms-1" data-id="${row.fundId}" title="Edit">
+                        Pay Now
+                    </button>
+                ` : ''}
+          
                        
                     `;
                 } 
@@ -1439,7 +1639,8 @@ var userRole = {{ Auth::user()->role }};
                      orderable: false,
                      searchable: false,
                      render: function(data, type, row, meta) {
-                      
+                
+
                         if (row.stage5_status === 1 && userRole === 4) {              
                     return `                
                        
@@ -1451,7 +1652,7 @@ var userRole = {{ Auth::user()->role }};
                      `;
                     }
                  
-                    else if(row.stage5_status && userRole === 5 && row.pmt_status===1 && row.hod_status === 1 )
+                    else if((row.stage5_status ===1 || row.stage5_status === 2)&& userRole === 5 && row.pmt_status===1 && row.hod_status === 1 && row.coo_status === 1)
                     {
                     return `       
                       <button class="btn btn-danger btn-sm info FM-approval me-1" data-id="${row.fundId}" title="Request">
@@ -1468,7 +1669,7 @@ var userRole = {{ Auth::user()->role }};
                     {
                     return `                                     
 
-                    <p>This product needs an approval by pmt,hod,fm and coo</p> 
+                     
                       
                     `;
                      } 
@@ -1482,18 +1683,20 @@ var userRole = {{ Auth::user()->role }};
                      render: function(data, type, row, meta) {
     const { stage5_status, pmt_status, hod_status, fm_status, coo_status } = row;
 
-    if ((row.stage5_status === 1|| row.stage5_status === 2)  && pmt_status === 1 && hod_status === 1 && fm_status === 1 && coo_status === 1) {
-        return `<div class="badge text-bg-info">COO Approved</div>`;
-    } 
-    if ((row.stage5_status === 1|| row.stage5_status === 2)  && pmt_status === 1 && hod_status === 1 && fm_status === 1) {
-        return `<div class="badge text-bg-info">Financial Manager Approved</div>`;
-    } 
-    if ((row.stage5_status === 1|| row.stage5_status === 2)  && pmt_status === 1 && hod_status === 1) {
-        return `<div class="badge text-bg-info">HOD Approved</div>`;
-    } 
-    if ((row.stage5_status === 1|| row.stage5_status === 2)  && pmt_status === 1) {
-        return `<div class="badge text-bg-info">Project Engineer Approved</div>`;
-    }
+    if ((row.stage5_status === 1 || row.stage5_status === 2) && row.pmt_status === 1 && row.hod_status === 1 && row.fm_status === 1 && row.coo_status ===1) {
+            return `<div class="badge text-bg-info">Financial Manager Approved</div>`;
+        } 
+        else if ((row.stage5_status === 1|| row.stage5_status === 2) && row.pmt_status === 1 && row.hod_status === 1 && row.coo_status ===1) {
+            return `<div class="badge text-bg-success">COO Verified</div>`;
+        } else if ((row.stage5_status === 1 || row.stage5_status ===2) && row.pmt_status === 1 && row.hod_status === 1) {
+            return `<div class="badge text-bg-info">Project Engineer & HOD approved</div>`;
+        } else if ((row.stage5_status === 1 || row.stage5_status === 2) && row.pmt_status === 1) {
+            return `<div class="badge text-bg-info">Project Engineer approved</div>`;
+        } 
+        else if((row.stage5_status === 1 || row.stage5_status === 2) && row.hod_status === 1) {
+            return `<div class="badge text-bg-info">HOD approved</div>`;
+        } 
+        
 
     // Optionally return a message if no approval
     return `<div class="badge text-bg-secondary">Not Approved</div>`;
@@ -1507,15 +1710,15 @@ var userRole = {{ Auth::user()->role }};
            
                 ], 
     columnDefs: [
-    {
-        // Hide the column for role 3
+        {
+        // Hide the column for roles 3, 4, and 5
         targets: [7],
-        visible: userRole !== 3
+        visible: ![3].includes(userRole)
     },
     {
         // Hide the column for roles 3, 4, and 5
         targets: [5],
-        visible: ![3, 4, 5].includes(userRole)
+        visible: ![3, 4,5].includes(userRole)
     }
    ],
 
@@ -1850,7 +2053,7 @@ $(document).on('click', '.delete', function() {
 });  
 
 
-//edit current input
+//request current input
 $(document).ready(function() 
 {
     // Event for opening the edit modal
@@ -1859,8 +2062,8 @@ $(document).ready(function()
         $.get(`{{ url('/user/projects/details/implementation/current/request') }}/${fundId}`, function(data) {
             // Fill the form with data
         $('#fundId').val(data.fundId);
-        $('#current').val(data.current);
-        $('#editModal').modal('show'); 
+        // $('#current').val(data.current);
+        $('#requestModal').modal('show'); 
         });
     });
   
@@ -1879,7 +2082,7 @@ $(document).ready(function()
                 _token: $('meta[name="csrf-token"]').attr('content') // Include CSRF token
             },
             success: function(response) {
-                $('#editModal').modal('hide');
+                $('#requestModal').modal('hide');
                 setTimeout(function() {
                         location.reload(); 
                     }, 2000);
@@ -1928,7 +2131,12 @@ $(document).on('click', '.submit', function() {
                     toastr.success(response.message, 'Success', {
                         positionClass: 'toast-top-right'
                     });
-                } else {
+                } else if (response.status === 0) {
+                // Handle the case where the bill has already been submitted
+                toastr.error(response.message, 'Error', {
+                    positionClass: 'toast-top-right'
+                });
+            } else {
                     toastr.error('Unexpected response format.', 'Error', {
                         positionClass: 'toast-top-right'
                     });
@@ -1940,11 +2148,19 @@ $(document).on('click', '.submit', function() {
                     }, 2000);
             },
             error: function(xhr, status, error) {
-                console.error(xhr.responseText);
+            console.error(xhr.responseText); // Log the error for debugging
+            if (xhr.status === 400) {
+                const response = JSON.parse(xhr.responseText);
+                toastr.error(response.message, 'Error', {
+                    positionClass: 'toast-top-right',
+                    toastClass: 'toast-yellow' // Custom class for yellow
+                });
+            } else {
                 toastr.error('Something went wrong!', 'Error', {
                     positionClass: 'toast-top-right'
                 });
             }
+        }
         });
     });
 });
@@ -2039,7 +2255,7 @@ $(document).ready(function() {
         $('#community_contribution').val(data.community_contribution);
         $('#any_other').val(data.any_other);
         $('#geo_location').val(data.geo_location);
-
+        $('#Editconsumptional_sheet').val(data.consumptional_sheet);
         // Show the modal containing the form
         $('#editCompletionModal').modal('show'); 
     });
@@ -2224,38 +2440,47 @@ function createPieChart(totalUtilized, totalBalance) {
 }
     
 
-   
-/*
-//check all bills are approved by all 
-$(document).ready(function() {
-        // AJAX call to fetch data
-        $.ajax({
-            url: `{{ url('/user/project/details/bill/status')}}`, // Adjust the URL if needed
-            method: 'GET',
-            dataType: 'json',
-            success: function(json) {
-                if (json.Message) {
-                // Set the message in the toast body
-                $('#toastMessage').text(json.Message);
-                
-                // Show the toast
-                $('#statusToast').toast({
-                    autohide: true,
-                    delay: 5000 // Hide after 5 seconds
-                }).toast('show');
-            }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error('Error fetching pie chart data:', textStatus, errorThrown);
-            }
-            
-        });
-        $('#statusToast .close').click(function() {
-        $('#statusToast').toast('hide');
+  // edit utilized by coo 
+    //edit current input
+    $(document).ready(function() {
+
+// Event for opening the edit modal
+$('#ImplementationTable').on('click', '.edit-utilized', function() {
+    var fundId = $(this).data('id');
+    $.get(`{{ url('/user/projects/details/implementation/utilized') }}/${fundId}`, function(data) {
+        // Fill the form with data
+    $('#fundId').val(data.fundId);
+    $('#utilized').val(data.current);
+    $('#editModal').modal('show'); 
     });
-    }); 
-    */
-    
+});
+
+// Save changes on the modal
+$('#updateUtilized').on('click', function() {
+    var fundId = $('#fundId').val();
+    var utilized = $('#utilized').val();
+
+    $.ajax({
+        url: `{{ url('/user/projects/details/stage5/utilized/update') }}/${fundId} `, // Adjust your URL
+        type: 'POST',
+        data: {
+             utilized: utilized,
+            _token: $('meta[name="csrf-token"]').attr('content') // Include CSRF token
+        },
+        success: function(response) {
+            toastr.success(response.message, 'Success');
+            $('#editModal').modal('hide');
+            setTimeout(function() {
+                    location.reload(); 
+                }, 2000);
+
+        },
+       
+    });
+});
+});
+
+
 
 
 </script>
