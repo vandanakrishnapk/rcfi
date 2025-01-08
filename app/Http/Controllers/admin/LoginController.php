@@ -35,6 +35,12 @@ class LoginController extends Controller
                 $request->session()->regenerate();
                 return redirect()->route('user.home');
             }
+            elseif($user->role === 7) 
+            {
+                
+                $request->session()->regenerate();
+                return redirect()->route('employee.empdashboard');
+            }
             else
            {
                 // Handle the case where the role is not 0

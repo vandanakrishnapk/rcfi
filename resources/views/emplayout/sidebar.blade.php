@@ -13,7 +13,7 @@
                 
 
                 <li class="sidebarli">
-                    <a href="{{ route('admin.home') }}" class="waves-effect sidebara">
+                    <a href="#" class="waves-effect sidebara">
                         <i class="bi bi-houses-fill text-white"></i>
                         <span>Dashboard</span>
                     </a>
@@ -21,31 +21,9 @@
 
                
 
-                <li class="sidebarli">
-                    <a href="#" class=" waves-effect sidebara">
-                        <i class="bi bi-people-fill text-white"></i>
-                        <span>Configuration</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="true">
-                        <li class="sidebarli">
-                            <a href="{{ route('data_table') }}" class="sidebara">User</a>
-                            
-                        </li>
-                        <li class="sidebarli">
-                            <a href="{{ route('donor.view') }}" class="sidebara">  <span>Donor</span></a>
-                           
-                        </li>
-                    </ul>
-                </li>
-
                 <!--Application -->
 
-                <li class="sidebarli">
-                    <a href="{{ route('admin.getApplications')}}" class=" waves-effect sidebara">
-                        <i class="bi bi-file-earmark-medical-fill text-white"></i>
-                        <span>Application</span>
-                    </a>
-                </li>
+              
                     {{-- <ul class="sub-menu" aria-expanded="true">
                         <li>
                             <a href="{{ route('admin.getMarkazOrphanCare')}}" class="">Markaz Orphan Care</a>
@@ -66,43 +44,20 @@
                        
                     </ul> --}}
              
+              
                 <li class="sidebarli">
-                    <a href="{{ route('admin.getProjects')}}" class="waves-effect sidebara">
-                        <i class="bi bi-folder-fill text-white "></i>
-                        <span>Projects</span>
-                    </a>
-                </li>
-                {{-- <li class="sidebarli">
-                    <a href="{{ route('admin.getHRModule')}}" class="waves-effect sidebara">
-                        <i class="bi bi-folder-fill text-white "></i>
-                        <span>HR Module</span>
+                    <a href="#" class="waves-effect sidebara">
+                <i class="bi bi-x-diamond-fill text-white"></i>
+                        <span>Leave</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="true">
-                        <li><a href="#" class="text-white">Add New Employee</a></li>
-                        <li><a href="#" class="text-white" data-bs-toggle="modal" data-bs-target="#leaveAllocateModal">Leave Allocation</a></li>
+                        <li><a href="{{ route('employee.viewProfile')}}" class="text-white">View Profile</a></li>
+                        <li><a href="#" class="text-white" data-bs-toggle="modal" data-bs-target="#leaveModal">Request leave</a></li>
                     </ul>
-                </li>  --}}
+                </li>  
 
 
-                <li class="sidebarli">
-                    <a href="#" class=" waves-effect sidebara">
-                        <i class="bi bi-people-fill text-white"></i>
-                        <span>HR Module</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="true">
-                        <li class="sidebarli">
-                            <a href="{{ route('admin.getHRModule') }}" class="sidebara">View HR Module</a>
-                            
-                        </li>
-                        <li class="sidebarli">
-                            <a href="#" class="sidebara" data-bs-toggle="modal" data-bs-target="#employeeModal">New Employee</a>
-                            
-                        </li>
-                        <li class="sidebarli">
-                            <a href="#" class="sidebara"  data-bs-toggle="modal" data-bs-target="#leaveAllocateModal"><span>Leave allocation</span></a>                           
-                        </li>
-                    </ul>
-                </li>
+              
 
                 {{-- <li>
                     <a href="#" class=" waves-effect">

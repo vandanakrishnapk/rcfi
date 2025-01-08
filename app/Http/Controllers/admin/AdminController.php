@@ -67,6 +67,7 @@ public function submitForgetPasswordForm(Request $request)
 
 public function change_password_form($token)
 {
+
     return view('email.change_password_form',['token'=>$token]);
 }
 
@@ -79,6 +80,7 @@ public function change_password_form($token)
   */
   public function submitResetPasswordForm(Request $request)
   {
+    \Log::info($request->all());  // Check all form data received
     $validator = Validator::make($request->all(), [
         'email' => 'required|email',
         'password' => 'required|string|min:8',
@@ -95,18 +97,21 @@ public function change_password_form($token)
       if ($validator->fails()) {
           return back()->withErrors($validator)->withInput();
       }
-  
-      $updatePassword = DB::table('password_reset_tokens')
-          ->where([
-              'email' => $request->email,
-              'token' => $request->token
-          ])->first();
-  
-      if (!$updatePassword) {
-          return back()->withInput()->with('error', 'Invalid token!');
-      }
-  
-      $user = Admin::where('email', $request->email)
+      $resetPasswordRecord = DB::table('password_reset_tokens')
+      ->where('token', $request->token)
+      ->first();
+
+  if (!$resetPasswordRecord) {
+      \Log::error('Invalid reset token: ' . $request->token);
+      return back()->withInput()->with('error', 'Invalid or expired token.');
+  }
+
+  // Check if the token has expired (60 minutes by default)
+  if (Carbon::now()->diffInMinutes(Carbon::parse($resetPasswordRecord->created_at)) > 60) {
+      \Log::error('Expired reset token: ' . $request->token);
+      return back()->with('error', 'This reset token has expired.');
+  }
+      $user = User::where('email', $request->email)
           ->update(['password' => bcrypt($request->password)]);
   
       DB::table('password_reset_tokens')->where(['email' => $request->email])->delete();
@@ -171,9 +176,6 @@ switch ($designation) {
     case 'HOD':
         $role = 6;
         break;
-    case 'HR':
-         $role = 7;
-    break;
     default:
         return response()->json([
             'status' => 0,

@@ -12,9 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('leave_allocations', function (Blueprint $table) {
-            $table->id();
+            $table->id('leave_allocationId');
+            $table->unsignedBigInteger('employeeId');
+            $table->string('employee_name');
+            $table->string('leave_type');
+            $table->integer('leave_days');
+            $table->unsignedBigInteger('allocated_by'); // HR user ID
             $table->timestamps();
-        });
+
+            // Foreign key constraint (assuming employees table exists)
+            $table->foreign('employeeId')->references('id')->on('users')->onDelete('cascade');
+             });
     }
 
     /**

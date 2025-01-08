@@ -48,6 +48,7 @@ use App\Http\Controllers\user\userDisplayProjectController;
 use App\Http\Controllers\user\userodfController; 
 use App\Http\Controllers\user\userdiffController; 
 use App\Http\Controllers\user\userFamilyProjectController;
+use App\Http\Controllers\EmployeeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -308,6 +309,9 @@ Route::get('/project/details/download/pdf', [ProjectDetailsController::class, 'd
 //hr routes 
 Route::get('/hr/module',[HRController::class,'getHRModule'])->name('admin.getHRModule');
 Route::post('/hr/module/employee/new',[HRController::class,'newEmployee'])->name('admin.newEmployee');
+Route::get('/hr/module/employee/name/{id}',[HRController::class,'getEmployeeName'])->name('admin.getEmployeeName');
+Route::post('/hr/module/leave/allocate',[HRController::class,'doLeaveAllocate'])->name('admin.doLeaveAllocate');
+Route::post('/hr/module/employee',[HRController::class,'empDatatable'])->name('admin.empDatatable');
 });  
 
 
@@ -518,6 +522,12 @@ Route::post('/project/family/current/update',[userFamilyProjectController::class
 Route::post('/project/family/status/update/{id}',[userFamilyProjectController::class,'updatefamilyStatus'])->name('user.updatefamilyStatus');
 Route::post('/project/family/paid/update/{id}',[userFamilyProjectController::class,'updatefamilypaymentStatus'])->name('user.updatefamilypaymentStatus');
 
+});
+Route::prefix('employee')->middleware(['auth', 'role:7'])->group(function ()
+{
+Route::get('/dashboard',[EmployeeController::class,'getEmployeeDashboard'])->name('employee.empdashboard');
+Route::post('/leave/request/new',[EmployeeController::class,'doLeaveRequest'])->name('employee.doLeaveRequest');
+Route::get('/profile/view',[EmployeeController::class,'viewProfile'])->name('employee.viewProfile');
 });
 
 
