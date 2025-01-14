@@ -94,6 +94,10 @@
                             <a href="{{ route('admin.getHRModule') }}" class="sidebara">View HR Module</a>
                             
                         </li>
+                        <li class="sidebarli">
+                            <a href="#" class="sidebara">Leave Requests</a>
+                            
+                        </li>
                      
                        
                     </ul>
