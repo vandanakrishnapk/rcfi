@@ -17,19 +17,142 @@
 @section('body') <body data-sidebar="light"> @endsection
 @section('content')
 
-<div class="row">
+<div class="row mt-3">
     <div class="col-12">
-        <div class="card">
-            <div class="card-header"><h3>Profile</h3></div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-6"><strong>Name</strong></div>
-                <div class="col-6"><strong>{{ }} </strong></div>
-              </div>
+
+        <div class="float-end d-none d-md-block">
+            <button type="button" class="btn btn-success mb-1 me-3 float-end rounded-circle" data-bs-toggle="modal" data-bs-target="#leaveModal">
+                <i class="bi bi-person-plus-fill fs-5"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="leaveModal" tabindex="-1" aria-labelledby="leaveModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header box">
+                <h1 class="modal-title fs-5 text-light" id="leaveModalLabel">Application for Leave</h1>
+                <button type="button" class="btn-close cls" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 familyModalBody">
+                <!-- Leave Request Form -->
+                <form id="leaveForm">
+                    @csrf
+                    <!-- Leave Start Date -->
+                    <div class="form-group">
+                        <label for="leave_duration_start">Leave Start Date:</label>
+                        <input type="date" name="leave_duration_start" id="leave_duration_start" class="form-control" >
+                        <span id="leave_duration_start-error" class="text-danger"></span> <!-- Error message -->
+                    </div>
+
+                    <!-- Leave End Date -->
+                    <div class="form-group">
+                        <label for="leave_duration_end">Leave End Date:</label>
+                        <input type="date" name="leave_duration_end" id="leave_duration_end" class="form-control" >
+                        <span id="leave_duration_end-error" class="text-danger"></span> <!-- Error message -->
+                    </div>
+
+                    <!-- Leave Type -->
+                    <div class="form-group">
+                        <label for="leave_type_id">Leave Type:</label>
+                        <select name="leave_type_id" id="leave_type_id" class="form-control" >
+                            <option value="">Select Leave Type</option>
+                            @foreach($leavetypes as $leavetype)
+                                <option value="{{ $leavetype->leavetypeId }}">{{ $leavetype->leave_name }}</option>
+                            @endforeach
+                        </select>
+                        <span id="leave_type_id-error" class="text-danger"></span> <!-- Error message -->
+                    </div>
+
+                    <!-- Remarks (Optional) -->
+                    <div class="form-group">
+                        <label for="remarks">Remarks (Optional):</label>
+                        <textarea name="remarks" id="remarks" class="form-control"></textarea>
+                        <span id="remarks-error" class="text-danger"></span> <!-- Error message -->
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary">Submit Leave Request</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header"><h3>Profile Information</h3></div>
+            <div class="card-body">
+                <!-- Profile Information Section -->
+                <div class="form-group row">
+                    <label for="name" class="col-4 col-form-label"><strong>Name</strong></label>
+                    <div class="col-8">
+                        <!-- Display user's name -->
+                        <p class="form-control-plaintext" id="name">{{ $employee->name }}</p>
+                    </div>
+                </div><br>
+                <div class="form-group row">
+                    <label for="name" class="col-4 col-form-label"><strong>Email</strong></label>
+                    <div class="col-8">
+                        <!-- Display user's name -->
+                        <p class="form-control-plaintext" id="name">{{ $employee->email }}</p>
+                    </div>
+                </div><br>
+                <div class="form-group row">
+                    <label for="name" class="col-4 col-form-label"><strong>Mobile</strong></label>
+                    <div class="col-8">
+                        <!-- Display user's name -->
+                        <p class="form-control-plaintext" id="name">{{ $employee->mobile }}</p>
+                    </div>
+                </div><br>
+                <div class="form-group row">
+                    <label for="name" class="col-4 col-form-label"><strong>Designation</strong></label>
+                    <div class="col-8">
+                        <!-- Display user's name -->
+                        <p class="form-control-plaintext" id="name">{{ $employee->designation }}</p>
+                    </div>
+                </div><br>
+
+                <!-- Leave Taken Section -->
+                <div class="card-header"><h3>Leave Taken</h3></div>
+
+
+                <!-- Leave Taken Table -->
+                <div class="form-group row">
+                     <div class="col-8">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Leave Type</th>
+                                    <th>Leave Taken (Days)</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($leaveApplications as $leave)
+                                    <tr>
+                                        <td>{{ $leave->leave_name }}</td>
+                                        <td>{{ $leave->leave_days }} days</td>
+                                        <td>{{ \Carbon\Carbon::parse($leave->leave_duration_start)->format('d M, Y') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($leave->leave_duration_end)->format('d M, Y') }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div><br>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+                
+                          
+
 
 
 
@@ -61,40 +184,47 @@
 
         // AJAX request to submit the form
         $.ajax({
-            url: '{{ url('/employee/leave/request/new') }}', // Ensure this URL is correct
+            url: `{{ url('/employee/leave/request/new') }}`, // Ensure this URL is correct
             type: 'POST',
             data: formData,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include CSRF token
             },
             success: function(response) {
-                // If success, show a success toast
+                // Success callback
                 iziToast.success({
                     title: 'Success!',
-                    message: response.message,
+                    message: response.message, // Message from the controller
                     position: 'topRight',
                 });
-                $('#leaveModal').hide(); // Close the modal after submission
-                // Reload DataTable (uncomment if needed)
-                // $('#empTable').DataTable().ajax.reload();
+                $('#leaveModal').hide(); // Hide the modal after successful submission
+                // Optionally reload DataTable or update the UI if needed
+                // $('#empTable').DataTable().ajax.reload();  // Uncomment this line if needed
             },
             error: function(xhr) {
-                // If validation fails, display the errors
-                var errors = xhr.responseJSON.errors;
-                for (var key in errors) {
-                    // Display the error message next to the respective input field
-                    $('#' + key + '-error').text(errors[key][0]);
+                // Error callback
+                if (xhr.status === 422) { // Validation errors from Laravel
+                    var errors = xhr.responseJSON.errors;
+                    for (var key in errors) {
+                        $('#' + key + '-error').text(errors[key][0]); // Display the first error
+                    }
+                    iziToast.error({
+                        title: 'Error!',
+                        message: 'Please fix the errors and try again.',
+                        position: 'topRight',
+                    });
+                } else {
+                    // General error handler (if the error is not related to validation)
+                    iziToast.error({
+                        title: 'Error!',
+                        message: xhr.responseJSON.message || 'An unexpected error occurred. Please try again.',
+                        position: 'topRight',
+                    });
                 }
-
-                iziToast.error({
-                    title: 'Error!',
-                    message: 'Please fix the errors and try again.',
-                    position: 'topRight',
-                });
             }
         });
     });
 });
 
-</script>
+  </script>
 @endpush

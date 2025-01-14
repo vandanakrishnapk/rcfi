@@ -1,3 +1,7 @@
+<?php 
+use Illuminate\Support\Facades\Auth;
+?>
+
 <header id="page-topbar" class="bg-dark">
     <div class="navbar-header pb-3 pt-3">
         <div class="d-flex">

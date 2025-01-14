@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('leave_types', function (Blueprint $table) {
             $table->id('leavetypeId');
             $table->string('leave_name');
+            $table->string('short_name');
+            $table->integer('yearly_limit');
+            $table->integer('carry_forward_limit')->nullable();
             $table->timestamps();
         });
     }

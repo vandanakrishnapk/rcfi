@@ -94,13 +94,8 @@
                             <a href="{{ route('admin.getHRModule') }}" class="sidebara">View HR Module</a>
                             
                         </li>
-                        <li class="sidebarli">
-                            <a href="#" class="sidebara" data-bs-toggle="modal" data-bs-target="#employeeModal">New Employee</a>
-                            
-                        </li>
-                        <li class="sidebarli">
-                            <a href="#" class="sidebara"  data-bs-toggle="modal" data-bs-target="#leaveAllocateModal"><span>Leave allocation</span></a>                           
-                        </li>
+                     
+                       
                     </ul>
                 </li>
 

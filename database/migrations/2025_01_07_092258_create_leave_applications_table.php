@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('leave_type_id');  // Foreign key to leave_types table
             $table->text('remarks')->nullable();  // Optional remarks field
             $table->timestamps();  // created_at and updated_at timestamps
+            $table->string('status');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('leave_type_id')->references('leavetypeId')->on('leave_types')->onDelete('cascade');
        

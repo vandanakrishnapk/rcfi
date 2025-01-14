@@ -310,8 +310,10 @@ Route::get('/project/details/download/pdf', [ProjectDetailsController::class, 'd
 Route::get('/hr/module',[HRController::class,'getHRModule'])->name('admin.getHRModule');
 Route::post('/hr/module/employee/new',[HRController::class,'newEmployee'])->name('admin.newEmployee');
 Route::get('/hr/module/employee/name/{id}',[HRController::class,'getEmployeeName'])->name('admin.getEmployeeName');
-Route::post('/hr/module/leave/allocate',[HRController::class,'doLeaveAllocate'])->name('admin.doLeaveAllocate');
 Route::post('/hr/module/employee',[HRController::class,'empDatatable'])->name('admin.empDatatable');
+Route::get('/hr/module/employee/edit/{id}',[HRController::class,'editEmployee'])->name('admin.editEmployee');
+Route::post('/hr/module/employee/update',[HRController::class,'updateEmployee'])->name('admin.updateEmployee');
+Route::get('/hr/module/employee/leave/details/{id}',[HRController::class,'leaveDetails'])->name('admin.leaveDetails');
 });  
 
 

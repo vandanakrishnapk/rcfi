@@ -13,7 +13,7 @@
                 
 
                 <li class="sidebarli">
-                    <a href="#" class="waves-effect sidebara">
+                    <a href="{{ route('employee.empdashboard')}}" class="waves-effect sidebara">
                         <i class="bi bi-houses-fill text-white"></i>
                         <span>Dashboard</span>
                     </a>
@@ -46,14 +46,11 @@
              
               
                 <li class="sidebarli">
-                    <a href="#" class="waves-effect sidebara">
+                    <a href="{{ route('employee.viewProfile')}}" class="waves-effect sidebara">
                 <i class="bi bi-x-diamond-fill text-white"></i>
-                        <span>Leave</span>
+                        <span>Profile</span>
                     </a>
-                    <ul class="sub-menu" aria-expanded="true">
-                        <li><a href="{{ route('employee.viewProfile')}}" class="text-white">View Profile</a></li>
-                        <li><a href="#" class="text-white" data-bs-toggle="modal" data-bs-target="#leaveModal">Request leave</a></li>
-                    </ul>
+                  
                 </li>  
 
 

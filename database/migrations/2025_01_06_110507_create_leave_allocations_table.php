@@ -15,13 +15,14 @@ return new class extends Migration
             $table->id('leave_allocationId');
             $table->unsignedBigInteger('employeeId');
             $table->string('employee_name');
-            $table->string('leave_type');
+            $table->unsignedBigInteger('leave_type');
             $table->integer('leave_days');
             $table->unsignedBigInteger('allocated_by'); // HR user ID
             $table->timestamps();
 
             // Foreign key constraint (assuming employees table exists)
             $table->foreign('employeeId')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('leave_type')->references('leavetypeId')->on('leave_types')->onDelete('cascade');
              });
     }
 
